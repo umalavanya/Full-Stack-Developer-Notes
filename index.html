@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📚 full‑stack developer notes · learning hub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(145deg, #f5f7fc 0%, #edf2f9 100%);
+            color: #0a192f;
+            padding: 2rem 1.5rem;
+            min-height: 100vh;
+        }
+
+        .main-wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* header */
+        .hero {
+            background: #0a192f;
+            color: white;
+            padding: 2.5rem 3rem;
+            border-radius: 2.5rem 2.5rem 2rem 2rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 25px 40px -15px rgba(2, 20, 40, 0.5);
+            border-bottom: 6px solid #f0b90b;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-size: 3.2rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            background: linear-gradient(145deg, #f0b90b, #f5d742);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+
+        .hero-text p {
+            font-size: 1.3rem;
+            color: #9cb4d4;
+            margin-top: 0.5rem;
+            max-width: 650px;
+        }
+
+        .hero-badge {
+            background: #1e3a5f;
+            padding: 0.7rem 2rem;
+            border-radius: 60px;
+            font-weight: 600;
+            color: #f0b90b;
+            border: 1px solid #f0b90b;
+            font-size: 1rem;
+        }
+
+        /* learning path section */
+        .path-container {
+            background: white;
+            border-radius: 2.5rem;
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+            border: 1px solid #dee7f0;
+        }
+
+        .path-title {
+            font-size: 2rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 2rem;
+        }
+
+        .path-title span {
+            background: #f0b90b;
+            color: #0a192f;
+            font-size: 1.2rem;
+            padding: 0.3rem 1.2rem;
+            border-radius: 40px;
+            font-weight: 600;
+        }
+
+        .flow-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem 1.5rem;
+            align-items: center;
+        }
+
+        .flow-node {
+            background: #eef2f6;
+            padding: 0.8rem 1.6rem;
+            border-radius: 40px;
+            font-weight: 600;
+            color: #0f2b45;
+            border: 1px solid #bdd3e8;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .flow-node.gold {
+            background: #fef3c7;
+            border-color: #f0b90b;
+            color: #7b5e0a;
+        }
+
+        .arrow-symbol {
+            color: #f0b90b;
+            font-size: 1.5rem;
+            font-weight: 300;
+        }
+
+        /* category grid */
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 2.5rem 0 1.8rem;
+            letter-spacing: -0.01em;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .section-title .badge {
+            background: #0a192f;
+            color: #f0b90b;
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 2rem;
+            padding: 1.8rem 1.5rem 2rem;
+            box-shadow: 0 10px 25px -8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: 1px solid #e2eaf2;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 30px -12px #0a192f55;
+            border-color: #f0b90b;
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            background: #ecf3fa;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 20px;
+            margin-bottom: 1rem;
+        }
+
+        .card h3 {
+            font-size: 1.7rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            border-bottom: 3px solid #f0b90b;
+            display: inline-block;
+            padding-bottom: 0.2rem;
+        }
+
+        .card .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 0.8rem 0 1rem;
+        }
+
+        .tech-tag {
+            background: #e6edf5;
+            color: #0a2f4a;
+            padding: 0.25rem 0.9rem;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.01em;
+        }
+
+        .tech-tag.gold {
+            background: #fceeb8;
+            color: #744f06;
+        }
+
+        .card p {
+            color: #2e405b;
+            margin: 0.3rem 0 1.2rem;
+            flex: 1;
+            font-size: 0.95rem;
+        }
+
+        .btn {
+            background: #0a192f;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.7rem 1.5rem;
+            border-radius: 40px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            align-self: flex-start;
+            border: 1px solid #0a192f;
+            transition: 0.15s;
+        }
+
+        .btn:hover {
+            background: #f0b90b;
+            border-color: #f0b90b;
+            color: #0a192f;
+        }
+
+        .footnote {
+            margin-top: 4rem;
+            text-align: center;
+            color: #365a7a;
+            border-top: 2px dashed #b9d0e7;
+            padding-top: 2.5rem;
+        }
+
+        .footnote a {
+            color: #0a192f;
+            font-weight: 700;
+            text-decoration: none;
+            border-bottom: 2px solid #f0b90b;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-wrapper">
+        <!-- hero -->
+        <div class="hero">
+            <div class="hero-text">
+                <h1>⚡ full‑stack developer<br>master notes</h1>
+                <p>Your guided path from core fundamentals to cloud & microservices. Every technology organised,
+                    explained, and ready to explore.</p>
+            </div>
+            <div class="hero-badge">📘 40+ technologies · learning roadmap</div>
+        </div>
+
+        <!-- 🧭 RECOMMENDED LEARNING PATH (visual flow) -->
+        <div class="path-container">
+            <div class="path-title">
+                🧭 recommended learning path <span>start here</span>
+            </div>
+            <div class="flow-grid">
+                <span class="flow-node gold">🌱 core Java</span> <span class="arrow-symbol">→</span>
+                <span class="flow-node">adv Java / JDBC / JPA</span> <span class="arrow-symbol">→</span>
+                <span class="flow-node">SQL / MongoDB</span> <span class="arrow-symbol">→</span>
+                <span class="flow-node gold">HTML / CSS / Bootstrap / Tailwind</span> <span
+                    class="arrow-symbol">→</span>
+                <span class="flow-node gold">JavaScript</span> <span class="arrow-symbol">→</span>
+                <span class="flow-node">jQuery / React / Angular</span> <span class="arrow-symbol">→</span>
+                <span class="flow-node">Spring / Spring Boot</span> <span class="arrow-symbol">→</span>
+                <span class="flow-node">REST API / Microservices</span> <span class="arrow-symbol">→</span>
+                <span class="flow-node">Node / Express</span> <span class="arrow-symbol">→</span>
+                <span class="flow-node">Docker / Kubernetes</span> <span class="arrow-symbol">→</span>
+                <span class="flow-node gold">AWS / Azure</span> <span class="arrow-symbol">→</span>
+                <span class="flow-node">DevOps / CI‑CD</span> <span class="arrow-symbol">→</span>
+                <span class="flow-node gold">DSA & LeetCode</span>
+            </div>
+            <p
+                style="margin-top: 1.8rem; color: #476b8f; background: #e8f0fe; padding: 0.8rem 1.5rem; border-radius: 3rem; display: inline-block;">
+                💡 each block opens a dedicated notes module (individual .html files)
+            </p>
+        </div>
+
+        <!-- 1️⃣ CORE JAVA & ADVANCED JAVA -->
+        <div class="section-title">☕ Java ecosystem <span class="badge">backend foundation</span></div>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-icon">☕</div>
+                <h3>Core Java</h3>
+                <div class="tech-tags"><span class="tech-tag">OOP</span><span class="tech-tag">collections</span><span
+                        class="tech-tag">multithreading</span><span class="tech-tag">exceptions</span></div>
+                <p>Syntax, JVM, memory, I/O, generics, lambda, streams – the absolute foundation.</p>
+                <a href="core-java.html" class="btn">open notes →</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">⚙️</div>
+                <h3>Advanced Java</h3>
+                <div class="tech-tags"><span class="tech-tag">servlets</span><span class="tech-tag">JSP</span><span
+                        class="tech-tag">JSTL</span><span class="tech-tag">JSF</span></div>
+                <p>Web technologies, filters, listeners, session management, and enterprise patterns.</p>
+                <a href="advanced-java.html" class="btn">open notes →</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">🗃️</div>
+                <h3>JDBC</h3>
+                <div class="tech-tags"><span class="tech-tag">drivers</span><span class="tech-tag">connection
+                        pool</span><span class="tech-tag">prepared statement</span></div>
+                <p>Database connectivity from Java, transactions, batch processing, RowSet.</p>
+                <a href="jdbc.html" class="btn">open notes →</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">📦</div>
+                <h3>JPA</h3>
+                <div class="tech-tags"><span class="tech-tag">Hibernate</span><span
+                        class="tech-tag">entities</span><span class="tech-tag">relationships</span><span
+                        class="tech-tag">JPQL</span></div>
+                <p>Object‑relational mapping, caching, persistence context, criteria API.</p>
+                <a href="jpa.html" class="btn">open notes →</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">🖥️</div>
+                <h3>SWING & AWT</h3>
+                <div class="tech-tags"><span class="tech-tag">desktop</span><span
+                        class="tech-tag">components</span><span class="tech-tag">event handling</span><span
+                        class="tech-tag">layout</span></div>
+                <p>Building cross‑platform desktop applications with Java.</p>
+                <a href="swing-awt.html" class="btn">open notes →</a>
+            </div>
+        </div>
+
+        <!-- 2️⃣ SPRING / SPRING BOOT & MICROSERVICES -->
+        <div class="section-title">🍃 Spring & microservices <span class="badge">modern backend</span></div>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-icon">🍃</div>
+                <h3>Spring Framework</h3>
+                <div class="tech-tags"><span class="tech-tag">IoC</span><span class="tech-tag">DI</span><span
+                        class="tech-tag">AOP</span><span class="tech-tag">MVC</span></div>
+                <p>Core container, beans, configuration, data access, transaction management.</p>
+                <a href="spring.html" class="btn">open notes →</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">🚀</div>
+                <h3>Spring Boot</h3>
+                <div class="tech-tags"><span class="tech-tag">auto-config</span><span
+                        class="tech-tag">starters</span><span class="tech-tag">actuator</span><span
+                        class="tech-tag">profiles</span></div>
+                <p>Production‑ready apps, embedded servers, Spring Data, security.</p>
+                <a href="springboot.html" class="btn">open notes →</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">🔌</div>
+                <h3>REST API</h3>
+                <div class="tech-tags"><span class="tech-tag">HTTP methods</span><span class="tech-tag">status
+                        codes</span><span class="tech-tag">JSON</span><span class="tech-tag">OpenAPI</span></div>
+                <p>Designing RESTful APIs, best practices, versioning, documentation.</p>
+                <a href="rest-api.html" class="btn">open notes →</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">🧩</div>
+                <h3>Microservices</h3>
+                <div class="tech-tags"><span class="tech-tag">service discovery</span><span class="tech-tag">API
+                        gateway</span><span class="tech-tag">circuit breaker</span></div>
+                <p>Distributed systems, resilience, communication (sync/async), patterns.</p>
+                <a href="microservices.html" class="btn">open notes →</a>
+            </div>
+        </div>
+
+        <!-- 3️⃣ DATABASES -->
+        <div class="section-title">🗄️ Databases <span class="badge">data layer</span></div>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-icon">📊</div>
+                <h3>SQL</h3>
+                <div class="tech-tags"><span class="tech-tag">queries</span><span class="tech-tag">joins</span><span
+                        class="tech-tag">indexes</span><span class="tech-tag">transactions</span></div>
+                <p>MySQL, PostgreSQL, DDL, DML, advanced functions, query optimisation.</p>
+                <a href="sql.html" class="btn">open notes →</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">🍃</div>
+                <h3>MongoDB</h3>
+                <div class="tech-tags"><span class="tech-tag">NoSQL</span><span class="tech-tag">documents</span><span
+                        class="tech-tag">aggregation</span><span class="tech-tag">indexes</span></div>
+                <p>CRUD, aggregation pipeline, replica sets, sharding, mongoose (Node).</p>
+                <a href="mongodb.html" class="btn">open notes →</a>
+            </div>
+        </div>
+
+        <!-- 4️⃣ FRONTEND TRIO + LIBRARIES/FRAMEWORKS -->
+        <div class="section-title">🎨 Frontend <span class="badge">UI/UX</span></div>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-icon">🌐</div>
+                <h3>HTML5</h3>
+                <div class="tech-tags"><span class="tech-tag">semantic</span><span class="tech-tag">forms</span><span
+                        class="tech-tag">canvas</span><span class="tech-tag">SVG</span></div>
+                <p>Elements, accessibility, multimedia, SEO‑friendly markup.</p>
+                <a href="html.html" class="btn">open notes →</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">🎨</div>
+                <h3>CSS3</h3>
+                <div class="tech-tags"><span class="tech-tag">flexbox</span><span class="tech-tag">grid</span><span
+                        class="tech-tag">animations</span><span class="tech-tag">responsive</span></div>
+                <p>Selectors, variables, keyframes, media queries, modern layout.</p>
+                <a href="css.html" class="btn">open notes →</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">🅱️</div>
+                <h3>Bootstrap</h3>
+                <div class="tech-tags"><span class="tech-tag">grid</span><span class="tech-tag">components</span><span
+                        class="tech-tag">utilities</span><span class="tech-tag">customize</span></div>
+                <p>Rapid prototyping, responsive design, Bootstrap 5.</p>
+                <a href="bootstrap.html" class="btn">open notes →</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">🌊</div>
+                <h3>Tailwind</h3>
+                <div class="tech-tags"><span class="tech-tag">utility‑first</span><span
+                        class="tech-tag">configuration</span><span class="tech-tag">plugins</span></div>
+                <p>Atomic CSS, JIT engine, custom designs without leaving HTML.</p>
+                <a href="tailwind.html" class="btn">open notes →</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">⚡</div>
+                <h3>JavaScript</h3>
+                <div class="tech-tags"><span class="tech-tag">ES6+</span><span class="tech-tag">DOM</span><span
+                        class="tech-tag">async</span><span class="tech-tag">modules</span></div>
+                <p>Full language deep‑dive – from basics to advanced (you are here).</p>
+                <a href="javascript-main.html" class="btn">open notes →</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">🧃</div>
+                <h3>jQuery</h3>
+                <div class="tech-tags"><span class="tech-tag">DOM traversal</span><span
+                        class="tech-tag">AJAX</span><span class="tech-tag">effects</span></div>
+                <p>Legacy but still used: selectors, chaining, plugins.</p>
+                <a href="jquery.html" class="btn">open notes →</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">⚛️</div>
+                <h3>React</h3>
+                <div class="tech-tags"><span class="tech-tag">components</span><span class="tech-tag">hooks</span><span
+                        class="tech-tag">state</span><span class="tech-tag">router</span></div>
+                <p>Modern frontend, virtual DOM, context, Redux/Zustand.</p>
+                <a href="react.html" class="btn">open notes →</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">🅰️</div>
+                <h3>Angular</h3>
+                <div class="tech-tags"><span class="tech-tag">TypeScript</span><span
+                        class="tech-tag">modules</span><span class="tech-tag">RxJS</span><span
+                        class="tech-tag">DI</span></div>
+                <p>Enterprise‑grade framework, two‑way binding, CLI.</p>
+                <a href="angular.html" class="btn">open notes →</a>
+            </div>
+        </div>
+
+        <!-- 5️⃣ BACKEND JAVASCRIPT (NODE/EXPRESS) -->
+        <div class="section-title">🟢 Node.js ecosystem <span class="badge">server‑side JS</span></div>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-icon">🟢</div>
+                <h3>Node.js</h3>
+                <div class="tech-tags"><span class="tech-tag">event loop</span><span class="tech-tag">npm</span><span
+                        class="tech-tag">modules</span><span class="tech-tag">file system</span></div>
+                <p>Non‑blocking I/O, streams, cluster, child processes.</p>
+                <a href="node.html" class="btn">open notes →</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">🚂</div>
+                <h3>Express</h3>
+                <div class="tech-tags"><span class="tech-tag">middleware</span><span
+                        class="tech-tag">routing</span><span class="tech-tag">templates</span><span
+                        class="tech-tag">error handling</span></div>
+                <p>Minimalist web framework for Node.js, REST APIs, static files.</p>
+                <a href="express.html" class="btn">open notes →</a>
+            </div>
+        </div>
+
+        <!-- 6️⃣ DEVOPS, CLOUD, CONTAINERS, CI/CD -->
+        <div class="section-title">☁️ DevOps & cloud <span class="badge">infra & deployment</span></div>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-icon">🐳</div>
+                <h3>Docker</h3>
+                <div class="tech-tags"><span class="tech-tag">containers</span><span class="tech-tag">images</span><span
+                        class="tech-tag">Dockerfile</span><span class="tech-tag">compose</span></div>
+                <p>Containerization, volumes, networking, multi‑stage builds.</p>
+                <a href="docker.html" class="btn">open notes →</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">⎈</div>
+                <h3>Kubernetes</h3>
+                <div class="tech-tags"><span class="tech-tag">pods</span><span class="tech-tag">services</span><span
+                        class="tech-tag">deployments</span><span class="tech-tag">helm</span></div>
+                <p>Orchestration, scaling, rolling updates, ingress.</p>
+                <a href="kubernetes.html" class="btn">open notes →</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">☁️</div>
+                <h3>AWS</h3>
+                <div class="tech-tags"><span class="tech-tag">EC2</span><span class="tech-tag">S3</span><span
+                        class="tech-tag">Lambda</span><span class="tech-tag">RDS</span></div>
+                <p>Core services, IAM, VPC, serverless, cloud architecture.</p>
+                <a href="aws.html" class="btn">open notes →</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">🔷</div>
+                <h3>Azure</h3>
+                <div class="tech-tags"><span class="tech-tag">VMs</span><span class="tech-tag">App Service</span><span
+                        class="tech-tag">Functions</span><span class="tech-tag">AD</span></div>
+                <p>Microsoft cloud, DevOps, cognitive services, cost management.</p>
+                <a href="azure.html" class="btn">open notes →</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">⚙️</div>
+                <h3>DevOps</h3>
+                <div class="tech-tags"><span class="tech-tag">Git</span><span class="tech-tag">GitHub
+                        Actions</span><span class="tech-tag">Jenkins</span><span class="tech-tag">Ansible</span></div>
+                <p>Culture, automation, monitoring, logging, infrastructure as code.</p>
+                <a href="devops.html" class="btn">open notes →</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">🔄</div>
+                <h3>CI/CD pipelines</h3>
+                <div class="tech-tags"><span class="tech-tag">Jenkins</span><span class="tech-tag">GitLab CI</span><span
+                        class="tech-tag">ArgoCD</span></div>
+                <p>Continuous integration, delivery, automated testing, rollbacks.</p>
+                <a href="ci-cd.html" class="btn">open notes →</a>
+            </div>
+        </div>
+
+        <!-- 7️⃣ DSA & LEETCODE (added) -->
+        <div class="section-title">🧮 Data structures & algorithms <span class="badge">interview prep</span></div>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-icon">📐</div>
+                <h3>Data Structures</h3>
+                <div class="tech-tags"><span class="tech-tag">arrays</span><span class="tech-tag">linked
+                        lists</span><span class="tech-tag">trees</span><span class="tech-tag">graphs</span></div>
+                <p>Implementations, complexity, recursion, stacks, queues, heaps.</p>
+                <a href="dsa.html" class="btn">open notes →</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">⚡</div>
+                <h3>Algorithms</h3>
+                <div class="tech-tags"><span class="tech-tag">sorting</span><span class="tech-tag">searching</span><span
+                        class="tech-tag">DP</span><span class="tech-tag">backtracking</span></div>
+                <p>Algorithm paradigms, complexity analysis, pattern solving.</p>
+                <a href="algorithms.html" class="btn">open notes →</a>
+            </div>
+            <div class="card">
+                <div class="card-icon">🏆</div>
+                <h3>LeetCode problems</h3>
+                <div class="tech-tags"><span class="tech-tag">easy/medium/hard</span><span class="tech-tag">top
+                        100</span><span class="tech-tag">solutions</span></div>
+                <p>Hand‑picked problems with explanations, multiple languages.</p>
+                <a href="leetcode.html" class="btn">open notes →</a>
+            </div>
+        </div>
+
+        <!-- summary note -->
+        <div class="footnote">
+            ⚡ over <strong>40+ technology stacks</strong> organised · every card links to a dedicated .html notes module
+            ·
+            <a href="#">back to roadmap ↑</a>
+        </div>
+    </div>
+</body>
+
+</html>

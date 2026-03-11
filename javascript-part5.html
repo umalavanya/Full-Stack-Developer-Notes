@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚡ asynchronous javascript – complete notes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f0f9ff;
+            color: #0f172a;
+            padding: 2rem 1rem;
+            line-height: 1.5;
+        }
+
+        .wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 2.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: #0f172a;
+            color: white;
+            padding: 2rem 2.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border-bottom: 5px solid #3b82f6;
+        }
+
+        .header h1 {
+            font-weight: 700;
+            font-size: 2.3rem;
+            letter-spacing: -0.02em;
+        }
+
+        .header span {
+            background: #3b82f6;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
+        }
+
+        .main-panel {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        /* sidebar table of contents */
+        .toc-panel {
+            background: #f8fafc;
+            width: 320px;
+            border-right: 1px solid #cbd5e1;
+            padding: 2rem 1rem;
+        }
+
+        .toc-panel h3 {
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            color: #475569;
+            margin-bottom: 1.8rem;
+            padding-left: 1rem;
+        }
+
+        .toc-list {
+            list-style: none;
+            max-height: 75vh;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+
+        .toc-list li {
+            margin-bottom: 0.2rem;
+        }
+
+        .toc-btn {
+            width: 100%;
+            text-align: left;
+            background: transparent;
+            border: none;
+            font-size: 0.9rem;
+            padding: 0.7rem 1rem;
+            border-radius: 14px;
+            color: #334155;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.1s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .toc-btn:hover {
+            background: #e2e8f0;
+            color: #0f172a;
+        }
+
+        .toc-btn.active {
+            background: white;
+            border-left: 3px solid #3b82f6;
+            font-weight: 600;
+            color: #0f172a;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.02);
+        }
+
+        /* content area */
+        .content-panel {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            padding: 2.5rem 2.8rem 4rem;
+        }
+
+        .section-card {
+            display: none;
+            animation: fade 0.2s;
+        }
+
+        .section-card.active-card {
+            display: block;
+        }
+
+        @keyframes fade {
+            0% {
+                opacity: 0.2;
+                transform: translateY(6px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            background: linear-gradient(145deg, #0f172a, #334155);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            border-bottom: 3px solid #3b82f6;
+            padding-bottom: 0.5rem;
+            display: inline-block;
+            margin-bottom: 1.2rem;
+        }
+
+        .tag {
+            background: #f1f5f9;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            color: #334155;
+            display: inline-block;
+            margin: 0.2rem 0 1.8rem;
+        }
+
+        .notes-body {
+            color: #1e293b;
+        }
+
+        .notes-body h2 {
+            font-size: 1.7rem;
+            margin: 2rem 0 1rem;
+            font-weight: 600;
+        }
+
+        .notes-body h3 {
+            font-size: 1.3rem;
+            margin: 1.5rem 0 0.8rem;
+            color: #0f172a;
+        }
+
+        .notes-body p {
+            margin: 1rem 0;
+        }
+
+        .notes-body pre {
+            background: #0b1120;
+            color: #e2e8f0;
+            padding: 1.3rem;
+            border-radius: 18px;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.9rem;
+            border-left: 4px solid #3b82f6;
+            margin: 1.5rem 0;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .notes-body code:not(pre code) {
+            background: #f1f5f9;
+            padding: 0.2rem 0.6rem;
+            border-radius: 8px;
+            font-family: monospace;
+            color: #2563eb;
+            font-size: 0.9rem;
+        }
+
+        .notes-body ul,
+        .notes-body ol {
+            margin: 0.8rem 0 1.2rem 1.8rem;
+        }
+
+        .notes-body li {
+            margin: 0.4rem 0;
+        }
+
+        .notes-body table {
+            border-collapse: collapse;
+            width: 100%;
+            background: #f8fafc;
+            border-radius: 16px;
+            border: 1px solid #cbd5e1;
+            margin: 1.5rem 0;
+        }
+
+        .notes-body th {
+            background: #e2e8f0;
+            font-weight: 600;
+            padding: 0.7rem 1rem;
+        }
+
+        .notes-body td {
+            padding: 0.7rem 1rem;
+            border-top: 1px solid #cbd5e1;
+        }
+
+        .hl {
+            background: #dbeafe;
+            color: #1e3a8a;
+            font-weight: 600;
+            padding: 0.2rem 0.5rem;
+            border-radius: 6px;
+        }
+
+        .footer-note {
+            margin-top: 3rem;
+            text-align: right;
+            border-top: 1px dashed #cbd5e1;
+            padding-top: 1.5rem;
+            color: #64748b;
+        }
+
+        @media (max-width: 800px) {
+            .main-panel {
+                flex-direction: column;
+            }
+
+            .toc-panel {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #cbd5e1;
+            }
+
+            .toc-list {
+                display: flex;
+                flex-wrap: wrap;
+            }
+
+            .toc-list li {
+                flex: 1 1 auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="header">
+            <h1>⚡ asynchronous javascript · BOM · web APIs</h1>
+            <span>callbacks → promises → async/await</span>
+        </div>
+
+        <div class="main-panel">
+            <!-- table of contents sidebar -->
+            <nav class="toc-panel">
+                <h3>📌 chapters</h3>
+                <ul class="toc-list" id="tocList"></ul>
+            </nav>
+
+            <!-- dynamic content injected here -->
+            <main class="content-panel" id="contentArea"></main>
+        </div>
+        <div class="footer-note">
+            <i>⚡ full async guide — based on your notes</i>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            // ------------- All sections from your Asynchronous JavaScript notes -------------
+            const sections = [
+                {
+                    id: "async-intro", title: "Asynchronous intro", content: `
+                <h2>Asynchronous JavaScript</h2>
+                <p><span class="hl">Synchronous</span> = line‑by‑line (blocking). <span class="hl">Asynchronous</span> = run tasks in parallel, not waiting. JavaScript is single‑threaded but uses event loop to handle async.</p>
+                <pre>console.log("start");
+setTimeout(() => console.log("timeout"), 0);
+console.log("end"); // start, end, timeout</pre>
+                <p>Use cases: API calls, file uploads, timers, animations, background tasks.</p>
+            `},
+                {
+                    id: "callbacks", title: "Callback functions", content: `
+                <h2>Callback functions</h2>
+                <p>A function passed as argument to another function. Used for async operations (e.g., <code>setTimeout</code>, event handlers).</p>
+                <pre>function fetchData(callback) {
+  setTimeout(() => callback("data"), 1000);
+}
+fetchData((data) => console.log(data));</pre>
+                <p><span class="hl">Callback hell</span> – nested callbacks become unreadable. Example: three nested async tasks.</p>
+                <pre>asyncTask1(() => {
+  asyncTask2(() => {
+    asyncTask3(() => {});
+  });
+});</pre>
+                <p>Array methods like <code>sort</code>, <code>filter</code>, <code>forEach</code> also use callbacks.</p>
+            `},
+                {
+                    id: "promises", title: "Promises", content: `
+                <h2>Promises (ES6)</h2>
+                <p>Object representing eventual completion/failure. States: pending, fulfilled, rejected.</p>
+                <pre>const p = new Promise((resolve, reject) => {
+  // async work
+  if (success) resolve(value);
+  else reject(error);
+});</pre>
+                <p>Consume with <code>.then()</code>, <code>.catch()</code>, <code>.finally()</code>.</p>
+                <pre>p.then(val => console.log(val))
+ .catch(err => console.error(err))
+ .finally(() => console.log("done"));</pre>
+                <p>Static methods: <code>Promise.all</code>, <code>Promise.race</code>, <code>Promise.allSettled</code>, <code>Promise.any</code>.</p>
+            `},
+                {
+                    id: "async-await", title: "Async/await", content: `
+                <h2>Async/await (ES2017)</h2>
+                <p>Syntactic sugar over promises. <code>async</code> function returns a promise. <code>await</code> pauses execution until promise settles.</p>
+                <pre>async function getData() {
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    return data;
+  } catch (err) {
+    console.error(err);
+  }
+}</pre>
+                <p>Cleaner than <code>.then()</code> chains. Works with any promise.</p>
+            `},
+                {
+                    id: "microtasks", title: "Microtasks & event loop", content: `
+                <h2>Microtasks & event loop</h2>
+                <p><span class="hl">Microtask queue</span> (promise callbacks, <code>queueMicrotask</code>) runs before <span class="hl">macrotask queue</span> (setTimeout, setInterval, I/O).</p>
+                <pre>console.log(1);
+setTimeout(() => console.log(2), 0);
+Promise.resolve().then(() => console.log(3));
+console.log(4); // 1,4,3,2</pre>
+                <p>Event loop: call stack empty → run all microtasks → pick one macrotask → repeat.</p>
+            `},
+                {
+                    id: "promisification", title: "Promisification", content: `
+                <h2>Promisification</h2>
+                <p>Convert callback‑based functions to promise‑based. Helper function wraps the original.</p>
+                <pre>function promisify(fn) {
+  return (...args) => new Promise((resolve, reject) => {
+    fn(...args, (err, result) => err ? reject(err) : resolve(result));
+  });
+}
+const readFilePromise = promisify(fs.readFile);</pre>
+                <p>Avoids callback hell, enables async/await.</p>
+            `},
+                {
+                    id: "promise-chaining", title: "Promise chaining", content: `
+                <h2>Promise chaining</h2>
+                <p>Chain multiple <code>.then()</code> calls. Each <code>.then()</code> returns a new promise.</p>
+                <pre>fetch(url)
+  .then(res => res.json())
+  .then(data => process(data))
+  .then(result => console.log(result))
+  .catch(err => console.error(err));</pre>
+                <p>Error propagates to nearest <code>.catch()</code>. Returning a promise in <code>.then()</code> adds to chain.</p>
+            `},
+                {
+                    id: "timing-events", title: "Timing events (setTimeout/setInterval)", content: `
+                <h2>Timing events</h2>
+                <p><span class="hl">setTimeout(fn, delay)</span> – runs once after delay. Returns id for <code>clearTimeout()</code>.</p>
+                <p><span class="hl">setInterval(fn, interval)</span> – runs repeatedly. Clear with <code>clearInterval()</code>.</p>
+                <pre>const id = setTimeout(() => console.log("hi"), 1000);
+clearTimeout(id); // cancels</pre>
+                <p>Zero delay (<code>setTimeout(fn,0)</code>) schedules macrotask – executes after current code and microtasks.</p>
+            `},
+                {
+                    id: "cookies", title: "Cookies", content: `
+                <h2>JavaScript cookies</h2>
+                <p>Small data stored in browser, sent with HTTP requests. Accessed via <code>document.cookie</code>.</p>
+                <pre>// set
+document.cookie = "username=John; expires=Fri, 31 Dec 2025 23:59:59 GMT; path=/";
+// read
+const cookies = document.cookie.split('; ');</pre>
+                <p>Attributes: <code>expires</code>, <code>max-age</code>, <code>path</code>, <code>domain</code>, <code>secure</code>, <code>HttpOnly</code>, <code>SameSite</code>.</p>
+                <p>Delete by setting past expiry.</p>
+            `},
+                {
+                    id: "cookie-attributes", title: "Cookie attributes", content: `
+                <h2>Cookie attributes</h2>
+                <table>
+                <tr><th>Attribute</th><th>Description</th></tr>
+                <tr><td>Name=Value</td><td>Key‑value data</td></tr>
+                <tr><td>Domain</td><td>Domain where cookie valid</td></tr>
+                <tr><td>Path</td><td>URL path</td></tr>
+                <tr><td>Expires/Max-Age</td><td>Lifetime</td></tr>
+                <tr><td>Secure</td><td>Only over HTTPS</td></tr>
+                <tr><td>HttpOnly</td><td>Not accessible via JS (security)</td></tr>
+                <tr><td>SameSite</td><td>Controls cross‑site sending</td></tr>
+                </table>
+                <pre>document.cookie = "session=abc123; Secure; SameSite=Strict";</pre>
+            `},
+                {
+                    id: "delete-cookies", title: "Deleting cookies", content: `
+                <h2>Delete cookies</h2>
+                <p>Set <code>expires</code> to past date or <code>max-age=0</code>.</p>
+                <pre>document.cookie = "user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";</pre>
+                <p>Also can be cleared via browser settings (clear browsing data).</p>
+            `},
+                {
+                    id: "bom", title: "Browser Object Model (BOM)", content: `
+                <h2>Browser Object Model</h2>
+                <p>Objects provided by browser: <code>window</code>, <code>document</code>, <code>screen</code>, <code>history</code>, <code>navigator</code>, <code>location</code>, <code>console</code>.</p>
+                <p><span class="hl">window</span> – global object. Properties: <code>innerHeight</code>, <code>innerWidth</code>, methods: <code>alert()</code>, <code>open()</code>, <code>close()</code>, <code>print()</code>.</p>
+                <p><span class="hl">document</span> – root of HTML. Methods: <code>getElementById()</code>, <code>querySelector()</code>, <code>createElement()</code>.</p>
+            `},
+                {
+                    id: "window", title: "Window object", content: `
+                <h2>Window object</h2>
+                <p>Global object in browser. All global vars are properties of <code>window</code>.</p>
+                <pre>window.alert("Hello");
+window.innerWidth; // viewport width
+window.open("https://example.com");</pre>
+                <p>Properties: <code>closed</code>, <code>console</code>, <code>document</code>, <code>history</code>, <code>location</code>, <code>screen</code>, <code>localStorage</code>, <code>sessionStorage</code>.</p>
+                <p>Methods: <code>setTimeout</code>, <code>setInterval</code>, <code>requestAnimationFrame</code>, <code>scrollTo</code>, <code>print()</code>.</p>
+            `},
+                {
+                    id: "document", title: "Document object", content: `
+                <h2>Document object</h2>
+                <p>Represents HTML document. Root of DOM. Access: <code>window.document</code> or <code>document</code>.</p>
+                <pre>document.title = "New title";
+const div = document.getElementById("app");
+div.innerHTML = "Hello";</pre>
+                <p>Properties: <code>body</code>, <code>head</code>, <code>URL</code>, <code>cookie</code>, <code>forms</code>, <code>images</code>.</p>
+                <p>Methods: <code>createElement()</code>, <code>appendChild()</code>, <code>removeChild()</code>, <code>querySelector()</code>.</p>
+            `},
+                {
+                    id: "screen", title: "Screen object", content: `
+                <h2>Screen object</h2>
+                <p>Information about user's screen: <code>screen.width</code>, <code>screen.height</code>, <code>availWidth</code>, <code>availHeight</code>, <code>colorDepth</code>, <code>pixelDepth</code>.</p>
+                <pre>console.log(screen.width); // total width in px</pre>
+            `},
+                {
+                    id: "history", title: "History object", content: `
+                <h2>History object</h2>
+                <p>Browser session history. Methods: <code>back()</code>, <code>forward()</code>, <code>go(n)</code>. Property: <code>length</code>.</p>
+                <pre>history.back(); // go to previous page
+history.go(-2); // go two steps back</pre>
+            `},
+                {
+                    id: "navigator", title: "Navigator object", content: `
+                <h2>Navigator object</h2>
+                <p>Information about browser: <code>navigator.userAgent</code>, <code>platform</code>, <code>language</code>, <code>cookieEnabled</code>, <code>geolocation</code>, etc.</p>
+                <pre>if (navigator.geolocation) { /* get location */ }</pre>
+                <p>Method: <code>javaEnabled()</code> (rare).</p>
+            `},
+                {
+                    id: "location", title: "Location object", content: `
+                <h2>Location object</h2>
+                <p>URL of current page. Properties: <code>href</code>, <code>host</code>, <code>hostname</code>, <code>pathname</code>, <code>protocol</code>, <code>search</code>, <code>hash</code>.</p>
+                <pre>location.href = "https://example.com"; // redirect
+console.log(location.pathname); // e.g., /page.html</pre>
+                <p>Methods: <code>assign()</code>, <code>replace()</code>, <code>reload()</code>.</p>
+            `},
+                {
+                    id: "console", title: "Console object", content: `
+                <h2>Console object</h2>
+                <p>Debugging: <code>console.log()</code>, <code>error()</code>, <code>warn()</code>, <code>info()</code>, <code>table()</code>, <code>time()/timeEnd()</code>, <code>group()</code>, <code>clear()</code>.</p>
+                <pre>console.log("value:", x);
+console.table([{a:1}]);</pre>
+            `},
+                {
+                    id: "webapi", title: "Web API overview", content: `
+                <h2>Web APIs</h2>
+                <p>Browser‑provided APIs (built on JS). Examples:</p>
+                <ul><li>Storage API (localStorage, sessionStorage)</li>
+                <li>Fetch API</li>
+                <li>Geolocation API</li>
+                <li>History API</li>
+                <li>Forms API (validation)</li>
+                <li>Worker API (background threads)</li></ul>
+            `},
+                {
+                    id: "history-api", title: "History API", content: `
+                <h2>History API (pushState, replaceState)</h2>
+                <p>Manipulate browser history without page reload (single‑page apps).</p>
+                <pre>history.pushState({page: 1}, "title", "/page1");
+window.onpopstate = (event) => { /* handle back */ };</pre>
+                <p><code>back()</code>, <code>forward()</code>, <code>go()</code> still work.</p>
+            `},
+                {
+                    id: "storage-api", title: "Storage API (localStorage/sessionStorage)", content: `
+                <h2>Storage API</h2>
+                <p><span class="hl">localStorage</span> – persists until cleared. <span class="hl">sessionStorage</span> – cleared when tab closed.</p>
+                <pre>localStorage.setItem("key", "value");
+const val = localStorage.getItem("key");
+localStorage.removeItem("key");
+localStorage.clear();</pre>
+                <p>Storage limit ~5‑10MB. Only strings (use <code>JSON.stringify()</code> for objects).</p>
+            `},
+                {
+                    id: "forms-api", title: "Forms API (constraint validation)", content: `
+                <h2>Forms / Constraint Validation API</h2>
+                <p>Methods: <code>checkValidity()</code>, <code>setCustomValidity()</code>. Properties: <code>validity</code> (with flags like <code>valueMissing</code>, <code>rangeOverflow</code>), <code>validationMessage</code>.</p>
+                <pre>const input = document.getElementById("age");
+if (input.validity.rangeUnderflow) {
+  input.setCustomValidity("Too young");
+}</pre>
+                <p>Call <code>reportValidity()</code> to show message.</p>
+            `},
+                {
+                    id: "worker-api", title: "Web Worker API", content: `
+                <h2>Web Workers</h2>
+                <p>Run JS in background thread. No DOM access. Communicate via <code>postMessage()</code> and <code>onmessage</code>.</p>
+                <pre>// main.js
+const worker = new Worker("worker.js");
+worker.onmessage = (e) => console.log(e.data);
+worker.postMessage("start");
+
+// worker.js
+onmessage = (e) => { postMessage("done"); };</pre>
+                <p>Terminate with <code>worker.terminate()</code>. Use for heavy computation.</p>
+            `},
+                {
+                    id: "fetch-api", title: "Fetch API", content: `
+                <h2>Fetch API</h2>
+                <p>Modern replacement for XMLHttpRequest. Returns promise.</p>
+                <pre>fetch(url, { method: "GET" })
+  .then(res => res.json())
+  .then(data => console.log(data))
+  .catch(err => console.error(err));</pre>
+                <p>Options: <code>method</code>, <code>headers</code>, <code>body</code> (JSON string), <code>mode</code>, <code>cache</code>, <code>credentials</code>.</p>
+                <p>POST example:</p>
+                <pre>fetch(url, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({name:"John"})
+});</pre>
+            `},
+                {
+                    id: "geolocation", title: "Geolocation API", content: `
+                <h2>Geolocation API</h2>
+                <p>Access device location (requires user permission).</p>
+                <pre>navigator.geolocation.getCurrentPosition(
+  (pos) => console.log(pos.coords.latitude, pos.coords.longitude),
+  (err) => console.error(err.code, err.message),
+  { enableHighAccuracy: true, timeout: 5000 }
+);</pre>
+                <p>Methods: <code>getCurrentPosition()</code>, <code>watchPosition()</code>, <code>clearWatch()</code>.</p>
+                <p>Error codes: <code>PERMISSION_DENIED</code>, <code>POSITION_UNAVAILABLE</code>, <code>TIMEOUT</code>, <code>UNKNOWN_ERROR</code>.</p>
+            `}
+            ];
+
+            const tocContainer = document.getElementById('tocList');
+            const contentArea = document.getElementById('contentArea');
+
+            function render() {
+                let tocHtml = '';
+                let contentHtml = '';
+
+                sections.forEach((sec, idx) => {
+                    const activeClass = idx === 0 ? 'active' : '';
+                    tocHtml += `<li><button class="toc-btn ${activeClass}" data-id="${sec.id}">${sec.title}</button></li>`;
+
+                    contentHtml += `<div id="card-${sec.id}" class="section-card ${idx === 0 ? 'active-card' : ''}">`;
+                    contentHtml += `<div class="section-title">${sec.title}</div>`;
+                    contentHtml += `<div class="tag">topic · ${sec.id}</div>`;
+                    contentHtml += `<div class="notes-body">${sec.content}</div>`;
+                    contentHtml += `</div>`;
+                });
+
+                tocContainer.innerHTML = tocHtml;
+                contentArea.innerHTML = contentHtml;
+
+                // attach click handlers
+                document.querySelectorAll('.toc-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const id = btn.dataset.id;
+                        document.querySelectorAll('.toc-btn').forEach(b => b.classList.remove('active'));
+                        document.querySelectorAll('.section-card').forEach(c => c.classList.remove('active-card'));
+
+                        btn.classList.add('active');
+                        document.getElementById(`card-${id}`).classList.add('active-card');
+                        contentArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    });
+                });
+            }
+
+            render();
+        })();
+    </script>
+</body>
+
+</html>

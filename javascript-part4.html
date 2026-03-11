@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📜 JavaScript versions – complete history & ES5‑ES2022</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f0f9ff;
+            color: #0f172a;
+            padding: 2rem 1rem;
+            line-height: 1.5;
+        }
+
+        .wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 2.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: #0c4a6e;
+            color: white;
+            padding: 2rem 2.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border-bottom: 5px solid #facc15;
+        }
+
+        .header h1 {
+            font-weight: 700;
+            font-size: 2.3rem;
+            letter-spacing: -0.02em;
+        }
+
+        .header span {
+            background: #facc15;
+            color: #0c4a6e;
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
+        }
+
+        .main-panel {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        /* sidebar table of contents */
+        .toc-panel {
+            background: #f8fafc;
+            width: 300px;
+            border-right: 1px solid #cbd5e1;
+            padding: 2rem 1rem;
+        }
+
+        .toc-panel h3 {
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            color: #475569;
+            margin-bottom: 1.8rem;
+            padding-left: 1rem;
+        }
+
+        .toc-list {
+            list-style: none;
+            max-height: 75vh;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+
+        .toc-list li {
+            margin-bottom: 0.2rem;
+        }
+
+        .toc-btn {
+            width: 100%;
+            text-align: left;
+            background: transparent;
+            border: none;
+            font-size: 0.9rem;
+            padding: 0.7rem 1rem;
+            border-radius: 14px;
+            color: #334155;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.1s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .toc-btn:hover {
+            background: #e2e8f0;
+            color: #0f172a;
+        }
+
+        .toc-btn.active {
+            background: white;
+            border-left: 3px solid #facc15;
+            font-weight: 600;
+            color: #0f172a;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.02);
+        }
+
+        /* content area */
+        .content-panel {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            padding: 2.5rem 2.8rem 4rem;
+        }
+
+        .section-card {
+            display: none;
+            animation: fade 0.2s;
+        }
+
+        .section-card.active-card {
+            display: block;
+        }
+
+        @keyframes fade {
+            0% {
+                opacity: 0.2;
+                transform: translateY(6px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            background: linear-gradient(145deg, #0c4a6e, #1e3a8a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            border-bottom: 3px solid #facc15;
+            padding-bottom: 0.5rem;
+            display: inline-block;
+            margin-bottom: 1.2rem;
+        }
+
+        .tag {
+            background: #f1f5f9;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            color: #334155;
+            display: inline-block;
+            margin: 0.2rem 0 1.8rem;
+        }
+
+        .notes-body {
+            color: #1e293b;
+        }
+
+        .notes-body h2 {
+            font-size: 1.7rem;
+            margin: 2rem 0 1rem;
+            font-weight: 600;
+        }
+
+        .notes-body h3 {
+            font-size: 1.3rem;
+            margin: 1.5rem 0 0.8rem;
+            color: #0f172a;
+        }
+
+        .notes-body p {
+            margin: 1rem 0;
+        }
+
+        .notes-body pre {
+            background: #0b1120;
+            color: #e2e8f0;
+            padding: 1.3rem;
+            border-radius: 18px;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.9rem;
+            border-left: 4px solid #facc15;
+            margin: 1.5rem 0;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .notes-body code:not(pre code) {
+            background: #f1f5f9;
+            padding: 0.2rem 0.6rem;
+            border-radius: 8px;
+            font-family: monospace;
+            color: #b45309;
+            font-size: 0.9rem;
+        }
+
+        .notes-body ul,
+        .notes-body ol {
+            margin: 0.8rem 0 1.2rem 1.8rem;
+        }
+
+        .notes-body li {
+            margin: 0.4rem 0;
+        }
+
+        .notes-body table {
+            border-collapse: collapse;
+            width: 100%;
+            background: #f8fafc;
+            border-radius: 16px;
+            border: 1px solid #cbd5e1;
+            margin: 1.5rem 0;
+        }
+
+        .notes-body th {
+            background: #e2e8f0;
+            font-weight: 600;
+            padding: 0.7rem 1rem;
+        }
+
+        .notes-body td {
+            padding: 0.7rem 1rem;
+            border-top: 1px solid #cbd5e1;
+        }
+
+        .hl {
+            background: #fef9c3;
+            color: #854d0e;
+            font-weight: 600;
+            padding: 0.2rem 0.5rem;
+            border-radius: 6px;
+        }
+
+        .footer-note {
+            margin-top: 3rem;
+            text-align: right;
+            border-top: 1px dashed #cbd5e1;
+            padding-top: 1.5rem;
+            color: #64748b;
+        }
+
+        @media (max-width: 800px) {
+            .main-panel {
+                flex-direction: column;
+            }
+
+            .toc-panel {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #cbd5e1;
+            }
+
+            .toc-list {
+                display: flex;
+                flex-wrap: wrap;
+            }
+
+            .toc-list li {
+                flex: 1 1 auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="header">
+            <h1>⏳ JavaScript versions · history & ES5–ES2022</h1>
+            <span>from 1995 to 2022</span>
+        </div>
+
+        <div class="main-panel">
+            <!-- table of contents sidebar -->
+            <nav class="toc-panel">
+                <h3>📚 timeline</h3>
+                <ul class="toc-list" id="tocList"></ul>
+            </nav>
+
+            <!-- dynamic content injected here -->
+            <main class="content-panel" id="contentArea"></main>
+        </div>
+        <div class="footer-note">
+            <i>⚡ full ECMAScript evolution — based on your notes</i>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            // ------------- All sections from your JavaScript versions notes -------------
+            const sections = [
+                {
+                    id: "history", title: "History of JavaScript", content: `
+                <h2>History of JavaScript</h2>
+                <p><span class="hl">1995</span> – Brendan Eich at Netscape developed JavaScript in 10 days (originally Mocha, then LiveScript). Renamed to JavaScript for marketing reasons (Java was popular).</p>
+                <p><span class="hl">1997</span> – Standardized by ECMA → ECMAScript 1 (ES1).</p>
+                <p><span class="hl">2009</span> – Node.js released (Ryan Dahl), bringing JavaScript to servers.</p>
+                <p><span class="hl">2015</span> – ES6 (ECMAScript 2015) major update: classes, modules, arrow functions, let/const, promises, etc.</p>
+                <p>Latest: <span class="hl">ES14 (2023)</span>. Browser support: all modern browsers.</p>
+                <p>Frameworks: jQuery (2006), Angular (2010), React (2013).</p>
+            `},
+                {
+                    id: "versions", title: "JavaScript versions (ES1–ES14)", content: `
+                <h2>ECMAScript versions</h2>
+                <table>
+                <tr><th>Version</th><th>Year</th><th>Key features</th></tr>
+                <tr><td>ES1</td><td>1997</td><td>First edition</td></tr>
+                <tr><td>ES2</td><td>1998</td><td>Minor changes</td></tr>
+                <tr><td>ES3</td><td>1999</td><td>Regex, do-while, switch, try/catch</td></tr>
+                <tr><td>ES4</td><td>abandoned</td><td>—</td></tr>
+                <tr><td>ES5</td><td>2009</td><td>strict mode, JSON, Array methods (forEach, map, filter), Object methods, getters/setters, trim()</td></tr>
+                <tr><td>ES6 (2015)</td><td>2015</td><td>let/const, classes, arrow functions, promises, modules, for/of, Map/Set, rest/spread, default parameters, symbols</td></tr>
+                <tr><td>ES7 (2016)</td><td>2016</td><td>Array.includes(), exponentiation operator (**)</td></tr>
+                <tr><td>ES8 (2017)</td><td>2017</td><td>async/await, Object.entries(), Object.values(), string padding (padStart/padEnd)</td></tr>
+                <tr><td>ES9 (2018)</td><td>2018</td><td>Promise.finally(), rest/spread for objects, RegExp enhancements</td></tr>
+                <tr><td>ES10 (2019)</td><td>2019</td><td>Array.flat(), flatMap(), Object.fromEntries(), String.trimStart/trimEnd, optional catch binding</td></tr>
+                <tr><td>ES11 (2020)</td><td>2020</td><td>BigInt, nullish coalescing (??), optional chaining (?.), Promise.allSettled(), String.matchAll()</td></tr>
+                <tr><td>ES12 (2021)</td><td>2021</td><td>String.replaceAll(), logical assignment (&&=, ||=, ??=), numeric separators (1_000)</td></tr>
+                <tr><td>ES13 (2022)</td><td>2022</td><td>Array.at(), String.at(), private fields/methods (#), Object.hasOwn(), error.cause, top‑level await</td></tr>
+                <tr><td>ES14 (2023)</td><td>2023</td><td>Array findLast/findLastIndex, Hashbang grammar, Symbols as WeakMap keys</td></tr>
+                </table>
+            `},
+                {
+                    id: "es5", title: "ES5 (2009) features", content: `
+                <h2>ES5 (ECMAScript 2009)</h2>
+                <p>Major revision: <span class="hl">"use strict"</span>, JSON support (<code>JSON.parse</code>, <code>JSON.stringify</code>), array methods (<code>forEach</code>, <code>map</code>, <code>filter</code>, <code>reduce</code>, <code>every</code>, <code>some</code>, <code>indexOf</code>, <code>lastIndexOf</code>), <code>Array.isArray()</code>, <code>Function.bind()</code>, object methods (<code>Object.create</code>, <code>defineProperty</code>, <code>keys</code>, <code>seal</code>, <code>freeze</code>), getters/setters, multiline strings, trailing commas, <code>trim()</code>, <code>Date.now()</code>, <code>toISOString()</code>.</p>
+                <pre>var arr = [1,2,3];
+arr.forEach(v => console.log(v));
+var doubled = arr.map(v => v*2);</pre>
+            `},
+                {
+                    id: "es6", title: "ES6 / ES2015", content: `
+                <h2>ES6 (ECMAScript 2015) – the big update</h2>
+                <p><span class="hl">let/const</span> (block scope), <span class="hl">arrow functions</span>, classes, modules (<code>import/export</code>), template literals, destructuring, default parameters, rest/spread, <code>for...of</code>, <span class="hl">promises</span>, <span class="hl">Map, Set, WeakMap, WeakSet</span>, <span class="hl">Symbol</span>, <span class="hl">Array.from()</span>, <span class="hl">Array.find()</span>, <span class="hl">Array.findIndex()</span>, <span class="hl">String.includes()/startsWith/endsWith</span>, <span class="hl">Number.isInteger()</span>, <span class="hl">Math</span> extensions (<code>trunc, sign, cbrt, log2, log10</code>).</p>
+                <pre>const sum = (a,b) => a + b;
+class Person { constructor(name) { this.name = name; }}</pre>
+            `},
+                {
+                    id: "es2016", title: "ES2016 (ES7)", content: `
+                <h2>ES2016 / ES7</h2>
+                <ul><li><span class="hl">Array.prototype.includes()</span></li>
+                <li><span class="hl">Exponentiation operator (**)</span></li>
+                <li><span class="hl">Exponentiation assignment (**=)</span></li></ul>
+                <pre>[1,2,3].includes(2); // true
+2 ** 3; // 8
+let a = 5; a **= 2; // 25</pre>
+            `},
+                {
+                    id: "es2017", title: "ES2017 (ES8)", content: `
+                <h2>ES2017 / ES8</h2>
+                <ul><li><span class="hl">Async/await</span></li>
+                <li><span class="hl">Object.entries() / Object.values()</span></li>
+                <li><span class="hl">String padding</span> (padStart, padEnd)</li>
+                <li><span class="hl">Object.getOwnPropertyDescriptors()</span></li>
+                <li>Shared memory / Atomics</li></ul>
+                <pre>async function fetchData() { let res = await fetch(url); }
+Object.entries({a:1}); // [['a',1]]
+'hi'.padStart(5,'*'); // '***hi'</pre>
+            `},
+                {
+                    id: "es2018", title: "ES2018 (ES9)", content: `
+                <h2>ES2018 / ES9</h2>
+                <ul><li><span class="hl">Promise.finally()</span></li>
+                <li><span class="hl">Rest/spread for objects</span> (<code>{...obj}</code>)</li>
+                <li>Asynchronous iteration (<code>for await...of</code>)</li>
+                <li>RegExp enhancements: lookbehind (<code>(?<=)</code>), named capture groups, <code>s</code> (dotAll) flag, Unicode property escapes</li></ul>
+                <pre>Promise.resolve().finally(() => console.log('done'));
+const {a, ...rest} = {a:1,b:2,c:3}; // rest = {b:2,c:3}</pre>
+            `},
+                {
+                    id: "es2019", title: "ES2019 (ES10)", content: `
+                <h2>ES2019 / ES10</h2>
+                <ul><li><span class="hl">Array.flat() / flatMap()</span></li>
+                <li><span class="hl">Object.fromEntries()</span></li>
+                <li><span class="hl">String.trimStart() / trimEnd()</span></li>
+                <li>Optional catch binding (<code>catch {}</code>)</li>
+                <li>Revised <code>Array.sort()</code> (stable)</li>
+                <li>Revised <code>Function.toString()</code></li>
+                <li>JSON.stringify() handles Unicode</li></ul>
+                <pre>[[1,2],[3,4]].flat(); // [1,2,3,4]
+Object.fromEntries([['a',1]]); // {a:1}
+'  hi  '.trimStart(); // 'hi  '</pre>
+            `},
+                {
+                    id: "es2020", title: "ES2020 (ES11)", content: `
+                <h2>ES2020 / ES11</h2>
+                <ul><li><span class="hl">BigInt</span> (<code>123n</code>)</li>
+                <li><span class="hl">Nullish coalescing (??)</span></li>
+                <li><span class="hl">Optional chaining (?.)</span></li>
+                <li><span class="hl">Promise.allSettled()</span></li>
+                <li><span class="hl">String.matchAll()</span></li>
+                <li><code>globalThis</code></li>
+                <li>dynamic <code>import()</code></li></ul>
+                <pre>undefined ?? 'default' // 'default'
+obj?.prop?.nested
+Promise.allSettled([promise1])</pre>
+            `},
+                {
+                    id: "es2021", title: "ES2021 (ES12)", content: `
+                <h2>ES2021 / ES12</h2>
+                <ul><li><span class="hl">String.replaceAll()</span></li>
+                <li><span class="hl">Logical assignment (&&=, ||=, ??=)</span></li>
+                <li><span class="hl">Numeric separators (1_000_000)</span></li>
+                <li><code>Promise.any()</code></li>
+                <li><code>WeakRef</code> and <code>FinalizationRegistry</code></li></ul>
+                <pre>'a1b1'.replaceAll('1', '2'); // 'a2b2'
+let x = 5; x ||= 10; // x stays 5 (truthy)
+let n = 1_000_000; // readable</pre>
+            `},
+                {
+                    id: "es2022", title: "ES2022 (ES13)", content: `
+                <h2>ES2022 / ES13</h2>
+                <ul><li><span class="hl">Array.at() / String.at()</span> (allow negative index)</li>
+                <li><span class="hl">Private fields/methods (#)</span> in classes</li>
+                <li><span class="hl">Object.hasOwn()</span> (safer than hasOwnProperty)</li>
+                <li><span class="hl">error.cause</span> property</li>
+                <li>Top‑level await (modules)</li>
+                <li>Class static blocks</li></ul>
+                <pre>[1,2,3].at(-1); // 3
+class C { #private = 42; get() { return this.#private; } }
+Object.hasOwn(obj, 'prop');</pre>
+            `},
+                {
+                    id: "es2023", title: "ES2023 (ES14)", content: `
+                <h2>ES2023 / ES14</h2>
+                <ul><li><span class="hl">Array.findLast() / findLastIndex()</span></li>
+                <li><span class="hl">Hashbang grammar (#!)</span></li>
+                <li><span class="hl">Symbols as WeakMap keys</span></li></ul>
+                <pre>[1,2,3,2].findLast(x => x===2); // 2 (last)
+[1,2,3,2].findLastIndex(x => x===2); // 3</pre>
+            `},
+                {
+                    id: "future", title: "Future & browser support", content: `
+                <h2>Future of JavaScript & support</h2>
+                <p>All modern browsers (Chrome, Firefox, Edge, Safari) support ES6 fully. For newer features (ES2020+), transpilers like Babel or polyfills can be used.</p>
+                <p>JavaScript continues to evolve yearly. The TC39 committee releases new features every year.</p>
+                <p>Stack Overflow 2023: ~63% of developers use JavaScript – most popular language.</p>
+            `}
+            ];
+
+            const tocContainer = document.getElementById('tocList');
+            const contentArea = document.getElementById('contentArea');
+
+            function render() {
+                let tocHtml = '';
+                let contentHtml = '';
+
+                sections.forEach((sec, idx) => {
+                    const activeClass = idx === 0 ? 'active' : '';
+                    tocHtml += `<li><button class="toc-btn ${activeClass}" data-id="${sec.id}">${sec.title}</button></li>`;
+
+                    contentHtml += `<div id="card-${sec.id}" class="section-card ${idx === 0 ? 'active-card' : ''}">`;
+                    contentHtml += `<div class="section-title">${sec.title}</div>`;
+                    contentHtml += `<div class="tag">version · ${sec.id}</div>`;
+                    contentHtml += `<div class="notes-body">${sec.content}</div>`;
+                    contentHtml += `</div>`;
+                });
+
+                tocContainer.innerHTML = tocHtml;
+                contentArea.innerHTML = contentHtml;
+
+                // attach click handlers
+                document.querySelectorAll('.toc-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const id = btn.dataset.id;
+                        document.querySelectorAll('.toc-btn').forEach(b => b.classList.remove('active'));
+                        document.querySelectorAll('.section-card').forEach(c => c.classList.remove('active-card'));
+
+                        btn.classList.add('active');
+                        document.getElementById(`card-${id}`).classList.add('active-card');
+                        contentArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    });
+                });
+            }
+
+            render();
+        })();
+    </script>
+</body>
+
+</html>

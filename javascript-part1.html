@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📘 JavaScript notes – interactive reference</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8fafc;
+            color: #0f172a;
+            line-height: 1.5;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 2rem;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* header */
+        .note-header {
+            background: #1e293b;
+            color: white;
+            padding: 1.5rem 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            border-bottom: 4px solid #facc15;
+        }
+        .note-header h1 {
+            font-weight: 600;
+            font-size: 1.8rem;
+            letter-spacing: -0.01em;
+        }
+        .note-header span {
+            background: #facc15;
+            color: #0f172a;
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 0.25rem 0.8rem;
+            border-radius: 40px;
+            margin-left: 1rem;
+        }
+
+        /* main layout */
+        .main-panel {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        /* table of contents sidebar */
+        .toc {
+            background: #f1f5f9;
+            width: 280px;
+            padding: 1.8rem 1rem;
+            border-right: 1px solid #cbd5e1;
+        }
+        .toc h3 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #475569;
+            margin-bottom: 1.5rem;
+            padding-left: 0.8rem;
+        }
+        .toc ul {
+            list-style: none;
+            max-height: 75vh;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+        .toc li {
+            margin-bottom: 0.3rem;
+        }
+        .toc button {
+            width: 100%;
+            text-align: left;
+            background: transparent;
+            border: none;
+            font-size: 0.9rem;
+            padding: 0.6rem 1rem;
+            border-radius: 12px;
+            color: #334155;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+            border-left: 3px solid transparent;
+        }
+        .toc button:hover {
+            background: #e2e8f0;
+            color: #0f172a;
+        }
+        .toc button.active {
+            background: white;
+            border-left: 3px solid #facc15;
+            font-weight: 600;
+            color: #1e293b;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+        }
+
+        /* content area */
+        .content {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            padding: 2rem 2rem 3rem;
+        }
+        .section-card {
+            display: none;
+            animation: fade 0.2s ease;
+        }
+        .section-card.active-section {
+            display: block;
+        }
+        @keyframes fade {
+            0% { opacity: 0.4; transform: translateY(6px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #1e293b, #3b4b62);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            border-bottom: 3px solid #facc15;
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+        .meta-badge {
+            background: #f1f5f9;
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            color: #334155;
+            display: inline-block;
+            margin: 0.5rem 0 1.5rem;
+        }
+        .notes-text {
+            color: #1e293b;
+        }
+        .notes-text h2 {
+            font-size: 1.5rem;
+            margin: 1.8rem 0 0.8rem;
+            font-weight: 600;
+        }
+        .notes-text h3 {
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin: 1.5rem 0 0.5rem;
+            color: #0f172a;
+        }
+        .notes-text p {
+            margin: 1rem 0;
+        }
+        .notes-text pre {
+            background: #0f172a;
+            color: #e2e8f0;
+            padding: 1.2rem;
+            border-radius: 18px;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.9rem;
+            margin: 1.5rem 0;
+            border: 1px solid #334155;
+            box-shadow: inset 0 0 0 1px #2d3a4e;
+        }
+        .notes-text code:not(pre code) {
+            background: #e9eef3;
+            padding: 0.2rem 0.4rem;
+            border-radius: 8px;
+            font-family: monospace;
+            color: #dc2626;
+            font-size: 0.9rem;
+        }
+        .notes-text ul, .notes-text ol {
+            margin: 0.8rem 0 1.2rem 1.8rem;
+        }
+        .notes-text li {
+            margin: 0.4rem 0;
+        }
+        .table-wrap {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+        .notes-text table {
+            border-collapse: collapse;
+            width: 100%;
+            background: #f8fafc;
+            border-radius: 16px;
+            border: 1px solid #cbd5e1;
+        }
+        .notes-text th {
+            background: #e2e8f0;
+            font-weight: 600;
+            padding: 0.75rem 1rem;
+        }
+        .notes-text td {
+            padding: 0.75rem 1rem;
+            border-top: 1px solid #cbd5e1;
+        }
+
+        .keyword {
+            background: #fef9c3;
+            color: #854d0e;
+            font-weight: 600;
+            padding: 0.1rem 0.3rem;
+            border-radius: 6px;
+        }
+        .footer-note {
+            margin-top: 3rem;
+            text-align: right;
+            font-size: 0.9rem;
+            color: #64748b;
+            border-top: 1px dashed #cbd5e1;
+            padding-top: 1.5rem;
+        }
+        .footer-note i {
+            font-style: normal;
+            background: #f1f5f9;
+            padding: 0.2rem 0.7rem;
+            border-radius: 40px;
+        }
+
+        @media (max-width: 800px) {
+            .main-panel { flex-direction: column; }
+            .toc { width: 100%; border-right: none; border-bottom: 1px solid #cbd5e1; padding: 1rem; }
+            .toc ul { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+            .toc li { flex: 1 1 auto; }
+            .toc button { border-left: none; border-bottom: 2px solid transparent; }
+            .toc button.active { border-left: none; border-bottom: 2px solid #facc15; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="note-header">
+        <h1>🧠 JavaScript notes · from zero to yield</h1>
+        <span>full tutorial</span>
+    </div>
+
+    <div class="main-panel">
+        <!-- table of contents (generated from sections) -->
+        <nav class="toc">
+            <h3>📖 contents</h3>
+            <ul id="toc-list"></ul>
+        </nav>
+
+        <!-- dynamic content area -->
+        <main class="content" id="content-area">
+            <!-- sections will be injected via js -->
+        </main>
+    </div>
+    <div class="footer-note">
+        <i>⚡ complete javascript reference — based on your notes</i>
+    </div>
+</div>
+
+<script>
+    (function() {
+        // --------------------------------------------------------------
+        // raw notes – exactly from your input (condensed but full)
+        // --------------------------------------------------------------
+        const sections = [
+            { id: "intro", title: "What is JavaScript", content: `
+                <h2>What is JavaScript</h2>
+                <p>JavaScript is a lightweight, interpreted programming language. It is commonly used to create dynamic and interactive elements in web applications. JavaScript is very easy to implement because it is integrated with HTML. It is open and cross-platform.</p>
+                <h3>JavaScript Features</h3>
+                <p>JavaScript is a highly popular and widely-used programming language for web development. It has a variety of features: dynamic, lightweight, interpreted, functional, object‑oriented. Many open‑source libraries available.</p>
+            `},
+            { id: "features", title: "Features & setup", content: `
+                <h2>Key features</h2>
+                <ul><li><span class="keyword">Easy setup</span> – no special editor, just &lt;script&gt;</li>
+                <li><span class="keyword">Browser support</span> – built‑in execution</li>
+                <li><span class="keyword">DOM manipulation, events, dynamic typing, functional & OOP, cross‑platform</span></li>
+                <li>Built‑in objects (Math, Date), prototypes, global object, JSON, asynchronous (promises), event‑driven, server‑side (Node.js)</li></ul>
+                <h3>Enabling JavaScript in browsers</h3>
+                <p>Chrome: menu → Settings → Privacy → Site Settings → JavaScript. Edge: menu → More tools → Internet Options → Security → Custom level → Scripting → Enable.<br> Firefox: about:config → javascript.enabled → toggle.<br> Safari: Preferences → Security → Enable JavaScript.<br> Opera: Tools → Preferences → Advanced → Content → Enable JavaScript.<br> Brave: shield icon → Block scripts.</p>
+                <p>Use &lt;noscript&gt; to show fallback.</p>
+            `},
+            { id: "syntax", title: "Syntax & first code", content: `
+                <h2>JavaScript Syntax</h2>
+                <p>Placed inside <code>&lt;script&gt;</code> tag. Example:</p>
+                <pre>document.write("Hello World!");</pre>
+                <h3>Values & variables</h3>
+                <p>Literals: <code>10, "Hello"</code>. Variables: <code>let, var, const</code>. Case‑sensitive, semicolons optional, camelCase common. Identifiers: letters, _, $.</p>
+                <pre>let a = 5; const b = "One";</pre>
+                <h3>Comments</h3>
+                <pre>// single line  /* multi line */</pre>
+                <h3>Operators & expressions</h3>
+                <p><code>10 + 20; a * b;</code> etc.</p>
+            `},
+            { id: "hello", title: "Hello World", content: `
+                <h2>“Hello World” in JavaScript</h2>
+                <ul><li><code>document.write("Hello World");</code></li>
+                <li><code>alert("Hello World");</code></li>
+                <li><code>console.log("Hello World");</code></li>
+                <li>using <code>innerHTML</code> : <code>document.getElementById("output").innerHTML = "Hello World";</code></li></ul>
+                <p>Console.log example:</p>
+                <pre>console.log("Hello World!", 30+20);</pre>
+            `},
+            { id: "console", title: "console.log()", content: `
+                <h2>console.log() method</h2>
+                <p>prints to web console (browser) or terminal (Node.js). Accepts multiple arguments.</p>
+                <pre>console.log("Sum:", 5, "and", 3, "=", 5+3);</pre>
+                <p>Objects are printed expandable:</p>
+                <pre>console.log({ website: "Tutorialspoint" });</pre>
+            `},
+            { id: "comments", title: "Comments", content: `
+                <h2>JavaScript comments</h2>
+                <p>Single-line <code>//</code>, multi-line <code>/* */</code>. Also <code>&lt;!--</code> (treated as single line). Prevent execution by commenting out code.</p>
+                <pre>// var x = 10;  /* function test() {} */</pre>
+            `},
+            { id: "variables", title: "Variables (var, let, const)", content: `
+                <h2>Variables</h2>
+                <p><span class="keyword">var</span> – function scope, can be redeclared. <span class="keyword">let</span> – block scope, no redeclare. <span class="keyword">const</span> – block scope, cannot reassign, but object properties can be mutated.</p>
+                <pre>var x = 5; let y = 10; const z = 15;
+y = 20;  // ok
+// z = 30; // error</pre>
+                <p>const array/object: can update content, not the reference.</p>
+                <pre>const arr = [1,2]; arr.push(3); // ok</pre>
+                <p>Undefined vs null.</p>
+            `},
+            { id: "datatypes", title: "Data types", content: `
+                <h2>Data types</h2>
+                <p><b>Primitive:</b> string, number, boolean, null, undefined, bigint, symbol.<br>
+                <b>Object:</b> Object, Array, Date, etc.</p>
+                <pre>let str = "hi"; let num = 100; let big = 123n; let sym = Symbol();</pre>
+                <p>typeof operator: <code>typeof 10</code> → "number", <code>typeof null</code> → "object".</p>
+                <p>Dynamic typing: variable can change type.</p>
+            `},
+            { id: "conversion", title: "Type conversions", content: `
+                <h2>Type conversions</h2>
+                <p><b>Implicit:</b> "100" + 24 → "10024"; "100" / "50" → 2; !!0 → false</p>
+                <p><b>Explicit:</b> <code>String(100), Number("123"), Boolean("hi")</code></p>
+                <pre>Number(" 99 ");  // 99
+Boolean("");      // false</pre>
+                <p>parseInt, parseFloat, toString, unary +.</p>
+            `},
+            { id: "strict", title: "Strict mode", content: `
+                <h2>"use strict"</h2>
+                <p>Enforces stricter parsing, prevents silent errors. Use at top of file or function.</p>
+                <pre>"use strict";
+x = 10;  // error (not declared)</pre>
+                <p>Cannot delete variables, duplicate params, octal literals, etc.</p>
+            `},
+            { id: "reserved", title: "Reserved keywords", content: `
+                <h2>Reserved keywords</h2>
+                <p>Cannot use as identifiers: <code>abstract, arguments, await, boolean, break, byte, case, catch, char, class, const, continue, debugger, default, delete, do, double, else, enum, eval, export, extends, false, final, finally, float, for, function, goto, if, implements, import, in, instanceof, int, interface, let, long, native, new, null, package, private, protected, public, return, short, static, super, switch, synchronized, this, throw, throws, transient, true, try, typeof, var, void, volatile, while, with, yield</code> ... plus built‑in objects, methods.</p>
+            `},
+            { id: "arithmetic", title: "Arithmetic operators", content: `
+                <h2>Arithmetic operators</h2>
+                <table><tr><th>Op</th><th>Name</th></tr>
+                <tr><td>+</td><td>Addition</td></tr><tr><td>-</td><td>Subtraction</td></tr><tr><td>*</td><td>Multiplication</td></tr><tr><td>/</td><td>Division</td></tr><tr><td>%</td><td>Modulus</td></tr><tr><td>++</td><td>Increment</td></tr><tr><td>--</td><td>Decrement</td></tr></table>
+                <pre>let x = 10; let y = x++ + 5;</pre>
+            `},
+            { id: "comparison", title: "Comparison", content: `
+                <h2>Comparison operators</h2>
+                <p>==, !=, ===, !==, >, <, >=, <=. Strict equality (===) checks type+value. Falsy: 0, "", false, null, undefined, NaN.</p>
+                <pre>0 == false   // true
+0 === false  // false</pre>
+            `},
+            { id: "logical", title: "Logical operators", content: `
+                <h2>Logical: &&, ||, !</h2>
+                <p>&& returns first falsy or last truthy. || returns first truthy or last falsy. ! converts to boolean and negates.</p>
+                <pre>let a = 5 && 10;   // 10
+let b = 0 || "ok";  // "ok"</pre>
+            `},
+            { id: "bitwise", title: "Bitwise operators", content: `
+                <h2>Bitwise (&, |, ^, ~, <<, >>, >>>)</h2>
+                <p>Operate on 32-bit signed integers. Example: 5 & 7 → 5 (101 & 111 = 101).</p>
+                <pre>let r = 5 << 1;   // 10</pre>
+            `},
+            { id: "assignment", title: "Assignment operators", content: `
+                <h2>Assignment =, +=, -=, *=, /=, %=, **=, <<=, >>=, >>>=, &=, |=, ^=, &&=, ||=, ??=</h2>
+                <pre>let x = 10; x += 5;  // x=15</pre>
+            `},
+            { id: "conditional", title: "Conditional (ternary)", content: `
+                <h2>Conditional operator ? :</h2>
+                <pre>let age = 20;
+let status = age >= 18 ? "adult" : "minor";</pre>
+            `},
+            { id: "typeof", title: "typeof operator", content: `
+                <h2>typeof</h2>
+                <p>Returns type as string. For array → "object". For null → "object". function → "function".</p>
+                <pre>typeof "hi"        // "string"
+typeof undefined   // "undefined"</pre>
+            `},
+            { id: "nullish", title: "Nullish coalescing (??)", content: `
+                <h2>?? operator</h2>
+                <p>Returns right operand only if left is null or undefined.</p>
+                <pre>let name = null ?? "default";   // "default"
+let count = 0 ?? 42;            // 0</pre>
+            `},
+            { id: "safeassign", title: "Safe assignment (?=)", content: `
+                <h2>Safe assignment (?=) – proposal</h2>
+                <p>Assigns only if variable is null/undefined. Not yet standard. Example (future): <code>username ?= "Guest";</code></p>
+            `},
+            { id: "delete", title: "delete operator", content: `
+                <h2>delete</h2>
+                <p>Removes object property. Returns true if successful. For arrays, leaves empty slot, length unchanged.</p>
+                <pre>const obj = {a:1, b:2}; delete obj.a;</pre>
+            `},
+            { id: "comma", title: "Comma operator", content: `
+                <h2>Comma ,</h2>
+                <p>Evaluates each operand, returns last.</p>
+                <pre>let x = (1, 2, 3);  // x = 3
+for (let i=0,j=10; i<5; i++,j--) {}</pre>
+            `},
+            { id: "grouping", title: "Grouping operator", content: `
+                <h2>() grouping</h2>
+                <p>Changes evaluation precedence.</p>
+                <pre>let result = (2 + 3) * 4;  // 20</pre>
+            `},
+            { id: "yield", title: "yield operator", content: `
+                <h2>yield – generator functions</h2>
+                <p>Pauses/resumes generator function. Used inside function*. Returns {value, done}.</p>
+                <pre>function* gen() { yield 1; yield 2; }</pre>
+            `},
+            { id: "spread", title: "Spread operator ...", content: `
+                <h2>Spread ...</h2>
+                <p>Expands iterable (array, string, object). Copy, concat, merge.</p>
+                <pre>const arr = [1,2]; const copy = [...arr];
+const obj = {a:1, b:2}; const merged = {...obj, c:3};</pre>
+            `},
+            { id: "exponentiation", title: "Exponentiation **", content: `
+                <h2>** (exponentiation)</h2>
+                <p>Right‑associative: 2 ** 3 ** 2 = 2 ** 9 = 512.</p>
+                <pre>let square = 4 ** 2;  // 16</pre>
+            `},
+            { id: "precedence", title: "Operator precedence", content: `
+                <h2>Operator precedence & associativity</h2>
+                <p>Grouping () highest, then member access, function call, new, postfix inc/dec, unary, exponentiation, multiplicative, additive, shift, relational, equality, bitwise, logical, nullish, assignment, comma.</p>
+                <p>Multiplication before addition, && before ||, etc. Use () to override.</p>
+            `}
+        ];
+
+        const tocList = document.getElementById('toc-list');
+        const contentArea = document.getElementById('content-area');
+
+        function renderSections() {
+            // build toc + content
+            let tocHtml = '';
+            let contentHtml = '';
+
+            sections.forEach((sec, idx) => {
+                const activeClass = idx === 0 ? 'active' : '';
+                tocHtml += `<li><button class="toc-btn ${activeClass}" data-target="${sec.id}">${sec.title}</button></li>`;
+
+                contentHtml += `<div id="section-${sec.id}" class="section-card ${idx === 0 ? 'active-section' : ''}">`;
+                contentHtml += `<div class="section-title">${sec.title}</div>`;
+                contentHtml += `<div class="meta-badge">📌 section · ${sec.id}</div>`;
+                contentHtml += `<div class="notes-text">${sec.content}</div>`;
+                contentHtml += `</div>`;
+            });
+
+            tocList.innerHTML = tocHtml;
+            contentArea.innerHTML = contentHtml;
+
+            // attach click handlers to toc buttons
+            document.querySelectorAll('.toc-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const targetId = btn.dataset.target;
+
+                    // remove active from all sections & buttons
+                    document.querySelectorAll('.section-card').forEach(s => s.classList.remove('active-section'));
+                    document.querySelectorAll('.toc-btn').forEach(b => b.classList.remove('active'));
+
+                    // activate target
+                    document.getElementById(`section-${targetId}`).classList.add('active-section');
+                    btn.classList.add('active');
+
+                    // smooth scroll to content (optional)
+                    contentArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                });
+            });
+        }
+
+        renderSections();
+    })();
+</script>
+
+<!-- a little extra style for better pre/code -->
+<style>
+    .notes-text pre { background: #0b1120; border-left: 4px solid #facc15; }
+    .notes-text code { font-size: 0.9rem; }
+    .toc-btn { font-family: inherit; }
+</style>
+</body>
+</html>

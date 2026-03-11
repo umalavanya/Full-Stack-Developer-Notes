@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📘 object oriented javascript – full notes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #ecfdf5;
+            color: #0f172a;
+            line-height: 1.5;
+            padding: 2rem 1rem;
+        }
+
+        .wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 2.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: #0f172a;
+            color: white;
+            padding: 2rem 2.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border-bottom: 5px solid #fbbf24;
+        }
+
+        .header h1 {
+            font-weight: 700;
+            font-size: 2.3rem;
+            letter-spacing: -0.02em;
+        }
+
+        .header span {
+            background: #fbbf24;
+            color: #0f172a;
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
+            margin-left: 0.5rem;
+        }
+
+        .main-panel {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        /* sidebar table of contents */
+        .toc-panel {
+            background: #f8fafc;
+            width: 320px;
+            border-right: 1px solid #cbd5e1;
+            padding: 2rem 1rem;
+        }
+
+        .toc-panel h3 {
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            color: #475569;
+            margin-bottom: 1.8rem;
+            padding-left: 1rem;
+        }
+
+        .toc-list {
+            list-style: none;
+            max-height: 75vh;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+
+        .toc-list li {
+            margin-bottom: 0.2rem;
+        }
+
+        .toc-btn {
+            width: 100%;
+            text-align: left;
+            background: transparent;
+            border: none;
+            font-size: 0.9rem;
+            padding: 0.7rem 1rem;
+            border-radius: 14px;
+            color: #334155;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.1s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .toc-btn:hover {
+            background: #e2e8f0;
+            color: #0f172a;
+        }
+
+        .toc-btn.active {
+            background: white;
+            border-left: 3px solid #fbbf24;
+            font-weight: 600;
+            color: #0f172a;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.02);
+        }
+
+        /* content area */
+        .content-panel {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            padding: 2.5rem 2.8rem 4rem;
+        }
+
+        .section-card {
+            display: none;
+            animation: fade 0.2s;
+        }
+
+        .section-card.active-card {
+            display: block;
+        }
+
+        @keyframes fade {
+            0% {
+                opacity: 0.2;
+                transform: translateY(6px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            background: linear-gradient(145deg, #0f172a, #334155);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            border-bottom: 3px solid #fbbf24;
+            padding-bottom: 0.5rem;
+            display: inline-block;
+            margin-bottom: 1.2rem;
+        }
+
+        .tag {
+            background: #f1f5f9;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            color: #334155;
+            display: inline-block;
+            margin: 0.2rem 0 1.8rem;
+        }
+
+        .notes-body {
+            color: #1e293b;
+        }
+
+        .notes-body h2 {
+            font-size: 1.7rem;
+            margin: 2rem 0 1rem;
+            font-weight: 600;
+        }
+
+        .notes-body h3 {
+            font-size: 1.3rem;
+            margin: 1.5rem 0 0.8rem;
+            color: #0f172a;
+        }
+
+        .notes-body p {
+            margin: 1rem 0;
+        }
+
+        .notes-body pre {
+            background: #0b1120;
+            color: #e2e8f0;
+            padding: 1.3rem;
+            border-radius: 18px;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.9rem;
+            border-left: 4px solid #fbbf24;
+            margin: 1.5rem 0;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .notes-body code:not(pre code) {
+            background: #f1f5f9;
+            padding: 0.2rem 0.6rem;
+            border-radius: 8px;
+            font-family: monospace;
+            color: #b45309;
+            font-size: 0.9rem;
+        }
+
+        .notes-body ul,
+        .notes-body ol {
+            margin: 0.8rem 0 1.2rem 1.8rem;
+        }
+
+        .notes-body li {
+            margin: 0.4rem 0;
+        }
+
+        .notes-body table {
+            border-collapse: collapse;
+            width: 100%;
+            background: #f8fafc;
+            border-radius: 16px;
+            border: 1px solid #cbd5e1;
+            margin: 1.5rem 0;
+        }
+
+        .notes-body th {
+            background: #e2e8f0;
+            font-weight: 600;
+            padding: 0.7rem 1rem;
+        }
+
+        .notes-body td {
+            padding: 0.7rem 1rem;
+            border-top: 1px solid #cbd5e1;
+        }
+
+        .hl {
+            background: #fef3c7;
+            color: #92400e;
+            font-weight: 600;
+            padding: 0.2rem 0.5rem;
+            border-radius: 6px;
+        }
+
+        .footer-note {
+            margin-top: 3rem;
+            text-align: right;
+            border-top: 1px dashed #cbd5e1;
+            padding-top: 1.5rem;
+            color: #64748b;
+        }
+
+        @media (max-width: 800px) {
+            .main-panel {
+                flex-direction: column;
+            }
+
+            .toc-panel {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #cbd5e1;
+            }
+
+            .toc-list {
+                display: flex;
+                flex-wrap: wrap;
+            }
+
+            .toc-list li {
+                flex: 1 1 auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="header">
+            <h1>🧬 object oriented javascript · oop in depth</h1>
+            <span>classes · prototypes · mixins</span>
+        </div>
+
+        <div class="main-panel">
+            <!-- table of contents sidebar -->
+            <nav class="toc-panel">
+                <h3>📌 topics</h3>
+                <ul class="toc-list" id="tocList"></ul>
+            </nav>
+
+            <!-- dynamic content injected here -->
+            <main class="content-panel" id="contentArea"></main>
+        </div>
+        <div class="footer-note">
+            <i>⚡ complete oop notes — based on your tutorial</i>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            // ------------- All sections from your Object Oriented JavaScript notes -------------
+            const sections = [
+                {
+                    id: "objects-overview", title: "Objects overview", content: `
+                <h2>JavaScript Objects</h2>
+                <p><span class="hl">Objects</span> store data as key‑value pairs. A property whose value is a function is called a <span class="hl">method</span>. Object literals: <code>{ key: value }</code>.</p>
+                <pre>const myBook = {
+  title: "Perl",
+  author: "Mohtashim",
+  pages: 355
+};</pre>
+                <p>Created via <code>Object()</code> constructor, <code>new</code>, <code>Object.create()</code>, or ES6 classes. Properties can be accessed with dot or bracket notation. Methods can be added directly.</p>
+                <p><span class="hl">with</span> keyword (discouraged) shortens property access. Native objects: Number, Boolean, String, Array, Date, Math, RegExp, Set, Map, WeakMap, etc.</p>
+            `},
+                {
+                    id: "classes", title: "Classes (ES6)", content: `
+                <h2>JavaScript Classes</h2>
+                <p>Blueprint for objects. Defined with <span class="hl">class</span> keyword. Constructor initializes properties. Methods are shared via prototype.</p>
+                <pre>class Car {
+  constructor(brand) { this.brand = brand; }
+  getBrand() { return this.brand; }
+}
+const myCar = new Car("Audi");</pre>
+                <p>Class type is <code>"function"</code>. Classes are not hoisted. Strict mode by default. Can define getters/setters, static methods.</p>
+            `},
+                {
+                    id: "object-properties", title: "Object properties", content: `
+                <h2>Object properties</h2>
+                <p>Access: dot (<code>obj.prop</code>), bracket (<code>obj["prop"]</code>), expression (<code>obj[expr]</code>). Nested properties: <code>obj.nested.prop</code>.</p>
+                <p>Add/update: <code>obj.prop = value</code>. Delete: <code>delete obj.prop</code>. Enumerate with <code>for...in</code> or <code>Object.keys()</code>.</p>
+                <p>Property attributes: <span class="hl">value, enumerable, configurable, writable</span>. Can be manipulated with <code>Object.defineProperty()</code>.</p>
+            `},
+                {
+                    id: "object-methods", title: "Object methods", content: `
+                <h2>Object methods</h2>
+                <p>Functions stored as properties. ES6 shorthand:</p>
+                <pre>const obj = {
+  getInfo() { return this.name; }
+};</pre>
+                <p>Add methods dynamically: <code>obj.method = function() { }</code>. Built‑in methods like <code>toString()</code> exist on all objects.</p>
+            `},
+                {
+                    id: "static-methods", title: "Static methods", content: `
+                <h2>Static methods</h2>
+                <p>Defined with <span class="hl">static</span> keyword, called on class, not instance.</p>
+                <pre>class Table {
+  static printSize() { return "20x20"; }
+}
+Table.printSize();</pre>
+                <p>Useful for utility functions. Can be executed in constructor via <code>this.constructor.staticMethod()</code>.</p>
+            `},
+                {
+                    id: "display-objects", title: "Display objects", content: `
+                <h2>Display objects</h2>
+                <p>Printing object directly gives <code>[object Object]</code>. Options:</p>
+                <ul><li>Access properties: <code>obj.prop</code></li>
+                <li><code>JSON.stringify(obj)</code></li>
+                <li><code>Object.entries(obj)</code> + loop</li>
+                <li><code>for...in</code></li></ul>
+                <pre>console.log(JSON.stringify(fruit)); // {"name":"Banana"}</pre>
+            `},
+                {
+                    id: "accessors", title: "Object accessors (get/set)", content: `
+                <h2>Getters & Setters</h2>
+                <p>Use <code>get</code> and <code>set</code> to define accessor properties.</p>
+                <pre>const wall = {
+  color: "brown",
+  get getColor() { return this.color; },
+  set setColor(c) { this.color = c; }
+};
+wall.setColor = "red";</pre>
+                <p>Provide data quality, encapsulation, simple syntax. Also definable via <code>Object.defineProperty()</code>.</p>
+            `},
+                {
+                    id: "constructors", title: "Object constructors", content: `
+                <h2>Constructor functions</h2>
+                <p>Template to create multiple objects. Use <code>new</code> keyword.</p>
+                <pre>function Bike(name, speed) {
+  this.name = name;
+  this.speed = speed;
+}
+const bike1 = new Bike("Honda", 100);</pre>
+                <p>Add methods to prototype to share across instances. Built‑in constructors: <code>Array, String, Number, Boolean, Set, Map, Object, Function, Date, RegExp, Error, Symbol</code>.</p>
+            `},
+                {
+                    id: "native-prototypes", title: "Native prototypes", content: `
+                <h2>Native prototypes</h2>
+                <p>Every object has a <code>prototype</code>. Built‑in objects have native prototypes (e.g., <code>Array.prototype</code>).</p>
+                <p>You can add methods (but avoid overriding).</p>
+                <pre>String.prototype.firstCase = function() {
+  return this.charAt(0).toUpperCase() + this.slice(1);
+};</pre>
+                <p>Prototype chaining: own property vs prototype property.</p>
+            `},
+                {
+                    id: "es5-methods", title: "ES5 Object methods", content: `
+                <h2>ES5 object methods</h2>
+                <p>Introduced in 2009. Key methods:</p>
+                <ul><li><code>Object.create()</code>, <code>defineProperty()</code>, <code>defineProperties()</code></li>
+                <li><code>getOwnPropertyDescriptor()</code>, <code>getOwnPropertyNames()</code></li>
+                <li><code>keys()</code>, <code>freeze()</code>, <code>seal()</code>, <code>isFrozen()</code>, <code>isSealed()</code></li>
+                <li><code>preventExtensions()</code>, <code>isExtensible()</code></li></ul>
+                <pre>Object.freeze(obj); // cannot modify</pre>
+            `},
+                {
+                    id: "encapsulation", title: "Encapsulation", content: `
+                <h2>Encapsulation</h2>
+                <p>Hide internal data, expose only necessary. Achieved via:</p>
+                <ul><li>Closures (factory functions)</li>
+                <li>ES6 classes with <span class="hl">private fields</span> (<code>#field</code>)</li>
+                <li>Getters/setters</li></ul>
+                <pre>class User {
+  #username = "bob";
+  get username() { return this.#username; }
+}</pre>
+                <p>Protects data integrity, reduces complexity.</p>
+            `},
+                {
+                    id: "inheritance", title: "Inheritance (extends)", content: `
+                <h2>Inheritance</h2>
+                <p>Child class inherits from parent with <code>extends</code>. Use <code>super()</code> to call parent constructor.</p>
+                <pre>class Bike { constructor(gears) { this.gears = gears; } }
+class Suzuki extends Bike {
+  constructor(brand, gears) { super(gears); this.brand = brand; }
+}</pre>
+                <p>Multilevel, hierarchical inheritance possible. Static methods inherited. Prototype‑based inheritance also works via setting <code>Child.prototype = Object.create(Parent.prototype)</code>.</p>
+            `},
+                {
+                    id: "abstraction", title: "Abstraction", content: `
+                <h2>Abstraction</h2>
+                <p>Hide implementation details. JavaScript doesn't have native abstract classes, but you can simulate via constructor checks.</p>
+                <pre>function Fruit() {
+  if (this.constructor === Fruit) throw new Error("abstract");
+}
+Fruit.prototype.getName = function() { return this.name; };</pre>
+                <p>Then inherit and implement. Keeps interface clean.</p>
+            `},
+                {
+                    id: "polymorphism", title: "Polymorphism", content: `
+                <h2>Polymorphism</h2>
+                <p>Same method name, different implementations (method overriding).</p>
+                <pre>class Shape { area() { return 0; } }
+class Circle extends Shape { area(r) { return 3.14*r*r; } }</pre>
+                <p>Child methods override parent. Use <code>super.method()</code> to extend. Enables dynamic behavior.</p>
+            `},
+                {
+                    id: "destructuring", title: "Destructuring (intro)", content: `
+                <h2>Destructuring</h2>
+                <p>Unpack values from arrays or objects into variables.</p>
+                <pre>const arr = [1,2,3]; const [a,b,c] = arr;
+const obj = {x:10,y:20}; const {x,y} = obj;</pre>
+                <p>Two types: <span class="hl">array destructuring</span> and <span class="hl">object destructuring</span>. Simplifies code, especially with nested data.</p>
+            `},
+                {
+                    id: "destructuring-assignment", title: "Destructuring assignment", content: `
+                <h2>Destructuring assignment</h2>
+                <p>ES6 feature. Examples:</p>
+                <pre>const [name, age] = ["John", 30];
+const {brand, price} = {brand:"Nike", price:100};</pre>
+                <p>Nested, default values, renaming, rest, function parameters.</p>
+            `},
+                {
+                    id: "object-destructuring", title: "Object destructuring", content: `
+                <h2>Object destructuring</h2>
+                <pre>const {prop1, prop2} = obj;
+const {prop1: newName = 'default'} = obj; // rename + default
+const {a, ...rest} = obj; // rest properties</pre>
+                <p>Useful in function parameters: <code>function({name, age}) {}</code></p>
+            `},
+                {
+                    id: "array-destructuring", title: "Array destructuring", content: `
+                <h2>Array destructuring</h2>
+                <pre>const [first, second] = [10,20];
+const [x, , z] = [1,2,3]; // skip
+const [head, ...tail] = [1,2,3,4]; // rest
+let a=5, b=10; [b,a] = [a,b]; // swap</pre>
+                <p>Default values: <code>[a=1, b=2] = [];</code></p>
+            `},
+                {
+                    id: "nested-destructuring", title: "Nested destructuring", content: `
+                <h2>Nested destructuring</h2>
+                <p>Unpack nested objects/arrays:</p>
+                <pre>const { info: { price, color } } = car;
+const [a, [b, c]] = [1, [2,3]];</pre>
+                <p>Combine with defaults, renaming, rest. Powerful for complex data.</p>
+            `},
+                {
+                    id: "global-object", title: "Global object", content: `
+                <h2>Global object</h2>
+                <p>In browsers: <code>window</code>, in Node: <code>global</code>. ES2020: <code>globalThis</code> works everywhere.</p>
+                <p>Global variables become properties of global object (if declared with <code>var</code>). Can be used for polyfills.</p>
+                <pre>var x = 10; window.x === 10; // true</pre>
+            `},
+                {
+                    id: "mixins", title: "Mixins", content: `
+                <h2>Mixins</h2>
+                <p>Borrow functionality from multiple objects. <code>Object.assign(target, source)</code> copies properties.</p>
+                <pre>const canEat = { eat() { } };
+const canWalk = { walk() { } };
+Object.assign(person, canEat, canWalk);</pre>
+                <p>Can simulate multiple inheritance with classes: <code>class Driver extends mix(Human, Swimmer) { }</code> using function factories.</p>
+            `},
+                {
+                    id: "proxies", title: "Proxies", content: `
+                <h2>Proxy</h2>
+                <p>Wrap an object to intercept operations (<code>get</code>, <code>set</code>, <code>apply</code>, ...).</p>
+                <pre>const handler = {
+  get(obj, prop) { return prop in obj ? obj[prop] : 42; }
+};
+const p = new Proxy(target, handler);</pre>
+                <p>Use cases: validation, logging, access control, side effects. Many trap methods: <code>apply</code>, <code>construct</code>, <code>defineProperty</code>, <code>deleteProperty</code>, <code>has</code>, etc.</p>
+            `},
+                {
+                    id: "optional-chaining", title: "Optional chaining (?.)", content: `
+                <h2>Optional chaining</h2>
+                <p>Safe nested property access without errors if intermediate is <code>null/undefined</code>.</p>
+                <pre>car?.info?.price; // undefined if car or info missing
+obj?.[expr]; arr?.[index]; func?.();</pre>
+                <p>Combine with nullish coalescing: <code>car?.color ?? "red"</code>. Short‑circuits.</p>
+            `}
+            ];
+
+            const tocContainer = document.getElementById('tocList');
+            const contentArea = document.getElementById('contentArea');
+
+            function render() {
+                let tocHtml = '';
+                let contentHtml = '';
+
+                sections.forEach((sec, idx) => {
+                    const activeClass = idx === 0 ? 'active' : '';
+                    tocHtml += `<li><button class="toc-btn ${activeClass}" data-id="${sec.id}">${sec.title}</button></li>`;
+
+                    contentHtml += `<div id="card-${sec.id}" class="section-card ${idx === 0 ? 'active-card' : ''}">`;
+                    contentHtml += `<div class="section-title">${sec.title}</div>`;
+                    contentHtml += `<div class="tag">topic · ${sec.id}</div>`;
+                    contentHtml += `<div class="notes-body">${sec.content}</div>`;
+                    contentHtml += `</div>`;
+                });
+
+                tocContainer.innerHTML = tocHtml;
+                contentArea.innerHTML = contentHtml;
+
+                // attach click handlers
+                document.querySelectorAll('.toc-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const id = btn.dataset.id;
+                        document.querySelectorAll('.toc-btn').forEach(b => b.classList.remove('active'));
+                        document.querySelectorAll('.section-card').forEach(c => c.classList.remove('active-card'));
+
+                        btn.classList.add('active');
+                        document.getElementById(`card-${id}`).classList.add('active-card');
+                        contentArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    });
+                });
+            }
+
+            render();
+        })();
+    </script>
+</body>
+
+</html>

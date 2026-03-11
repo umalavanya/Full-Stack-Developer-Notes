@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📚 JavaScript Complete Notes · Main Index</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(145deg, #f0f4fa 0%, #e6ecf5 100%);
+            color: #0f172a;
+            line-height: 1.5;
+            padding: 2rem 1.5rem;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* header */
+        .hero {
+            background: #1e293b;
+            color: white;
+            padding: 2.5rem 3rem;
+            border-radius: 2.5rem 2.5rem 2rem 2rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 25px 40px -15px rgba(0, 20, 40, 0.4);
+            border-bottom: 6px solid #fbbf24;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-size: 3.2rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            background: linear-gradient(to right, #fbbf24, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+
+        .hero-text p {
+            font-size: 1.25rem;
+            color: #cbd5e1;
+            margin-top: 0.5rem;
+            max-width: 600px;
+        }
+
+        .badge {
+            background: #334155;
+            padding: 0.6rem 1.5rem;
+            border-radius: 60px;
+            font-weight: 500;
+            color: #facc15;
+            border: 1px solid #facc15;
+            font-size: 1rem;
+        }
+
+        /* navigation cards grid */
+        .section-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 2rem;
+            padding: 1.8rem 1.5rem 2rem;
+            box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.15);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: 1px solid #e9eef2;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 35px -12px #1e293b55;
+            border-color: #fbbf24;
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.8rem;
+            background: #f1f5f9;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 30px;
+        }
+
+        .card h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: #0f172a;
+            border-bottom: 3px solid #fbbf24;
+            display: inline-block;
+            padding-bottom: 0.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .card p {
+            color: #334155;
+            margin: 0.5rem 0 1.3rem;
+            flex: 1;
+            font-size: 1rem;
+        }
+
+        .chip-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1rem 0 1.5rem;
+        }
+
+        .chip {
+            background: #e9eef3;
+            color: #1e293b;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.3rem 0.8rem;
+            border-radius: 40px;
+            letter-spacing: 0.01em;
+        }
+
+        .chip.gold {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .btn {
+            background: #1e293b;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            border: 1px solid #1e293b;
+            transition: all 0.15s;
+            margin-top: 0.5rem;
+            align-self: flex-start;
+        }
+
+        .btn:hover {
+            background: #fbbf24;
+            border-color: #fbbf24;
+            color: #0f172a;
+        }
+
+        .footer-note {
+            margin-top: 4rem;
+            text-align: center;
+            color: #475569;
+            border-top: 2px dashed #cbd5e1;
+            padding-top: 2rem;
+        }
+
+        .footer-note a {
+            color: #1e293b;
+            font-weight: 600;
+            text-decoration: none;
+            border-bottom: 2px solid #fbbf24;
+        }
+
+        .footer-note a:hover {
+            color: #000;
+        }
+
+        @media (max-width: 600px) {
+            .hero {
+                padding: 2rem 1.5rem;
+            }
+
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-container">
+        <!-- hero section -->
+        <div class="hero">
+            <div class="hero-text">
+                <h1>🧠 JavaScript<br>complete notes</h1>
+                <p>Your all‑in‑one reference – from fundamentals to advanced, asynchronous to browser APIs.</p>
+            </div>
+            <div class="badge">📘 8 modules · 350+ topics</div>
+        </div>
+
+        <!-- navigation cards (each links to a dedicated html file) -->
+        <div class="section-grid">
+
+            <!-- 1. JavaScript basics -->
+            <div class="card">
+                <div class="card-icon">📄</div>
+                <h2>JavaScript basics</h2>
+                <p>Syntax, variables, data types, operators, functions, scope, hoisting, closures, and more – the
+                    foundation.</p>
+                <div class="chip-list">
+                    <span class="chip">var/let/const</span>
+                    <span class="chip">type conversions</span>
+                    <span class="chip">closures</span>
+                    <span class="chip">strict mode</span>
+                    <span class="chip gold">core</span>
+                </div>
+                <a href="javascript-part1.html" class="btn">open notes →</a>
+            </div>
+
+            <!-- 2. Control flow & loops -->
+            <div class="card">
+                <div class="card-icon">🔄</div>
+                <h2>Control flow</h2>
+                <p>if...else, switch, while, for, for...in, for...of, break/continue, labels – full flow control.</p>
+                <div class="chip-list">
+                    <span class="chip">if‑else</span>
+                    <span class="chip">loops</span>
+                    <span class="chip">iterators</span>
+                    <span class="chip">switch</span>
+                </div>
+                <a href="javascript-part2.html" class="btn">open notes →</a>
+            </div>
+
+            <!-- 3. Object oriented JavaScript -->
+            <div class="card">
+                <div class="card-icon">🧩</div>
+                <h2>Object oriented</h2>
+                <p>Objects, classes, prototypes, inheritance, encapsulation, polymorphism, mixins, proxies,
+                    destructuring.</p>
+                <div class="chip-list">
+                    <span class="chip">classes</span>
+                    <span class="chip">prototypes</span>
+                    <span class="chip">get/set</span>
+                    <span class="chip">mixins</span>
+                    <span class="chip gold">OOP</span>
+                </div>
+                <a href="javascript-part3.html" class="btn">open notes →</a>
+            </div>
+
+            <!-- 4. JavaScript versions (ES5–ES2023) -->
+            <div class="card">
+                <div class="card-icon">📅</div>
+                <h2>ECMAScript versions</h2>
+                <p>History, ES5, ES6, ES2016 … ES2023: all features with examples – the evolution timeline.</p>
+                <div class="chip-list">
+                    <span class="chip">ES5</span>
+                    <span class="chip">ES6+</span>
+                    <span class="chip">ES2023</span>
+                    <span class="chip">BigInt</span>
+                </div>
+                <a href="javascript-part4.html" class="btn">open notes →</a>
+            </div>
+
+            <!-- 5. Asynchronous JavaScript -->
+            <div class="card">
+                <div class="card-icon">⚡</div>
+                <h2>Asynchronous JS</h2>
+                <p>Callbacks, promises, async/await, microtasks, event loop, fetch, timing events, workers, geolocation.
+                </p>
+                <div class="chip-list">
+                    <span class="chip">promises</span>
+                    <span class="chip">async/await</span>
+                    <span class="chip">event loop</span>
+                    <span class="chip">fetch</span>
+                </div>
+                <a href="javascript-part5.html" class="btn">open notes →</a>
+            </div>
+
+            <!-- 6. Events, error handling, DOM, keywords -->
+            <div class="card">
+                <div class="card-icon">🎯</div>
+                <h2>Events · errors · DOM</h2>
+                <p>Event handling (bubbling/capturing), error handling (try/catch, custom errors), DOM manipulation,
+                    this/void/new/var.</p>
+                <div class="chip-list">
+                    <span class="chip">addEventListener</span>
+                    <span class="chip">bubbling</span>
+                    <span class="chip">custom errors</span>
+                    <span class="chip">this</span>
+                </div>
+                <a href="javascript-part6.html" class="btn">open notes →</a>
+            </div>
+
+            <!-- 7. Advanced chapters -->
+            <div class="card">
+                <div class="card-icon">🚀</div>
+                <h2>Advanced topics</h2>
+                <p>Algorithms (sort), design patterns, data structures, tRPC, throttling, reactive programming,
+                    localStorage, etc.</p>
+                <div class="chip-list">
+                    <span class="chip">bubble sort</span>
+                    <span class="chip">design patterns</span>
+                    <span class="chip">memoization</span>
+                    <span class="chip">immutability</span>
+                </div>
+                <a href="javascript-part7.html" class="btn">open notes →</a>
+            </div>
+
+            <!-- 8. Miscellaneous -->
+            <div class="card">
+                <div class="card-icon">🧰</div>
+                <h2>Miscellaneous</h2>
+                <p>Ajax, async iteration, Atomics, BigInt, Blob, canvas, currying, IndexedDB, performance, style guide,
+                    and more.</p>
+                <div class="chip-list">
+                    <span class="chip">Ajax/fetch</span>
+                    <span class="chip">IndexedDB</span>
+                    <span class="chip">currying</span>
+                    <span class="chip">debouncing</span>
+                </div>
+                <a href="javascript-part8.html" class="btn">open notes →</a>
+            </div>
+        </div>
+
+        <!-- extra: quick module summary (table) -->
+        <div style="background: #f8fafc; border-radius: 2rem; padding: 2rem; margin-top: 3rem;">
+            <h3 style="font-size: 1.8rem; font-weight: 600; margin-bottom: 1.5rem;">📋 all modules at a glance</h3>
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 0.8rem; color: #334155;">
+                <div style="background: white; border-radius: 2rem; padding: 1rem 1.4rem;">📄 JavaScript basics</div>
+                <div style="background: white; border-radius: 2rem; padding: 1rem 1.4rem;">🔄 Control flow & loops</div>
+                <div style="background: white; border-radius: 2rem; padding: 1rem 1.4rem;">🧩 Object oriented JS</div>
+                <div style="background: white; border-radius: 2rem; padding: 1rem 1.4rem;">📅 ECMAScript versions</div>
+                <div style="background: white; border-radius: 2rem; padding: 1rem 1.4rem;">⚡ Asynchronous JS</div>
+                <div style="background: white; border-radius: 2rem; padding: 1rem 1.4rem;">🎯 Events, errors, DOM</div>
+                <div style="background: white; border-radius: 2rem; padding: 1rem 1.4rem;">🚀 Advanced chapters</div>
+                <div style="background: white; border-radius: 2rem; padding: 1rem 1.4rem;">🧰 Miscellaneous</div>
+            </div>
+            <p
+                style="margin-top: 2rem; font-size: 1rem; background: #e9eef3; padding: 1rem 1.8rem; border-radius: 3rem; display: inline-block;">
+                💡 each card opens a dedicated HTML file with full notes, code examples, and syntax highlighting.
+            </p>
+        </div>
+
+        <div class="footer-note">
+            ⚡ built from your personal JavaScript notes · all chapters compiled ·
+            <a href="#">back to top ↑</a>
+        </div>
+    </div>
+</body>
+
+</html>

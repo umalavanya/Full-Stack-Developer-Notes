@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚡ javascript advanced chapters – algorithms · patterns · utilities</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            color: #0f172a;
+            padding: 2rem 1rem;
+            line-height: 1.5;
+        }
+
+        .wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 2.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: #1e293b;
+            color: white;
+            padding: 2rem 2.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border-bottom: 5px solid #f97316;
+        }
+
+        .header h1 {
+            font-weight: 700;
+            font-size: 2.3rem;
+            letter-spacing: -0.02em;
+        }
+
+        .header span {
+            background: #f97316;
+            color: #1e293b;
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
+        }
+
+        .main-panel {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        /* sidebar table of contents */
+        .toc-panel {
+            background: #f8fafc;
+            width: 320px;
+            border-right: 1px solid #cbd5e1;
+            padding: 2rem 1rem;
+        }
+
+        .toc-panel h3 {
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            color: #475569;
+            margin-bottom: 1.8rem;
+            padding-left: 1rem;
+        }
+
+        .toc-list {
+            list-style: none;
+            max-height: 75vh;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+
+        .toc-list li {
+            margin-bottom: 0.2rem;
+        }
+
+        .toc-btn {
+            width: 100%;
+            text-align: left;
+            background: transparent;
+            border: none;
+            font-size: 0.9rem;
+            padding: 0.7rem 1rem;
+            border-radius: 14px;
+            color: #334155;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.1s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .toc-btn:hover {
+            background: #e2e8f0;
+            color: #0f172a;
+        }
+
+        .toc-btn.active {
+            background: white;
+            border-left: 3px solid #f97316;
+            font-weight: 600;
+            color: #0f172a;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.02);
+        }
+
+        /* content area */
+        .content-panel {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            padding: 2.5rem 2.8rem 4rem;
+        }
+
+        .section-card {
+            display: none;
+            animation: fade 0.2s;
+        }
+
+        .section-card.active-card {
+            display: block;
+        }
+
+        @keyframes fade {
+            0% {
+                opacity: 0.2;
+                transform: translateY(6px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            background: linear-gradient(145deg, #1e293b, #334155);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            border-bottom: 3px solid #f97316;
+            padding-bottom: 0.5rem;
+            display: inline-block;
+            margin-bottom: 1.2rem;
+        }
+
+        .tag {
+            background: #f1f5f9;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            color: #334155;
+            display: inline-block;
+            margin: 0.2rem 0 1.8rem;
+        }
+
+        .notes-body {
+            color: #1e293b;
+        }
+
+        .notes-body h2 {
+            font-size: 1.7rem;
+            margin: 2rem 0 1rem;
+            font-weight: 600;
+        }
+
+        .notes-body h3 {
+            font-size: 1.3rem;
+            margin: 1.5rem 0 0.8rem;
+            color: #0f172a;
+        }
+
+        .notes-body p {
+            margin: 1rem 0;
+        }
+
+        .notes-body pre {
+            background: #0b1120;
+            color: #e2e8f0;
+            padding: 1.3rem;
+            border-radius: 18px;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.9rem;
+            border-left: 4px solid #f97316;
+            margin: 1.5rem 0;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .notes-body code:not(pre code) {
+            background: #f1f5f9;
+            padding: 0.2rem 0.6rem;
+            border-radius: 8px;
+            font-family: monospace;
+            color: #b45309;
+            font-size: 0.9rem;
+        }
+
+        .notes-body ul,
+        .notes-body ol {
+            margin: 0.8rem 0 1.2rem 1.8rem;
+        }
+
+        .notes-body li {
+            margin: 0.4rem 0;
+        }
+
+        .notes-body table {
+            border-collapse: collapse;
+            width: 100%;
+            background: #f8fafc;
+            border-radius: 16px;
+            border: 1px solid #cbd5e1;
+            margin: 1.5rem 0;
+        }
+
+        .notes-body th {
+            background: #e2e8f0;
+            font-weight: 600;
+            padding: 0.7rem 1rem;
+        }
+
+        .notes-body td {
+            padding: 0.7rem 1rem;
+            border-top: 1px solid #cbd5e1;
+        }
+
+        .hl {
+            background: #fef9c3;
+            color: #854d0e;
+            font-weight: 600;
+            padding: 0.2rem 0.5rem;
+            border-radius: 6px;
+        }
+
+        .footer-note {
+            margin-top: 3rem;
+            text-align: right;
+            border-top: 1px dashed #cbd5e1;
+            padding-top: 1.5rem;
+            color: #64748b;
+        }
+
+        @media (max-width: 800px) {
+            .main-panel {
+                flex-direction: column;
+            }
+
+            .toc-panel {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #cbd5e1;
+            }
+
+            .toc-list {
+                display: flex;
+                flex-wrap: wrap;
+            }
+
+            .toc-list li {
+                flex: 1 1 auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="header">
+            <h1>⚡ javascript advanced · algorithms · design patterns · utilities</h1>
+            <span>pro topics</span>
+        </div>
+
+        <div class="main-panel">
+            <!-- table of contents sidebar -->
+            <nav class="toc-panel">
+                <h3>📌 advanced chapters</h3>
+                <ul class="toc-list" id="tocList"></ul>
+            </nav>
+
+            <!-- dynamic content injected here -->
+            <main class="content-panel" id="contentArea"></main>
+        </div>
+        <div class="footer-note">
+            <i>⚡ comprehensive advanced reference — based on your notes</i>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            // ------------- All sections from your JavaScript advanced chapters -------------
+            const sections = [
+                {
+                    id: "bubble-sort", title: "Bubble Sort", content: `
+                <h2>Bubble Sort Algorithm</h2>
+                <p>Repeatedly steps through the list, compares adjacent elements and swaps them if they are in the wrong order. The pass through the list is repeated until the list is sorted.</p>
+                <pre>function bubbleSort(arr) {
+  let n = arr.length;
+  let swapped;
+  for (let i = 0; i < n-1; i++) {
+    swapped = false;
+    for (let j = 0; j < n-i-1; j++) {
+      if (arr[j] > arr[j+1]) {
+        [arr[j], arr[j+1]] = [arr[j+1], arr[j]];
+        swapped = true;
+      }
+    }
+    if (!swapped) break;
+  }
+  return arr;
+}
+console.log(bubbleSort([8,3,7,1,5])); // [1,3,5,7,8]</pre>
+                <p>Time: O(n²) average, O(n) best (already sorted). Space: O(1).</p>
+            `},
+                {
+                    id: "circular-reference", title: "Circular Reference Error", content: `
+                <h2>Circular reference & JSON.stringify</h2>
+                <p>When object references itself (directly or indirectly), JSON.stringify throws: <span class="hl">TypeError: Converting circular structure to JSON</span>.</p>
+                <pre>let obj = {};
+obj.self = obj;
+// JSON.stringify(obj); // error</pre>
+                <p>Solutions: remove reference, use custom <code>toJSON()</code>, or libraries like <code>flatted</code> / <code>circular-json</code>.</p>
+                <pre>obj.toJSON = function() {
+  let copy = { ...this };
+  delete copy.self;
+  return copy;
+};</pre>
+            `},
+                {
+                    id: "jest-testing", title: "Jest Testing", content: `
+                <h2>Jest – testing framework</h2>
+                <p>Zero‑config, snapshot testing, mocking, parallel execution.</p>
+                <pre>// sum.js
+function sum(a,b) { return a+b; }
+module.exports = sum;
+
+// sum.test.js
+const sum = require('./sum');
+test('adds 1+2 to equal 3', () => {
+  expect(sum(1,2)).toBe(3);
+});</pre>
+                <p>Async test:</p>
+                <pre>test('async data', async () => {
+  const data = await fetchData();
+  expect(data).toBe('expected');
+});</pre>
+                <p>Mock: <code>jest.fn(x => x+42)</code>.</p>
+            `},
+                {
+                    id: "cors", title: "CORS Handling", content: `
+                <h2>Cross‑Origin Resource Sharing (CORS)</h2>
+                <p>Browser security policy; blocks requests from different origins unless server allows.</p>
+                <p>Express middleware to enable CORS:</p>
+                <pre>server.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+});</pre>
+                <p>For specific origin: <code>'https://example.com'</code>. Also handle preflight (OPTIONS) requests.</p>
+            `},
+                {
+                    id: "data-analysis", title: "Data Analysis with JS", content: `
+                <h2>JavaScript for data analysis</h2>
+                <p>Libraries: <span class="hl">D3.js</span> (visualization), <span class="hl">Chart.js</span>, <span class="hl">Plotly.js</span>, <span class="hl">TensorFlow.js</span> (ML).</p>
+                <p>Basic statistics:</p>
+                <pre>function average(arr) {
+  return arr.reduce((a,b)=>a+b,0)/arr.length;
+}
+function findMax(arr) { return Math.max(...arr); }
+function findMin(arr) { return Math.min(...arr); }</pre>
+                <p>Range, outliers, data cleaning.</p>
+            `},
+                {
+                    id: "dead-zone", title: "Temporal Dead Zone (TDZ)", content: `
+                <h2>Temporal Dead Zone (TDZ)</h2>
+                <p>Period between entering block scope and actual variable declaration where <code>let</code>/<code>const</code> variables cannot be accessed.</p>
+                <pre>{
+  // TDZ starts
+  // console.log(x); // ReferenceError
+  let x = 10; // TDZ ends
+}</pre>
+                <p>Hoisting: <code>var</code> is hoisted with undefined, <code>let</code>/<code>const</code> are hoisted but not initialized → TDZ. Avoid by declaring at top of block.</p>
+            `},
+                {
+                    id: "design-patterns", title: "Design Patterns", content: `
+                <h2>Creational, Structural, Behavioral</h2>
+                <p><span class="hl">Singleton</span> – one instance (use <code>Object.freeze()</code>).</p>
+                <pre>const Settings = { api: '...' };
+Object.freeze(Settings);</pre>
+                <p><span class="hl">Factory</span> – create objects without specifying exact class.</p>
+                <pre>class Car { /*...*/ }
+class Truck { /*...*/ }
+const vehicleFactory = {
+  create: (type) => type === 'car' ? new Car() : new Truck()
+};</pre>
+                <p><span class="hl">Observer</span> – subscribe/notify (like event listeners).</p>
+                <p><span class="hl">Proxy</span> – intercept property access.</p>
+            `},
+                {
+                    id: "engine-runtime", title: "Engine & Runtime", content: `
+                <h2>JavaScript engine & runtime</h2>
+                <p>Engine (e.g. V8) parses, compiles (JIT), executes. Components: call stack, heap.</p>
+                <p>Runtime = engine + Web APIs (DOM, fetch, timers) + callback queue + event loop.</p>
+                <p>Event loop: executes microtasks (Promise callbacks) before macrotasks (setTimeout, I/O).</p>
+                <pre>console.log(1);
+setTimeout(()=>console.log(2),0);
+Promise.resolve().then(()=>console.log(3));
+// 1,3,2</pre>
+            `},
+                {
+                    id: "execution-context", title: "Execution Context", content: `
+                <h2>Execution context & call stack</h2>
+                <p>Global execution context (GEC) created first. Function calls create new execution contexts (FEC).</p>
+                <p>Phases: creation (hoisting, scope chain) → execution.</p>
+                <p>Call stack (LIFO) tracks contexts. Stack overflow with infinite recursion.</p>
+                <pre>function a() { b(); }
+function b() { c(); }
+function c() { console.trace(); }
+a(); // shows call stack</pre>
+            `},
+                {
+                    id: "function-composition", title: "Function Composition", content: `
+                <h2>Function composition</h2>
+                <p>Combine functions: output of one becomes input of next. <code>compose</code> (right‑to‑left) / <code>pipe</code> (left‑to‑right).</p>
+                <pre>const compose = (...fns) => x => fns.reduceRight((v, f) => f(v), x);
+const add5 = x => x+5;
+const double = x => x*2;
+const add5ThenDouble = compose(double, add5);
+console.log(add5ThenDouble(3)); // (3+5)*2 = 16</pre>
+                <p>Benefits: modularity, reusability, readability.</p>
+            `},
+                {
+                    id: "immutability", title: "Immutability", content: `
+                <h2>Immutable data</h2>
+                <p>Primitives (string, number) are immutable. Objects/arrays are mutable. Use spread, <code>Object.assign</code>, or libraries to preserve immutability.</p>
+                <pre>const arr = [1,2,3];
+const newArr = [...arr, 4]; // [1,2,3,4]
+
+const obj = { a:1 };
+const newObj = { ...obj, b:2 };</pre>
+                <p>Immutability prevents side effects, easier debugging, enables features like time‑travel.</p>
+            `},
+                {
+                    id: "kaboom-js", title: "Kaboom.js (game dev)", content: `
+                <h2>Kaboom.js – simple game library</h2>
+                <pre>kaboom({ global: true });
+loadSprite('yeti', 'img.png');
+scene('main', () => {
+  const player = add([sprite('yeti'), pos(80,80), body()]);
+  add([rect(width(),12), pos(0,280), solid()]);
+  keyPress('space', () => player.jump(320));
+  keyDown('left', () => player.move(-120,0));
+  keyDown('right', () => player.move(120,0));
+});
+start('main');</pre>
+                <p>Add sprites, physics, key events, background.</p>
+            `},
+                {
+                    id: "lexical-scope", title: "Lexical Scope", content: `
+                <h2>Lexical (static) scope</h2>
+                <p>Scope determined by where variables/functions are defined, not where invoked. Inner functions have access to outer scope.</p>
+                <pre>function outer() {
+  let x = 10;
+  function inner() {
+    console.log(x); // 10 (lexical scope)
+  }
+  inner();
+}
+outer();</pre>
+                <p>Closures rely on lexical scope.</p>
+            `},
+                {
+                    id: "local-storage", title: "Local Storage", content: `
+                <h2>localStorage – persistent storage</h2>
+                <p>Store key‑value pairs (strings) that survive browser restart. ~5‑10MB limit.</p>
+                <pre>localStorage.setItem('theme', 'dark');
+const theme = localStorage.getItem('theme');
+localStorage.removeItem('theme');
+localStorage.clear();</pre>
+                <p>For objects: <code>JSON.stringify()</code> / <code>JSON.parse()</code>.</p>
+                <p>⚠️ Synchronous, avoid storing sensitive data.</p>
+            `},
+                {
+                    id: "memoization", title: "Memoization", content: `
+                <h2>Memoization – caching expensive calls</h2>
+                <p>Store results of function calls and return cached when same inputs occur.</p>
+                <pre>function memoizedFib(n, memo = [1,1]) {
+  if (memo[n] !== undefined) return memo[n];
+  memo[n] = memoizedFib(n-1, memo) + memoizedFib(n-2, memo);
+  return memo[n];
+}</pre>
+                <p>Uses closure to maintain cache. Dramatically speeds up recursive functions.</p>
+            `},
+                {
+                    id: "minifying", title: "Minifying JS", content: `
+                <h2>Code minification</h2>
+                <p>Remove whitespace, comments, shorten variable names. Reduces file size, speeds up loading.</p>
+                <pre>// original
+function isPalindrome(word) { const len = word.length; for(...) }
+// minified
+function isPalindrome(w){const l=w.length;for(...)}</pre>
+                <p>Tools: UglifyJS, Terser, online minifiers.</p>
+            `},
+                {
+                    id: "mutability-vs-immutability", title: "Mutability vs Immutability", content: `
+                <h2>Mutable vs Immutable</h2>
+                <p>Mutable: can be changed (objects, arrays). Immutable: cannot be changed (primitives, frozen objects).</p>
+                <pre>// mutable
+let arr = [1,2];
+arr.push(3); // arr changed
+
+// immutable (create new)
+let newArr = [...arr, 4];</pre>
+                <p>Benefits of immutability: predictability, no side effects, easier testing.</p>
+            `},
+                {
+                    id: "package-manager", title: "Package Managers (npm/yarn)", content: `
+                <h2>npm & yarn</h2>
+                <p>Manage dependencies. <code>npm install</code> / <code>yarn add</code>. <code>package.json</code> lists project metadata and dependencies.</p>
+                <pre>// install a package
+npm install lodash
+// or yarn add lodash
+
+// package.json
+{
+  "name": "myapp",
+  "scripts": { "test": "jest" },
+  "dependencies": { "lodash": "^4.17.21" }
+}</pre>
+                <p>Lock files (package-lock.json / yarn.lock) ensure reproducible installs.</p>
+            `},
+                {
+                    id: "parse-sexpressions", title: "Parse S‑expressions", content: `
+                <h2>S‑expression parser (Lisp‑like)</h2>
+                <pre>function tokenize(input) {
+  return input.replace(/\(/g,' ( ').replace(/\)/g,' ) ').trim().split(/\\s+/);
+}
+function parse(tokens) {
+  if (tokens.length===0) throw new Error('EOF');
+  let token = tokens.shift();
+  if (token === '(') {
+    let list = [];
+    while (tokens[0] !== ')') list.push(parse(tokens));
+    tokens.shift(); // remove ')'
+    return list;
+  } else if (token === ')') throw new Error('unexpected )');
+  else return isNaN(token) ? token : Number(token);
+}
+let ast = parse(tokenize("(+ 1 (* 2 3))")); // ["+",1,["*",2,3]]</pre>
+            `},
+                {
+                    id: "prototypal-inheritance", title: "Prototypal Inheritance", content: `
+                <h2>Prototypal inheritance</h2>
+                <p>Objects inherit from other objects via prototype chain. <code>__proto__</code> or <code>Object.create()</code>.</p>
+                <pre>let animal = { eats: true };
+let rabbit = { jumps: true };
+rabbit.__proto__ = animal;
+console.log(rabbit.eats); // true (inherited)</pre>
+                <p>Constructor functions: <code>Rabbit.prototype</code> shared. ES6 classes are syntactic sugar over prototypes.</p>
+            `},
+                {
+                    id: "reactivity", title: "Reactivity patterns", content: `
+                <h2>Reactivity in JS</h2>
+                <p>Pub/Sub, Custom Events, Observer, Proxy, <code>Object.defineProperty</code>, <code>MutationObserver</code>, <code>IntersectionObserver</code>.</p>
+                <pre>// Proxy reactivity
+let data = { name: 'John' };
+let reactive = new Proxy(data, {
+  set(obj, prop, val) {
+    console.log(\`\${prop} changed to \${val}\`);
+    obj[prop] = val;
+    return true;
+  }
+});</pre>
+                <p>Used in Vue, MobX, etc.</p>
+            `},
+                {
+                    id: "require", title: "require() function", content: `
+                <h2>require() – CommonJS modules</h2>
+                <p>Node.js uses <code>require()</code> to import modules. Exports with <code>module.exports</code>.</p>
+                <pre>// utils.js
+module.exports = function sum(a,b) { return a+b; };
+
+// main.js
+const sum = require('./utils.js');</pre>
+                <p>ES modules use <code>import/export</code> (with <code>.mjs</code> extension or <code>"type":"module"</code> in package.json).</p>
+            `},
+                {
+                    id: "selection-api", title: "Selection API", content: `
+                <h2>Selection API – user selections</h2>
+                <p>Get selected text: <code>window.getSelection()</code> / <code>document.getSelection()</code>. Properties: anchorNode, focusNode, isCollapsed, rangeCount, type. Methods: addRange, collapse, deleteFromDocument, etc.</p>
+                <pre>document.addEventListener('selectionchange', () => {
+  console.log(document.getSelection().toString());
+});</pre>
+                <p><code>selectstart</code> event fires when selection begins.</p>
+            `},
+                {
+                    id: "session-storage", title: "Session Storage", content: `
+                <h2>sessionStorage – temporary storage</h2>
+                <p>Similar to localStorage but data cleared when tab/window closed. Methods: <code>setItem</code>, <code>getItem</code>, <code>removeItem</code>, <code>clear</code>, <code>key</code>.</p>
+                <pre>sessionStorage.setItem('token', 'abc123');
+const token = sessionStorage.getItem('token');</pre>
+                <p>Useful for per‑session data (e.g., shopping cart).</p>
+            `},
+                {
+                    id: "sql-crud", title: "SQL CRUD operations (on objects)", content: `
+                <h2>CRUD operations on JavaScript objects</h2>
+                <p><span class="hl">Create</span> – <code>const obj = { key: value };</code></p>
+                <p><span class="hl">Read</span> – <code>obj.key</code> or <code>obj['key']</code></p>
+                <p><span class="hl">Update</span> – <code>obj.key = newValue;</code></p>
+                <p><span class="hl">Delete</span> – <code>delete obj.key;</code></p>
+                <p>Destructuring can also create/update copies immutably.</p>
+            `},
+                {
+                    id: "supercharged-sorts", title: "Supercharged sorts (multiple criteria)", content: `
+                <h2>Sorting by multiple properties</h2>
+                <pre>products.sort((a,b) => 
+  a.price - b.price || 
+  b.rating - a.rating ||
+  a.name.localeCompare(b.name)
+);</pre>
+                <p>Boolean OR (||) short‑circuits: if first comparator returns 0 (equal), next is evaluated. Creates reusable comparators:</p>
+                <pre>const byPrice = (a,b) => a.price - b.price;
+const byRatingDesc = (a,b) => b.rating - a.rating;</pre>
+            `},
+                {
+                    id: "tdz", title: "Temporal Dead Zone (TDZ)", content: `
+                <h2>Temporal Dead Zone (TDZ) – recap</h2>
+                <p>Time between entering scope and variable declaration where <code>let</code>/<code>const</code> are inaccessible. Access results in ReferenceError.</p>
+                <pre>{
+  // TDZ for x starts
+  // console.log(x); // error
+  let x = 10; // TDZ ends
+}</pre>
+                <p>Avoid by declaring variables at the top of their block.</p>
+            `},
+                {
+                    id: "throttling", title: "Throttling", content: `
+                <h2>Throttling – limit function execution rate</h2>
+                <p>Ensures function is called at most once per specified interval (e.g., scroll/resize events).</p>
+                <pre>function throttle(fn, delay) {
+  let last = 0;
+  return (...args) => {
+    const now = Date.now();
+    if (now - last >= delay) {
+      last = now;
+      fn(...args);
+    }
+  };
+}
+window.addEventListener('scroll', throttle(() => {
+  console.log('scrolled');
+}, 200));</pre>
+            `},
+                {
+                    id: "trpc", title: "tRPC Library", content: `
+                <h2>tRPC – end‑to‑end typesafe APIs</h2>
+                <p>Build RPC APIs with TypeScript; share types between server and client.</p>
+                <pre>// server
+const appRouter = t.router({
+  getUser: t.procedure.input(z.string()).query(({ input }) => db.user.find(input))
+});
+// client (automatically typed)
+const user = await trpc.getUser.query('123');</pre>
+                <p>No REST/GraphQL boilerplate; full type safety.</p>
+            `},
+                {
+                    id: "truthy-falsy", title: "Truthy & Falsy Values", content: `
+                <h2>Truthy and falsy values</h2>
+                <p><span class="hl">Falsy:</span> <code>false, 0, -0, 0n, '' (empty string), null, undefined, NaN</code>. Everything else is truthy.</p>
+                <pre>if (value) { /* truthy */ } else { /* falsy */ }</pre>
+                <p>Be careful with <code>0</code>, empty array (<code>[]</code>) is truthy. Use strict checks when needed.</p>
+            `},
+                {
+                    id: "upload-files", title: "Upload Files without forms", content: `
+                <h2>File upload using FormData + fetch</h2>
+                <pre>const formData = new FormData();
+formData.append('file', fileInput.files[0]);
+
+fetch('/upload', {
+  method: 'POST',
+  body: formData
+});</pre>
+                <p>Also possible with <code>XMLHttpRequest</code> or plugins like <code>simpleUpload</code>.</p>
+            `},
+                {
+                    id: "date-comparison", title: "Date Comparison", content: `
+                <h2>Comparing dates in JavaScript</h2>
+                <pre>const d1 = new Date('2024-01-01');
+const d2 = new Date('2024-02-01');
+if (d1.getTime() < d2.getTime()) { /* d1 earlier */ }</pre>
+                <p>Using Moment.js: <code>moment().diff(otherDate, 'days')</code>.</p>
+            `},
+                {
+                    id: "recursion", title: "Recursion", content: `
+                <h2>Recursion – function calling itself</h2>
+                <p>Base case stops recursion. Example: factorial</p>
+                <pre>function fact(n) {
+  if (n <= 1) return 1;
+  return n * fact(n-1);
+}
+console.log(fact(5)); // 120</pre>
+                <p>Useful for tree traversal, divide‑and‑conquer algorithms.</p>
+            `},
+                {
+                    id: "data-structures", title: "Data Structures (Map, Set, Stack, Queue, Linked List)", content: `
+                <h2>Built‑in & custom data structures</h2>
+                <p><span class="hl">Map</span> – key‑value (any key type). <span class="hl">Set</span> – unique values.</p>
+                <p><span class="hl">Stack</span> (LIFO) – array with push/pop. <span class="hl">Queue</span> (FIFO) – array push/shift (or better: linked list).</p>
+                <p><span class="hl">Linked List</span> – node with data and next pointer.</p>
+                <pre>class Node { constructor(data) { this.data = data; this.next = null; } }</pre>
+            `},
+                {
+                    id: "base64", title: "Base64 Encoding", content: `
+                <h2>Base64 encoding/decoding</h2>
+                <pre>const encoded = btoa('Hello'); // 'SGVsbG8='
+const decoded = atob(encoded); // 'Hello'</pre>
+                <p>Works with strings; for binary data use <code>Buffer</code> (Node) or <code>FileReader</code> (browser).</p>
+            `},
+                {
+                    id: "callback-fn", title: "Callback Function", content: `
+                <h2>Callback functions</h2>
+                <p>Function passed as argument to another function. Used for async operations (setTimeout, events).</p>
+                <pre>function fetchData(cb) {
+  setTimeout(() => cb('data'), 1000);
+}
+fetchData(console.log);</pre>
+                <p>Callback hell: nested callbacks → use promises/async‑await.</p>
+            `},
+                {
+                    id: "current-date", title: "Current Date/Time", content: `
+                <h2>Get current date & time</h2>
+                <pre>const now = new Date();
+console.log(now.toLocaleString());   // 12/15/2024, 12:30:45 PM
+console.log(now.toLocaleDateString());
+console.log(now.toLocaleTimeString());</pre>
+                <p>Use <code>getFullYear()</code>, <code>getMonth()</code> (0‑based), <code>getDate()</code> for components.</p>
+            `},
+                {
+                    id: "date-validation", title: "Date Validation", content: `
+                <h2>Validate a date</h2>
+                <pre>function isValidDate(d) {
+  return d instanceof Date && !isNaN(d);
+}
+console.log(isValidDate(new Date('invalid'))); // false</pre>
+                <p>Also check format with regex: <code>/^\\d{4}-\\d{2}-\\d{2}$/.test(dateString)</code>.</p>
+            `},
+                {
+                    id: "filter-method", title: "filter() Method", content: `
+                <h2>Array.filter() – create subset</h2>
+                <pre>const nums = [1,2,3,4,5];
+const even = nums.filter(n => n%2 === 0); // [2,4]</pre>
+                <p>Works on typed arrays and Map (convert to array first).</p>
+            `},
+                {
+                    id: "generate-colors", title: "Generate Random Colors", content: `
+                <h2>Random hex / RGB colors</h2>
+                <pre>function randomHex() {
+  return '#' + Math.floor(Math.random()*16777215).toString(16);
+}
+function randomRGB() {
+  return \`rgb(\${Math.random()*255},\${Math.random()*255},\${Math.random()*255})\`;
+}</pre>
+            `},
+                {
+                    id: "http-requests", title: "HTTP Requests (XHR, fetch)", content: `
+                <h2>Making HTTP requests</h2>
+                <p><span class="hl">XMLHttpRequest</span> (old):</p>
+                <pre>const xhr = new XMLHttpRequest();
+xhr.open('GET', url);
+xhr.onload = () => console.log(xhr.response);
+xhr.send();</pre>
+                <p><span class="hl">fetch</span> (modern, promise‑based):</p>
+                <pre>fetch(url).then(r => r.json()).then(console.log);</pre>
+            `},
+                {
+                    id: "insertion-sort", title: "Insertion Sort", content: `
+                <h2>Insertion Sort</h2>
+                <p>Builds sorted array one element at a time by inserting each element into correct position.</p>
+                <pre>function insertionSort(arr) {
+  for (let i=1; i<arr.length; i++) {
+    let current = arr[i];
+    let j = i-1;
+    while (j>=0 && arr[j] > current) {
+      arr[j+1] = arr[j];
+      j--;
+    }
+    arr[j+1] = current;
+  }
+  return arr;
+}</pre>
+            `},
+                {
+                    id: "lazy-loading", title: "Lazy Loading (images)", content: `
+                <h2>Lazy loading with IntersectionObserver</h2>
+                <pre>const images = document.querySelectorAll('[data-src]');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const img = e.target;
+      img.src = img.dataset.src;
+      observer.unobserve(img);
+    }
+  });
+});
+images.forEach(img => observer.observe(img));</pre>
+            `},
+                {
+                    id: "linked-list", title: "Linked List", content: `
+                <h2>Singly linked list implementation</h2>
+                <pre>class Node { constructor(data) { this.data = data; this.next = null; } }
+class LinkedList {
+  constructor() { this.head = null; }
+  insert(data) {
+    const node = new Node(data);
+    if (!this.head) { this.head = node; }
+    else { let current = this.head; while(current.next) current=current.next; current.next = node; }
+  }
+  // search, delete, print...
+}</pre>
+            `},
+                {
+                    id: "nested-loop", title: "Nested Loops", content: `
+                <h2>Nested loops (matrix iteration)</h2>
+                <pre>for (let i=0; i<rows.length; i++) {
+  for (let j=0; j<cols.length; j++) {
+    console.log(rows[i], cols[j]);
+  }
+}</pre>
+                <p>Works with while as well.</p>
+            `},
+                {
+                    id: "null-check", title: "Null Checking", content: `
+                <h2>Check for null</h2>
+                <pre>if (value === null) { /* null */ }
+if (value == null) { /* null or undefined */ } // loose equality</pre>
+                <p>Using <code>typeof value === 'object' && !value</code> also works but not recommended.</p>
+            `},
+                {
+                    id: "current-url", title: "Get Current URL", content: `
+                <h2>window.location, document.URL</h2>
+                <pre>const url = window.location.href; // full URL
+const origin = window.location.origin;
+const path = window.location.pathname;</pre>
+                <p><code>document.URL</code> and <code>document.documentURI</code> also return current URL.</p>
+            `},
+                {
+                    id: "graph-algos", title: "Graph Algorithms (BFS, DFS)", content: `
+                <h2>Graph traversal – BFS & DFS</h2>
+                <pre>// BFS (queue)
+function bfs(graph, start) {
+  let visited = new Set(), queue = [start];
+  while (queue.length) {
+    let node = queue.shift();
+    if (visited.has(node)) continue;
+    visited.add(node);
+    console.log(node);
+    for (let neighbor of graph[node] || []) queue.push(neighbor);
+  }
+}</pre>
+                <pre>// DFS (stack / recursion)
+function dfs(node, visited = new Set()) {
+  if (visited.has(node)) return;
+  visited.add(node);
+  console.log(node);
+  for (let neighbor of graph[node] || []) dfs(neighbor, visited);
+}</pre>
+                <p>Topological sort (DAG) – DFS with stack.</p>
+            `},
+                {
+                    id: "higher-order-fn", title: "Higher‑Order Functions", content: `
+                <h2>Higher‑order functions (map, filter, reduce, forEach)</h2>
+                <p>Functions that take/return functions. Core of functional programming.</p>
+                <pre>const doubled = [1,2,3].map(x => x*2);
+const sum = [1,2,3].reduce((acc,x)=>acc+x, 0);</pre>
+                <p>Improve readability, reusability.</p>
+            `},
+                {
+                    id: "empty-string", title: "Empty String Check", content: `
+                <h2>Check if string is empty</h2>
+                <pre>if (str.length === 0) { /* empty */ }
+if (str.trim() === '') { /* empty or whitespace only */ }</pre>
+            `},
+                {
+                    id: "form-handling", title: "Form Handling (validation, submit)", content: `
+                <h2>Form handling basics</h2>
+                <pre>function validateForm() {
+  const name = document.forms['myForm']['fname'].value;
+  if (name === '') { alert('Name required'); return false; }
+  return true;
+}</pre>
+                <p>Submit with <code>form.submit()</code>, reset with <code>form.reset()</code>.</p>
+            `},
+                {
+                    id: "functional-programming", title: "Functional Programming concepts", content: `
+                <h2>FP principles: pure functions, immutability, higher‑order</h2>
+                <p>Pure function: same input → same output, no side effects.</p>
+                <pre>// pure
+function add(a,b) { return a+b; }</pre>
+                <p>Immutability, function composition, declarative style.</p>
+            `},
+                {
+                    id: "params-vs-args", title: "Parameters vs Arguments", content: `
+                <h2>Parameters (definition) vs Arguments (call)</h2>
+                <pre>function sum(a, b) { // a,b are parameters
+  return a + b;
+}
+sum(2, 3); // 2,3 are arguments</pre>
+            `},
+                {
+                    id: "prototype", title: "Prototype (object/constructor)", content: `
+                <h2>Prototype – shared properties/methods</h2>
+                <pre>function Person(name) { this.name = name; }
+Person.prototype.greet = function() { return 'Hi ' + this.name; };
+let p = new Person('John');
+console.log(p.greet()); // 'Hi John'</pre>
+                <p>Built‑in prototypes: Array.prototype, String.prototype, etc.</p>
+            `},
+                {
+                    id: "reactive-programming", title: "Reactive Programming (RxJS, Vue, React)", content: `
+                <h2>Reactive programming libraries</h2>
+                <p><span class="hl">RxJS</span> – observables, operators. <span class="hl">React</span> – declarative UI, virtual DOM. <span class="hl">Vue</span> – reactive data model (computed, watchers).</p>
+                <pre>// RxJS example
+import { fromEvent } from 'rxjs';
+fromEvent(document, 'click').subscribe(() => console.log('clicked'));</pre>
+            `},
+                {
+                    id: "reduce-method", title: "reduce() Method", content: `
+                <h2>Array.reduce() – accumulate values</h2>
+                <pre>[1,2,3].reduce((acc,cur) => acc+cur, 0); // 6
+[[1,2],[3,4]].reduce((acc,cur)=>acc.concat(cur), []); // flatten</pre>
+                <p>Works on typed arrays and Map (convert to array first).</p>
+            `},
+                {
+                    id: "rest-operator", title: "Rest Operator (...)", content: `
+                <h2>Rest operator – collect remaining items</h2>
+                <pre>function sum(...nums) { return nums.reduce((a,b)=>a+b,0); }
+sum(1,2,3); // 6
+
+const [first, ...rest] = [1,2,3,4]; // first=1, rest=[2,3,4]</pre>
+                <p>Also works with object destructuring.</p>
+            `},
+                {
+                    id: "short-circuiting", title: "Short‑Circuiting (&&, ||)", content: `
+                <h2>Short‑circuit evaluation</h2>
+                <pre>// && returns first falsy or last truthy
+let x = 0 && 'hello'; // 0
+// || returns first truthy or last falsy
+let y = '' || 'default'; // 'default'</pre>
+                <p>Used for conditional assignment, function calls.</p>
+            `},
+                {
+                    id: "undefined-check", title: "Undefined Check", content: `
+                <h2>Check if variable is undefined</h2>
+                <pre>if (typeof x === 'undefined') { /* x is undefined or undeclared */ }
+if (x === undefined) { /* declared but undefined */ }</pre>
+            `},
+                {
+                    id: "unit-testing", title: "Unit Testing (Jest, Mocha, Jasmine)", content: `
+                <h2>Unit testing frameworks</h2>
+                <p><span class="hl">Jest</span> (zero‑config, mocking, snapshots), <span class="hl">Mocha</span> (flexible, async), <span class="hl">Jasmine</span> (BDD), <span class="hl">QUnit</span> (jQuery).</p>
+                <pre>// Mocha example
+const assert = require('assert');
+describe('sum', () => {
+  it('should add two numbers', () => {
+    assert.strictEqual(sum(2,3), 5);
+  });
+});</pre>
+            `},
+                {
+                    id: "validate-urls", title: "Validate URLs", content: `
+                <h2>URL validation (regex, URL constructor)</h2>
+                <pre>function isValidUrl(string) {
+  try { new URL(string); return true; }
+  catch { return false; }
+}
+// or regex: /^https?:\\/\\/.../</pre>
+            `}
+            ];
+
+            const tocContainer = document.getElementById('tocList');
+            const contentArea = document.getElementById('contentArea');
+
+            function render() {
+                let tocHtml = '';
+                let contentHtml = '';
+
+                sections.forEach((sec, idx) => {
+                    const activeClass = idx === 0 ? 'active' : '';
+                    tocHtml += `<li><button class="toc-btn ${activeClass}" data-id="${sec.id}">${sec.title}</button></li>`;
+
+                    contentHtml += `<div id="card-${sec.id}" class="section-card ${idx === 0 ? 'active-card' : ''}">`;
+                    contentHtml += `<div class="section-title">${sec.title}</div>`;
+                    contentHtml += `<div class="tag">advanced · ${sec.id}</div>`;
+                    contentHtml += `<div class="notes-body">${sec.content}</div>`;
+                    contentHtml += `</div>`;
+                });
+
+                tocContainer.innerHTML = tocHtml;
+                contentArea.innerHTML = contentHtml;
+
+                // attach click handlers
+                document.querySelectorAll('.toc-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const id = btn.dataset.id;
+                        document.querySelectorAll('.toc-btn').forEach(b => b.classList.remove('active'));
+                        document.querySelectorAll('.section-card').forEach(c => c.classList.remove('active-card'));
+
+                        btn.classList.add('active');
+                        document.getElementById(`card-${id}`).classList.add('active-card');
+                        contentArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    });
+                });
+            }
+
+            render();
+        })();
+    </script>
+</body>
+
+</html>

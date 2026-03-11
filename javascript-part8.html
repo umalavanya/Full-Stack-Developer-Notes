@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📘 javascript miscellaneous – ajax · async · atomics · more</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f4f4f5;
+            color: #0f172a;
+            padding: 2rem 1rem;
+            line-height: 1.5;
+        }
+
+        .wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 2.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: #1e293b;
+            color: white;
+            padding: 2rem 2.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border-bottom: 5px solid #3b82f6;
+        }
+
+        .header h1 {
+            font-weight: 700;
+            font-size: 2.3rem;
+            letter-spacing: -0.02em;
+        }
+
+        .header span {
+            background: #3b82f6;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
+        }
+
+        .main-panel {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        /* sidebar table of contents */
+        .toc-panel {
+            background: #f8fafc;
+            width: 320px;
+            border-right: 1px solid #cbd5e1;
+            padding: 2rem 1rem;
+        }
+
+        .toc-panel h3 {
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            color: #475569;
+            margin-bottom: 1.8rem;
+            padding-left: 1rem;
+        }
+
+        .toc-list {
+            list-style: none;
+            max-height: 75vh;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+
+        .toc-list li {
+            margin-bottom: 0.2rem;
+        }
+
+        .toc-btn {
+            width: 100%;
+            text-align: left;
+            background: transparent;
+            border: none;
+            font-size: 0.9rem;
+            padding: 0.7rem 1rem;
+            border-radius: 14px;
+            color: #334155;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.1s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .toc-btn:hover {
+            background: #e2e8f0;
+            color: #0f172a;
+        }
+
+        .toc-btn.active {
+            background: white;
+            border-left: 3px solid #3b82f6;
+            font-weight: 600;
+            color: #0f172a;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.02);
+        }
+
+        /* content area */
+        .content-panel {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            padding: 2.5rem 2.8rem 4rem;
+        }
+
+        .section-card {
+            display: none;
+            animation: fade 0.2s;
+        }
+
+        .section-card.active-card {
+            display: block;
+        }
+
+        @keyframes fade {
+            0% {
+                opacity: 0.2;
+                transform: translateY(6px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            background: linear-gradient(145deg, #1e293b, #334155);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            border-bottom: 3px solid #3b82f6;
+            padding-bottom: 0.5rem;
+            display: inline-block;
+            margin-bottom: 1.2rem;
+        }
+
+        .tag {
+            background: #f1f5f9;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            color: #334155;
+            display: inline-block;
+            margin: 0.2rem 0 1.8rem;
+        }
+
+        .notes-body {
+            color: #1e293b;
+        }
+
+        .notes-body h2 {
+            font-size: 1.7rem;
+            margin: 2rem 0 1rem;
+            font-weight: 600;
+        }
+
+        .notes-body h3 {
+            font-size: 1.3rem;
+            margin: 1.5rem 0 0.8rem;
+            color: #0f172a;
+        }
+
+        .notes-body p {
+            margin: 1rem 0;
+        }
+
+        .notes-body pre {
+            background: #0b1120;
+            color: #e2e8f0;
+            padding: 1.3rem;
+            border-radius: 18px;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.9rem;
+            border-left: 4px solid #3b82f6;
+            margin: 1.5rem 0;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .notes-body code:not(pre code) {
+            background: #f1f5f9;
+            padding: 0.2rem 0.6rem;
+            border-radius: 8px;
+            font-family: monospace;
+            color: #2563eb;
+            font-size: 0.9rem;
+        }
+
+        .notes-body ul,
+        .notes-body ol {
+            margin: 0.8rem 0 1.2rem 1.8rem;
+        }
+
+        .notes-body li {
+            margin: 0.4rem 0;
+        }
+
+        .notes-body table {
+            border-collapse: collapse;
+            width: 100%;
+            background: #f8fafc;
+            border-radius: 16px;
+            border: 1px solid #cbd5e1;
+            margin: 1.5rem 0;
+        }
+
+        .notes-body th {
+            background: #e2e8f0;
+            font-weight: 600;
+            padding: 0.7rem 1rem;
+        }
+
+        .notes-body td {
+            padding: 0.7rem 1rem;
+            border-top: 1px solid #cbd5e1;
+        }
+
+        .hl {
+            background: #dbeafe;
+            color: #1e3a8a;
+            font-weight: 600;
+            padding: 0.2rem 0.5rem;
+            border-radius: 6px;
+        }
+
+        .footer-note {
+            margin-top: 3rem;
+            text-align: right;
+            border-top: 1px dashed #cbd5e1;
+            padding-top: 1.5rem;
+            color: #64748b;
+        }
+
+        @media (max-width: 800px) {
+            .main-panel {
+                flex-direction: column;
+            }
+
+            .toc-panel {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #cbd5e1;
+            }
+
+            .toc-list {
+                display: flex;
+                flex-wrap: wrap;
+            }
+
+            .toc-list li {
+                flex: 1 1 auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="header">
+            <h1>⚡ javascript miscellaneous · ajax · async iteration · atomics · more</h1>
+            <span>complete reference</span>
+        </div>
+
+        <div class="main-panel">
+            <!-- table of contents sidebar -->
+            <nav class="toc-panel">
+                <h3>📌 topics</h3>
+                <ul class="toc-list" id="tocList"></ul>
+            </nav>
+
+            <!-- dynamic content injected here -->
+            <main class="content-panel" id="contentArea"></main>
+        </div>
+        <div class="footer-note">
+            <i>⚡ comprehensive misc notes — based on your tutorial</i>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            // ------------- All sections from your JavaScript Miscellaneous notes -------------
+            const sections = [
+                {
+                    id: "ajax", title: "Ajax (XMLHttpRequest, fetch, Axios, jQuery)", content: `
+                <h2>Ajax – asynchronous requests</h2>
+                <p><span class="hl">XMLHttpRequest</span> (older):</p>
+                <pre>const xhr = new XMLHttpRequest();
+xhr.open('GET', 'https://jsonplaceholder.typicode.com/users/2');
+xhr.onreadystatechange = function() {
+  if (xhr.readyState === 4 && xhr.status === 200) {
+    console.log(JSON.parse(xhr.responseText));
+  }
+};
+xhr.send();</pre>
+                <p><span class="hl">Fetch API</span> (modern):</p>
+                <pre>fetch('https://jsonplaceholder.typicode.com/users/3')
+  .then(res => res.json())
+  .then(data => console.log(data));</pre>
+                <p><span class="hl">Axios</span> (library):</p>
+                <pre>axios.get('https://jsonplaceholder.typicode.com/users/5')
+  .then(res => console.log(res.data));</pre>
+                <p><span class="hl">jQuery Ajax</span>:</p>
+                <pre>$.ajax({
+  url: 'https://jsonplaceholder.typicode.com/users/7',
+  method: 'GET',
+  success: data => console.log(data)
+});</pre>
+            `},
+                {
+                    id: "async-iteration", title: "Async Iteration (for await...of)", content: `
+                <h2>Asynchronous iteration</h2>
+                <p>Iterate over async generators / promises using <code>for await...of</code>. Useful for streaming data, paginated APIs.</p>
+                <pre>async function* asyncGenerator() {
+  for (let i = 1; i <= 3; i++) {
+    await new Promise(r => setTimeout(r, 1000));
+    yield i;
+  }
+}
+(async () => {
+  for await (const value of asyncGenerator()) {
+    console.log(value); // 1,2,3 (each after 1 sec)
+  }
+})();</pre>
+                <p>Works with any async iterable (e.g., fetch with streams).</p>
+            `},
+                {
+                    id: "atomics", title: "Atomics (shared memory)", content: `
+                <h2>Atomics – thread‑safe operations on SharedArrayBuffer</h2>
+                <p>Static methods for atomic read‑modify‑write on shared memory. Used with Web Workers.</p>
+                <pre>const buffer = new SharedArrayBuffer(4);
+const arr = new Int32Array(buffer);
+
+Atomics.add(arr, 0, 5);   // arr[0] += 5
+Atomics.sub(arr, 0, 2);   // arr[0] -= 2
+Atomics.load(arr, 0);      // get value
+Atomics.store(arr, 0, 10); // set value
+Atomics.compareExchange(arr, 0, 10, 20); // if ==10 set to20</pre>
+                <p>Methods: <code>add, sub, and, or, xor, load, store, exchange, compareExchange, wait, notify</code>.</p>
+            `},
+                {
+                    id: "rest-parameter", title: "Rest Parameter (...args)", content: `
+                <h2>Rest parameter – collect remaining arguments</h2>
+                <pre>function sum(...numbers) {
+  return numbers.reduce((a,b) => a+b, 0);
+}
+console.log(sum(1,2,3,4)); // 10</pre>
+                <p>Collects all remaining arguments into an array. Must be last parameter.</p>
+                <p>Also used in destructuring:</p>
+                <pre>const [first, second, ...rest] = [1,2,3,4,5];
+const {a, ...others} = {a:1,b:2,c:3};</pre>
+            `},
+                {
+                    id: "page-redirection", title: "Page Redirection", content: `
+                <h2>Redirect user to another page</h2>
+                <pre>window.location = "https://example.com";
+// or
+window.location.href = "https://example.com";
+// with delay
+setTimeout(() => window.location = "/newpage", 3000);</pre>
+                <p>Browser‑based redirect. Can be used after user action or automatically.</p>
+            `},
+                {
+                    id: "dialog-boxes", title: "Dialog Boxes (alert, confirm, prompt)", content: `
+                <h2>alert, confirm, prompt</h2>
+                <pre>alert('Warning message'); // just OK
+
+const ok = confirm('Continue?'); // true/false
+
+const name = prompt('Enter name:', 'default'); // string or null</pre>
+                <p>Blocking dialogs – use sparingly.</p>
+            `},
+                {
+                    id: "page-printing", title: "Page Printing", content: `
+                <h2>window.print() – open print dialog</h2>
+                <pre>&lt;button onclick="window.print()"&gt;Print&lt;/button&gt;</pre>
+                <p>Prints current page. Consider creating printer‑friendly version.</p>
+            `},
+                {
+                    id: "form-validation", title: "Form Validation", content: `
+                <h2>Client‑side form validation</h2>
+                <pre>function validateForm() {
+  const name = document.forms['myForm']['name'].value;
+  if (name === '') {
+    alert('Name required');
+    return false;
+  }
+  // email regex, etc.
+  return true;
+}</pre>
+                <p>Also use HTML5 attributes: <code>required, pattern, min, max</code>.</p>
+            `},
+                {
+                    id: "animation", title: "Animation (setTimeout, setInterval, requestAnimationFrame)", content: `
+                <h2>JavaScript animation basics</h2>
+                <p>Move element step by step:</p>
+                <pre>let pos = 0;
+const elem = document.getElementById('animate');
+function frame() {
+  if (pos >= 300) return;
+  pos++;
+  elem.style.left = pos + 'px';
+  requestAnimationFrame(frame);
+}
+frame();</pre>
+                <p>Better than <code>setInterval</code> for smooth animations. Use <code>requestAnimationFrame</code>.</p>
+            `},
+                {
+                    id: "multimedia", title: "Multimedia (plugins, embed)", content: `
+                <h2>Multimedia & plugins detection</h2>
+                <p><code>navigator.plugins</code> lists installed plugins (Firefox/Chrome).</p>
+                <pre>for (let i = 0; i < navigator.plugins.length; i++) {
+  console.log(navigator.plugins[i].name);
+}</pre>
+                <p>Check MIME support: <code>navigator.mimeTypes["video/quicktime"]</code>. Use <code>&lt;embed&gt;</code> or <code>&lt;video&gt;</code>.</p>
+            `},
+                {
+                    id: "image-map", title: "Image Map", content: `
+                <h2>Client‑side image map with JavaScript</h2>
+                <pre>&lt;img src="map.gif" usemap="#tutorials"&gt;
+&lt;map name="tutorials"&gt;
+  &lt;area shape="rect" coords="22,83,126,125" href="/html" alt="HTML"
+        onMouseOver="showTutorial('html')" onMouseOut="showTutorial('')"&gt;
+&lt;/map&gt;</pre>
+                <p>Use <code>onMouseOver</code>/<code>onMouseOut</code> to change UI dynamically.</p>
+            `},
+                {
+                    id: "browser-compat", title: "Browser Compatibility (navigator)", content: `
+                <h2>Browser detection with navigator</h2>
+                <pre>const ua = navigator.userAgent;
+if (ua.indexOf('Firefox') !== -1) { /* Firefox */ }
+else if (ua.indexOf('Chrome') !== -1) { /* Chrome */ }</pre>
+                <p>Properties: <code>appName, appVersion, platform, language, cookieEnabled</code>. Methods: <code>javaEnabled()</code>.</p>
+            `},
+                {
+                    id: "json", title: "JSON (parse, stringify)", content: `
+                <h2>JSON – JavaScript Object Notation</h2>
+                <p>Data interchange format. Syntax: keys in double quotes.</p>
+                <pre>const jsonStr = '{"name":"John","age":30}';
+const obj = JSON.parse(jsonStr);
+console.log(obj.name); // John
+
+const backToJson = JSON.stringify(obj);
+// '{"name":"John","age":30}'</pre>
+                <p>Arrays, numbers, booleans, null allowed. No functions or undefined.</p>
+            `},
+                {
+                    id: "multiline-strings", title: "Multiline Strings", content: `
+                <h2>Creating multiline strings</h2>
+                <p><span class="hl">Template literals</span> (ES6):</p>
+                <pre>const multi = \`This is
+a multiline
+string\`;</pre>
+                <p>Older methods: concatenation with <code>+</code> and <code>\\n</code>, or backslash escaping:</p>
+                <pre>let str = "Line 1\\n" +
+          "Line 2\\n" +
+          "Line 3";</pre>
+            `},
+                {
+                    id: "date-formats", title: "Date Formats", content: `
+                <h2>Date formatting in JavaScript</h2>
+                <table>
+                <tr><th>Format</th><th>Example</th></tr>
+                <tr><td>ISO (UTC)</td><td>2024-01-29T12:34:56.789Z</td></tr>
+                <tr><td>Locale</td><td>1/29/2024, 12:34:56 PM</td></tr>
+                <tr><td>Custom</td><td>Jan 29, 2024, 12:34:56 PM PST</td></tr>
+                <tr><td>Short date</td><td>01/29/24</td></tr>
+                <tr><td>Long date</td><td>January 29, 2024</td></tr>
+                <tr><td>UTC string</td><td>Tue, 29 Jan 2024 12:34:56 GMT</td></tr>
+                <tr><td>Epoch timestamp</td><td>1643450096789</td></tr>
+                </table>
+                <pre>const d = new Date();
+d.toISOString(); d.toLocaleString(); d.toUTCString();</pre>
+            `},
+                {
+                    id: "get-date-methods", title: "Get Date Methods", content: `
+                <h2>Date getter methods</h2>
+                <pre>const d = new Date();
+d.getFullYear();   // 2024
+d.getMonth();      // 0‑11
+d.getDate();       // 1‑31
+d.getDay();        // 0‑6 (Sunday=0)
+d.getHours(); d.getMinutes(); d.getSeconds(); d.getMilliseconds();
+// UTC versions: getUTCFullYear(), getUTCMonth() ...</pre>
+            `},
+                {
+                    id: "set-date-methods", title: "Set Date Methods", content: `
+                <h2>Date setter methods</h2>
+                <pre>const d = new Date();
+d.setFullYear(2025);
+d.setMonth(5);      // June (0‑based)
+d.setDate(15);
+d.setHours(10);
+d.setMinutes(30);
+d.setSeconds(45);
+d.setMilliseconds(500);
+// UTC setters also exist: setUTCFullYear(), etc.</pre>
+                <p>Automatically adjusts overflow (e.g., 32 Jan → 1 Feb).</p>
+            `},
+                {
+                    id: "modules", title: "Modules (export/import)", content: `
+                <h2>ES6 modules</h2>
+                <pre>// math.js
+export function sum(a,b) { return a+b; }
+export const PI = 3.14;
+
+// main.js
+import { sum, PI } from './math.js';
+console.log(sum(2,3), PI);</pre>
+                <p>Default export:</p>
+                <pre>// util.js
+export default function greet() { return 'hi'; }
+
+// main.js
+import greet from './util.js';</pre>
+                <p>Renaming: <code>import { sum as add }</code>.</p>
+            `},
+                {
+                    id: "dynamic-imports", title: "Dynamic Imports", content: `
+                <h2>import() – dynamic module loading</h2>
+                <pre>const modulePath = './math.js';
+import(modulePath)
+  .then(module => {
+    console.log(module.sum(2,3));
+  });</pre>
+                <p>Use with <code>async/await</code>:</p>
+                <pre>async function load() {
+  const module = await import('./math.js');
+  console.log(module.sum(2,3));
+}</pre>
+                <p>Enables code splitting, lazy loading.</p>
+            `},
+                {
+                    id: "bigint", title: "BigInt – arbitrary‑precision integers", content: `
+                <h2>BigInt</h2>
+                <p>Create with <code>n</code> suffix or <code>BigInt()</code>:</p>
+                <pre>const big = 123456789012345678901234567890n;
+const another = BigInt('9007199254740993');</pre>
+                <p>Operations: <code>+ - * / % **</code> (both operands must be BigInt). Compare with <code>&lt; &gt; ===</code>.</p>
+                <pre>console.log(2n + 3n); // 5n
+console.log(5n / 2n); // 2n (truncates)</pre>
+                <p>Cannot mix with regular numbers without explicit conversion.</p>
+            `},
+                {
+                    id: "blob", title: "Blob (binary large object)", content: `
+                <h2>Blob – handle binary data</h2>
+                <pre>const text = 'Hello world';
+const blob = new Blob([text], { type: 'text/plain' });
+
+// Create object URL
+const url = URL.createObjectURL(blob);
+console.log(url); // blob:http://...
+
+// Read with FileReader
+const reader = new FileReader();
+reader.onload = () => console.log(reader.result);
+reader.readAsText(blob);</pre>
+                <p>Useful for file download, image preview, etc.</p>
+            `},
+                {
+                    id: "unicode", title: "Unicode in JavaScript", content: `
+                <h2>Unicode escape sequences</h2>
+                <p><code>\\uXXXX</code> for BMP, <code>\\u{XXXXX}</code> for astral planes.</p>
+                <pre>console.log('\\u0041'); // 'A'
+console.log('\\u{1F600}'); // 😀 (smiley)</pre>
+                <p>Can use Unicode in variable names (not recommended): <code>let \\u0061 = 5;</code> → <code>a</code>.</p>
+            `},
+                {
+                    id: "shallow-copy", title: "Shallow Copy", content: `
+                <h2>Shallow copy – top‑level only</h2>
+                <p>For objects: spread or <code>Object.assign()</code></p>
+                <pre>const obj = { a: 1, b: { c: 2 } };
+const copy = { ...obj }; // shallow
+copy.b.c = 99; // affects original obj.b.c</pre>
+                <p>For arrays: <code>[...arr]</code> or <code>arr.slice()</code>.</p>
+                <p>Deep copy: <code>JSON.parse(JSON.stringify(obj))</code> (but loses functions/undefined) or use structuredClone / libraries.</p>
+            `},
+                {
+                    id: "call-stack", title: "Call Stack", content: `
+                <h2>Call stack – LIFO execution context</h2>
+                <p>JavaScript engine uses stack to track function calls. Stack overflow with recursion without base case.</p>
+                <pre>function a() { b(); }
+function b() { c(); }
+function c() { console.log('c'); }
+a(); // a → b → c → pop c → pop b → pop a</pre>
+                <p>Global context at bottom. Each function call pushes new frame.</p>
+            `},
+                {
+                    id: "reference-type", title: "Reference Type (vs primitive)", content: `
+                <h2>Primitive vs Reference</h2>
+                <p>Primitives: <code>string, number, boolean, null, undefined, symbol, bigint</code> – copied by value.</p>
+                <p>Reference types: <code>Object, Array, Function</code> – copied by reference.</p>
+                <pre>let a = [1,2,3];
+let b = a;    // b references same array
+b.push(4);    // a also changed [1,2,3,4]</pre>
+                <p>To avoid mutation, create a copy: <code>let b = [...a]</code> (shallow).</p>
+            `},
+                {
+                    id: "indexeddb", title: "IndexedDB (client‑side database)", content: `
+                <h2>IndexedDB – NoSQL storage</h2>
+                <p>Asynchronous API for large structured data. CRUD via object stores.</p>
+                <pre>const request = indexedDB.open('myDb', 1);
+request.onupgradeneeded = (e) => {
+  const db = e.target.result;
+  const store = db.createObjectStore('items', { keyPath: 'id' });
+  store.createIndex('name', 'name', { unique: false });
+};</pre>
+                <p>Transactions: <code>db.transaction('items', 'readwrite').objectStore('items').add(data)</code>.</p>
+                <p>Supports indexes, cursors.</p>
+            `},
+                {
+                    id: "clickjacking", title: "Clickjacking Attack", content: `
+                <h2>Clickjacking – UI redressing</h2>
+                <p>Attacker overlays transparent iframe on legitimate site; user clicks on invisible malicious element.</p>
+                <p>Prevention:</p>
+                <ul><li>Set <code>X-Frame-Options: DENY</code> or <code>SAMEORIGIN</code></li>
+                <li>Use <code>Content-Security-Policy: frame-ancestors 'none'</code></li>
+                <li>Frame‑busting JavaScript (though can be bypassed)</li></ul>
+                <pre>if (top !== self) top.location.href = self.location.href;</pre>
+            `},
+                {
+                    id: "currying", title: "Currying", content: `
+                <h2>Currying – transform f(a,b,c) → f(a)(b)(c)</h2>
+                <p>Using closures:</p>
+                <pre>function mul(a) {
+  return function(b) {
+    return function(c) {
+      return a * b * c;
+    };
+  };
+}
+console.log(mul(2)(3)(4)); // 24</pre>
+                <p>Using <code>bind()</code>:</p>
+                <pre>function multiply(x,y,z) { return x*y*z; }
+const mul2 = multiply.bind(null, 2);
+const mul2_3 = mul2.bind(null, 3);
+console.log(mul2_3(10)); // 60</pre>
+            `},
+                {
+                    id: "graphics", title: "Graphics (WebGL, p5.js, Chart.js, Plotly)", content: `
+                <h2>Graphics libraries</h2>
+                <p><span class="hl">WebGL</span> – low‑level 3D via canvas.</p>
+                <p><span class="hl">p5.js</span> – creative coding, easy 2D/3D.</p>
+                <pre>function setup() { createCanvas(400,400); }
+function draw() { ellipse(mouseX,mouseY,50,50); }</pre>
+                <p><span class="hl">Chart.js</span> – simple charts:</p>
+                <pre>new Chart(ctx, { type: 'bar', data: { labels: ['A','B'], datasets: [{ data: [1,2] }] } });</pre>
+                <p><span class="hl">Plotly</span> – interactive, scientific charts.</p>
+            `},
+                {
+                    id: "canvas", title: "Canvas 2D", content: `
+                <h2>HTML Canvas drawing</h2>
+                <pre>&lt;canvas id="c" width="400" height="300"&gt;&lt;/canvas&gt;
+&lt;script&gt;
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+
+ctx.fillStyle = 'red';
+ctx.fillRect(10,10,150,100); // rectangle
+
+ctx.beginPath();
+ctx.arc(200,150,50,0,2*Math.PI);
+ctx.fillStyle = 'green';
+ctx.fill(); // circle
+
+ctx.moveTo(0,0);
+ctx.lineTo(400,300);
+ctx.stroke(); // line
+&lt;/script&gt;</pre>
+                <p>Methods: <code>fillRect, strokeRect, fillText, arc, moveTo, lineTo, createLinearGradient, etc.</code></p>
+            `},
+                {
+                    id: "debouncing", title: "Debouncing", content: `
+                <h2>Debouncing – limit execution frequency</h2>
+                <p>Ensures function runs only after a pause. Useful for input events, resize.</p>
+                <pre>function debounce(func, wait) {
+  let timeout;
+  return function(...args) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(this, args), wait);
+  };
+}
+window.addEventListener('resize', debounce(() => {
+  console.log('resized (debounced)');
+}, 300));</pre>
+                <p>Delays execution until user stops triggering events.</p>
+            `},
+                {
+                    id: "performance", title: "Performance Tips", content: `
+                <h2>Optimizing JavaScript performance</h2>
+                <ul><li>Minimize DOM access (cache selectors)</li>
+                <li>Use document fragments for batch updates</li>
+                <li>Debounce/resize handlers</li>
+                <li>Async/defer scripts</li>
+                <li>Avoid global variables</li>
+                <li>Use efficient loops (avoid for...in for arrays)</li>
+                <li>Web workers for heavy computation</li>
+                <li>Optimize reflows/repaints</li></ul>
+            `},
+                {
+                    id: "style-guide", title: "Style Guide (coding conventions)", content: `
+                <h2>JavaScript style guide – best practices</h2>
+                <ul><li>Indentation: 2 or 4 spaces (consistent)</li>
+                <li>Use <code>//</code> for comments, not <code>/* */</code></li>
+                <li>Declare variables at top of scope</li>
+                <li>Identifiers: <code>camelCase</code> for variables/functions, <code>PascalCase</code> for classes</li>
+                <li>Spaces around operators, after commas</li>
+                <li>Objects: each property on new line, trailing comma after last</li>
+                <li>Statements end with semicolon</li>
+                <li>Maximum line length ~80‑100</li></ul>
+            `}
+            ];
+
+            const tocContainer = document.getElementById('tocList');
+            const contentArea = document.getElementById('contentArea');
+
+            function render() {
+                let tocHtml = '';
+                let contentHtml = '';
+
+                sections.forEach((sec, idx) => {
+                    const activeClass = idx === 0 ? 'active' : '';
+                    tocHtml += `<li><button class="toc-btn ${activeClass}" data-id="${sec.id}">${sec.title}</button></li>`;
+
+                    contentHtml += `<div id="card-${sec.id}" class="section-card ${idx === 0 ? 'active-card' : ''}">`;
+                    contentHtml += `<div class="section-title">${sec.title}</div>`;
+                    contentHtml += `<div class="tag">misc · ${sec.id}</div>`;
+                    contentHtml += `<div class="notes-body">${sec.content}</div>`;
+                    contentHtml += `</div>`;
+                });
+
+                tocContainer.innerHTML = tocHtml;
+                contentArea.innerHTML = contentHtml;
+
+                // attach click handlers
+                document.querySelectorAll('.toc-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const id = btn.dataset.id;
+                        document.querySelectorAll('.toc-btn').forEach(b => b.classList.remove('active'));
+                        document.querySelectorAll('.section-card').forEach(c => c.classList.remove('active-card'));
+
+                        btn.classList.add('active');
+                        document.getElementById(`card-${id}`).classList.add('active-card');
+                        contentArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    });
+                });
+            }
+
+            render();
+        })();
+    </script>
+</body>
+
+</html>

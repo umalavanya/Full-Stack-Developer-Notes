@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧠 advanced javascript · control flow & objects</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f1f5f9;
+            color: #0f172a;
+            padding: 2rem 1rem;
+            line-height: 1.5;
+        }
+
+        .wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 2rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+        }
+
+        .header {
+            background: #0f172a;
+            color: white;
+            padding: 1.5rem 2.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border-bottom: 4px solid #f97316;
+        }
+
+        .header h1 {
+            font-weight: 700;
+            font-size: 2rem;
+            letter-spacing: -0.02em;
+        }
+
+        .header span {
+            background: #f97316;
+            color: #0f172a;
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+        }
+
+        .main-panel {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        /* table of contents */
+        .toc-panel {
+            background: #f8fafc;
+            width: 300px;
+            border-right: 1px solid #cbd5e1;
+            padding: 2rem 1rem;
+        }
+
+        .toc-panel h3 {
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+            color: #475569;
+            margin-bottom: 1.5rem;
+            padding-left: 1rem;
+        }
+
+        .toc-list {
+            list-style: none;
+            max-height: 75vh;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+
+        .toc-list li {
+            margin-bottom: 0.2rem;
+        }
+
+        .toc-btn {
+            width: 100%;
+            text-align: left;
+            background: transparent;
+            border: none;
+            font-size: 0.9rem;
+            padding: 0.7rem 1rem;
+            border-radius: 12px;
+            color: #334155;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.1s;
+            border-left: 3px solid transparent;
+        }
+
+        .toc-btn:hover {
+            background: #e2e8f0;
+            color: #0f172a;
+        }
+
+        .toc-btn.active-toc {
+            background: white;
+            border-left: 3px solid #f97316;
+            font-weight: 600;
+            color: #0f172a;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+        }
+
+        /* content area */
+        .content-panel {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            padding: 2.5rem 2.5rem 3.5rem;
+        }
+
+        .section-card {
+            display: none;
+            animation: fade 0.2s ease;
+        }
+
+        .section-card.active-card {
+            display: block;
+        }
+
+        @keyframes fade {
+            0% {
+                opacity: 0.3;
+                transform: translateY(6px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            background: linear-gradient(145deg, #0f172a, #334155);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            border-bottom: 3px solid #f97316;
+            padding-bottom: 0.5rem;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .tag {
+            background: #f1f5f9;
+            padding: 0.2rem 0.9rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            color: #334155;
+            display: inline-block;
+            margin: 0.5rem 0 1.8rem;
+        }
+
+        .notes-body {
+            color: #1e293b;
+        }
+
+        .notes-body h2 {
+            font-size: 1.7rem;
+            margin: 2rem 0 1rem;
+            font-weight: 600;
+        }
+
+        .notes-body h3 {
+            font-size: 1.3rem;
+            margin: 1.5rem 0 0.8rem;
+            color: #0f172a;
+        }
+
+        .notes-body p {
+            margin: 1rem 0;
+        }
+
+        .notes-body pre {
+            background: #0b1120;
+            color: #e2e8f0;
+            padding: 1.3rem;
+            border-radius: 18px;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.9rem;
+            border-left: 4px solid #f97316;
+            margin: 1.5rem 0;
+        }
+
+        .notes-body code:not(pre code) {
+            background: #f1f5f9;
+            padding: 0.2rem 0.5rem;
+            border-radius: 8px;
+            font-family: monospace;
+            color: #c2410c;
+            font-size: 0.9rem;
+        }
+
+        .notes-body ul,
+        .notes-body ol {
+            margin: 0.8rem 0 1.2rem 1.8rem;
+        }
+
+        .notes-body li {
+            margin: 0.4rem 0;
+        }
+
+        .notes-body table {
+            border-collapse: collapse;
+            width: 100%;
+            background: #f8fafc;
+            border-radius: 16px;
+            border: 1px solid #cbd5e1;
+            margin: 1.5rem 0;
+        }
+
+        .notes-body th {
+            background: #e2e8f0;
+            font-weight: 600;
+            padding: 0.7rem 1rem;
+        }
+
+        .notes-body td {
+            padding: 0.7rem 1rem;
+            border-top: 1px solid #cbd5e1;
+        }
+
+        .hl {
+            background: #fff3cd;
+            color: #856404;
+            font-weight: 600;
+            padding: 0.2rem 0.4rem;
+            border-radius: 6px;
+        }
+
+        .footer-note {
+            margin-top: 3.5rem;
+            text-align: right;
+            border-top: 1px dashed #cbd5e1;
+            padding-top: 1.5rem;
+            color: #64748b;
+        }
+
+        @media (max-width: 800px) {
+            .main-panel {
+                flex-direction: column;
+            }
+
+            .toc-panel {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #cbd5e1;
+            }
+
+            .toc-list {
+                display: flex;
+                flex-wrap: wrap;
+            }
+
+            .toc-list li {
+                flex: 1 1 auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="header">
+            <h1>⚡ control flow · functions · objects</h1>
+            <span>deep js notes</span>
+        </div>
+
+        <div class="main-panel">
+            <!-- sidebar navigation -->
+            <nav class="toc-panel">
+                <h3>📚 chapters</h3>
+                <ul class="toc-list" id="tocList"></ul>
+            </nav>
+
+            <!-- dynamic content injected here -->
+            <main class="content-panel" id="contentArea"></main>
+        </div>
+        <div class="footer-note">
+            <i>📌 complete javascript — based on your tutorial notes</i>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            // ------------- All sections from your notes (control flow + functions + objects + advanced) -------------
+            const sections = [
+                {
+                    id: "ifelse", title: "if...else statement", content: `
+                <h2>if...else</h2>
+                <p><span class="hl">if</span> statement executes block if condition true. <span class="hl">if...else</span> adds fallback. <span class="hl">if...else if</span> ladder for multiple conditions.</p>
+                <pre>let age = 15;
+if(age > 18) result = "driving";
+else result = "not driving";</pre>
+                <pre>let book = "maths";
+if(book == "history") {...} 
+else if(book == "maths") {...}
+else {...}</pre>
+                <p><b>flowchart:</b> condition → true branch / false branch.</p>
+            `},
+                {
+                    id: "while", title: "while & do...while", content: `
+                <h2>while loops</h2>
+                <p><span class="hl">while</span> (entry‑controlled) repeats while condition true.</p>
+                <pre>let count = 0;
+while(count < 5) { count++; }</pre>
+                <p><span class="hl">do...while</span> (exit‑controlled) runs at least once.</p>
+                <pre>do { /*...*/ } while (count < 5);</pre>
+                <p>while = unknown iterations, for = fixed.</p>
+            `},
+                {
+                    id: "forloop", title: "for loop", content: `
+                <h2>for loop</h2>
+                <p><code>for(initialization; condition; iteration) { }</code></p>
+                <pre>for(let i=0; i<10; i++) { }</pre>
+                <p>All three parts optional. Can omit init/iteration and use <code>break</code> inside.</p>
+                <pre>let i=0;
+for(; ;) { if(i>=5) break; i++; }</pre>
+            `},
+                {
+                    id: "forin", title: "for...in loop", content: `
+                <h2>for...in (enumerate properties)</h2>
+                <p>Iterates over enumerable property keys (object keys, array indexes).</p>
+                <pre>const car = {brand:"OD", model:"Q7"};
+for(let key in car) { console.log(key, car[key]); }</pre>
+                <p>Also works on string and array (index as key).</p>
+            `},
+                {
+                    id: "forof", title: "for...of loop", content: `
+                <h2>for...of (iterate values)</h2>
+                <p>Iterates over values of iterable (array, string, map, set).</p>
+                <pre>const arr = [10,20,30];
+for(let val of arr) { console.log(val); }</pre>
+                <p>for...of vs for...in: values vs keys.</p>
+            `},
+                {
+                    id: "breakcontinue", title: "break / continue / labels", content: `
+                <h2>loop control</h2>
+                <p><span class="hl">break</span> – exits loop. <span class="hl">continue</span> – skips to next iteration.</p>
+                <pre>for(let i=0;i<10;i++) {
+  if(i===5) break;    // stops
+  if(i===3) continue; // skip 3
+}</pre>
+                <p><span class="hl">label</span> to break outer loop:</p>
+                <pre>outer: for(...) {
+  inner: for(...) {
+    break outer;
+  }
+}</pre>
+            `},
+                {
+                    id: "switch", title: "switch case", content: `
+                <h2>switch statement</h2>
+                <p>Compares expression with case labels (strict equality).</p>
+                <pre>switch(grade) {
+  case 'A': ...; break;
+  case 'B': ...; break;
+  default: ...;
+}</pre>
+                <p>If no <code>break</code>, execution falls through.</p>
+            `},
+                {
+                    id: "iterators", title: "user‑defined iterators", content: `
+                <h2>custom iterators</h2>
+                <p>Implement <code>[Symbol.iterator]()</code> returning <code>{next()}</code>.</p>
+                <pre>function customIterator(arr) {
+  let i=0;
+  return { next() {
+    if(i < arr.length) return {value: arr[i++], done: false};
+    return {done: true};
+  }};
+}</pre>
+                <p>Now <code>for...of</code> works with your object.</p>
+            `},
+                {
+                    id: "functions", title: "functions basics", content: `
+                <h2>function declaration & expression</h2>
+                <p><span class="hl">function declaration</span> – hoisted.</p>
+                <pre>function add(a,b) { return a+b; }</pre>
+                <p><span class="hl">function expression</span> – stored in variable.</p>
+                <pre>const add = function(a,b) { return a+b; };</pre>
+                <p>Parameters vs arguments. Return statement optional.</p>
+            `},
+                {
+                    id: "funcparams", title: "parameters & arguments", content: `
+                <h2>parameters, arguments object</h2>
+                <p><code>arguments</code> (array‑like) holds all passed args.</p>
+                <pre>function merge() {
+  let final = "";
+  for(let i=0; i<arguments.length; i++) final += arguments[i];
+  return final;
+}</pre>
+                <p>Pass by value (primitives) vs pass by reference (objects).</p>
+            `},
+                {
+                    id: "defaultparams", title: "default parameters", content: `
+                <h2>default parameters (ES6)</h2>
+                <pre>function sum(a=10, b=20) { return a+b; }</pre>
+                <p>If argument omitted or <code>undefined</code>, default used. Expression can be default value.</p>
+                <pre>function mul(a, b = a*2) { ... }</pre>
+            `},
+                {
+                    id: "funcconstructor", title: "Function() constructor", content: `
+                <h2>new Function()</h2>
+                <p>Create function dynamically (unsafe, but possible).</p>
+                <pre>const sum = new Function("a","b","return a+b");</pre>
+                <p>Last argument = function body. Earlier = parameters.</p>
+            `},
+                {
+                    id: "hoisting", title: "hoisting", content: `
+                <h2>function & variable hoisting</h2>
+                <p>Declarations moved to top. <span class="hl">function declaration</span> hoisted entirely; <span class="hl">var</span> hoisted (undefined), <span class="hl">let/const</span> not hoisted (TDZ).</p>
+                <pre>console.log(x); // undefined (var x)
+var x = 5;
+hello(); // works (function declaration)
+function hello() {}</pre>
+            `},
+                {
+                    id: "iife", title: "self‑invoking (IIFE)", content: `
+                <h2>IIFE (immediately invoked)</h2>
+                <pre>(function() { console.log("run now"); })();</pre>
+                <p>Creates private scope. Can pass parameters.</p>
+                <pre>(function(name) { ... })("John");</pre>
+            `},
+                {
+                    id: "arrow", title: "arrow functions", content: `
+                <h2>arrow functions (ES6)</h2>
+                <p>Shorter syntax, no own <code>this</code>, no <code>arguments</code>, cannot be used as constructor.</p>
+                <pre>const add = (a,b) => a+b;
+const greet = () => "hello";
+const square = x => x*x;</pre>
+                <p>With block body must use <code>return</code>.</p>
+            `},
+                {
+                    id: "invocation", title: "function invocation", content: `
+                <h2>invocation patterns</h2>
+                <p>Normal call: <code>func()</code>, as constructor: <code>new func()</code>, method: <code>obj.method()</code>, IIFE, <code>call</code>/<code>apply</code>/<code>bind</code>.</p>
+            `},
+                {
+                    id: "callapplybind", title: "call, apply, bind", content: `
+                <h2>call, apply, bind</h2>
+                <p><span class="hl">call</span> – invoke with given <code>this</code>, arguments list.</p>
+                <pre>func.call(obj, arg1, arg2);</pre>
+                <p><span class="hl">apply</span> – like call, but arguments array.</p>
+                <pre>func.apply(obj, [arg1, arg2]);</pre>
+                <p><span class="hl">bind</span> – returns new function with bound <code>this</code>.</p>
+                <pre>const bound = func.bind(obj, arg1);</pre>
+            `},
+                {
+                    id: "closures", title: "closures", content: `
+                <h2>closures</h2>
+                <p>Inner function remembers outer scope even after outer returned.</p>
+                <pre>function counter() {
+  let cnt = 0;
+  return function() { cnt++; return cnt; };
+}
+const c = counter(); c(); // 1</pre>
+                <p>Used for data privacy, partial application.</p>
+            `},
+                {
+                    id: "scope", title: "scope (block/function/global)", content: `
+                <h2>variable scope</h2>
+                <p><span class="hl">block</span> – <code>{ }</code> with let/const. <span class="hl">function</span> – var inside function. <span class="hl">global</span> – outside any function.</p>
+                <pre>{
+  let x = 10; // block scope
+  var y = 20; // function or global scope
+}</pre>
+            `},
+                {
+                    id: "globalvars", title: "global variables", content: `
+                <h2>global variables</h2>
+                <p>Declared outside functions, accessible everywhere. In browser <code>var</code> global becomes property of <code>window</code>. Avoid implicit globals (assignment without declaration).</p>
+            `},
+                {
+                    id: "smartparams", title: "smart function parameters", content: `
+                <h2>rest, destructuring, default</h2>
+                <p><span class="hl">rest</span> – <code>...args</code> collects remaining arguments.</p>
+                <pre>function f(a, ...rest) { }</pre>
+                <p><span class="hl">destructuring</span> – function({prop1, prop2}) { }</p>
+                <pre>function print({brand, price}) { ... }</pre>
+                <p>Combine with defaults.</p>
+            `},
+                {
+                    id: "numberobj", title: "Number object", content: `
+                <h2>Number & methods</h2>
+                <p>Properties: <code>Number.MAX_VALUE, MIN_VALUE, NaN, POSITIVE_INFINITY</code> etc.</p>
+                <p>Methods: <code>toFixed(), toPrecision(), toExponential(), Number.isNaN(), isInteger()</code> …</p>
+                <pre>let n = 123.456; n.toFixed(1); // '123.5'</pre>
+            `},
+                {
+                    id: "booleanobj", title: "Boolean object", content: `
+                <h2>Boolean</h2>
+                <p>Primitive boolean vs <code>new Boolean()</code> (object). Falsy values: <code>false, 0, "", null, undefined, NaN</code>. Everything else truthy.</p>
+                <pre>Boolean(0) // false; Boolean("hello") // true</pre>
+            `},
+                {
+                    id: "strings", title: "String methods", content: `
+                <h2>String object</h2>
+                <p>Properties: <code>length</code>. Methods: <code>charAt(), indexOf(), slice(), substring(), split(), toLowerCase(), concat(), includes(), replace()</code> and many more.</p>
+                <pre>"hello".toUpperCase(); // "HELLO"</pre>
+                <p>Strings immutable.</p>
+            `},
+                {
+                    id: "array", title: "Array", content: `
+                <h2>Array – properties & methods</h2>
+                <p><code>length, push(), pop(), shift(), unshift(), indexOf(), includes(), slice(), splice(), concat(), forEach(), map(), filter(), reduce(), find(), sort()</code> etc.</p>
+                <pre>[1,2,3].map(x => x*2); // [2,4,6]</pre>
+            `},
+                {
+                    id: "date", title: "Date object", content: `
+                <h2>Date</h2>
+                <p><code>new Date()</code>, getters: <code>getFullYear(), getMonth(), getDate(), getHours()</code>, setters, formatting: <code>toDateString(), toISOString()</code>.</p>
+                <pre>new Date(2024, 0, 1) // Jan 1 2024</pre>
+            `},
+                {
+                    id: "dataview", title: "DataView", content: `
+                <h2>DataView (binary buffer)</h2>
+                <p>Low‑level interface to read/write multiple number types from an <code>ArrayBuffer</code>.</p>
+                <pre>const buffer = new ArrayBuffer(16);
+const view = new DataView(buffer);
+view.setInt32(0, 42);</pre>
+            `},
+                {
+                    id: "handler", title: "Proxy Handler", content: `
+                <h2>Proxy handlers</h2>
+                <p>Trap methods like <code>get, set, has, deleteProperty</code> to customize object behavior.</p>
+                <pre>const handler = { get(obj, prop) { return prop in obj ? obj[prop] : 42; } };</pre>
+            `},
+                {
+                    id: "math", title: "Math object", content: `
+                <h2>Math</h2>
+                <p>Properties: <code>Math.PI, E, LN2</code>. Methods: <code>abs(), ceil(), floor(), round(), max(), min(), random(), pow(), sqrt()</code> …</p>
+                <pre>Math.random(); // 0..1</pre>
+            `},
+                {
+                    id: "regexp", title: "RegExp", content: `
+                <h2>regular expressions</h2>
+                <p>Patterns with <code>/.../flags</code>. Methods: <code>test(), exec()</code>, string <code>match(), replace(), search()</code>.</p>
+                <pre>/\\d+/.test("123") // true</pre>
+            `},
+                {
+                    id: "symbol", title: "Symbol", content: `
+                <h2>Symbol primitive</h2>
+                <p>Unique, immutable. Used as object keys, avoids name clashes.</p>
+                <pre>const sym = Symbol("desc");
+const obj = { [sym]: "secret" };</pre>
+                <p>Symbols not enumerated in for...in.</p>
+            `},
+                {
+                    id: "set", title: "Set", content: `
+                <h2>Set – unique values</h2>
+                <p>Methods: <code>add(), delete(), has(), clear(), forEach()</code>, property <code>size</code>.</p>
+                <pre>const s = new Set([1,2,2,3]); // 1,2,3</pre>
+                <p>Union/intersection/difference via manual code.</p>
+            `},
+                {
+                    id: "weakset", title: "WeakSet", content: `
+                <h2>WeakSet (objects only)</h2>
+                <p>Holds objects weakly – no memory leak. No iteration, no <code>size</code>. Methods: <code>add(), delete(), has()</code>.</p>
+                <pre>let obj = {}; const ws = new WeakSet([obj]);</pre>
+            `},
+                {
+                    id: "map", title: "Map", content: `
+                <h2>Map (key‑value)</h2>
+                <p>Any type key. Methods: <code>set(), get(), delete(), has(), clear()</code>, <code>size</code>, iterators: <code>keys(), values(), entries()</code>.</p>
+                <pre>const m = new Map(); m.set("a",1); m.get("a");</pre>
+            `},
+                {
+                    id: "weakmap", title: "WeakMap", content: `
+                <h2>WeakMap</h2>
+                <p>Keys must be objects (or non‑registered symbol). No iteration, no <code>size</code>. Methods: <code>set(), get(), delete(), has()</code>.</p>
+                <pre>const wm = new WeakMap(); wm.set(obj, "private");</pre>
+            `},
+                {
+                    id: "iterables", title: "Iterables", content: `
+                <h2>iterables overview</h2>
+                <p>Built‑in iterables: Array, String, Map, Set, arguments, NodeList. Consumed by <code>for...of</code>, spread, destructuring.</p>
+                <pre>const arr = [1,2,3]; [...arr]</pre>
+            `},
+                {
+                    id: "reflect", title: "Reflect", content: `
+                <h2>Reflect API</h2>
+                <p>Static methods mirroring proxy traps: <code>Reflect.get(), set(), has(), deleteProperty(), construct(), apply()</code> …</p>
+                <pre>Reflect.set(obj, "prop", 42);</pre>
+            `},
+                {
+                    id: "typedarray", title: "TypedArray", content: `
+                <h2>TypedArray (Int8, Uint8, Float32...)</h2>
+                <p>Array‑like view of binary buffer. Fixed type and length. Methods: <code>set(), subarray(), slice(), map(), filter()</code> etc.</p>
+                <pre>new Int8Array([1000,200]) // clamped: [-24, -56]</pre>
+            `},
+                {
+                    id: "templateliterals", title: "Template literals", content: `
+                <h2>template literals ` + "``" + `</h2>
+                <p>Back‑tick strings with <code>\${expression}</code>. Multi‑line, no escape needed for quotes.</p>
+                <pre>\`Hello \${name}!\`</pre>
+            `},
+                {
+                    id: "taggedtemplates", title: "Tagged templates", content: `
+                <h2>tagged templates</h2>
+                <p>Call function with template literal: <code>tag\`...\${expr}...\`</code>. First arg: array of string parts, then expressions.</p>
+                <pre>function tag(str, ...vals) { return str[0] + vals[0]; }</pre>
+            `}
+            ];
+
+            const tocContainer = document.getElementById('tocList');
+            const contentArea = document.getElementById('contentArea');
+
+            function render() {
+                let tocHtml = '';
+                let contentHtml = '';
+
+                sections.forEach((sec, idx) => {
+                    const activeClass = idx === 0 ? 'active-toc' : '';
+                    tocHtml += `<li><button class="toc-btn ${activeClass}" data-id="${sec.id}">${sec.title}</button></li>`;
+
+                    contentHtml += `<div id="card-${sec.id}" class="section-card ${idx === 0 ? 'active-card' : ''}">`;
+                    contentHtml += `<div class="section-title">${sec.title}</div>`;
+                    contentHtml += `<div class="tag">topic #${sec.id}</div>`;
+                    contentHtml += `<div class="notes-body">${sec.content}</div>`;
+                    contentHtml += `</div>`;
+                });
+
+                tocContainer.innerHTML = tocHtml;
+                contentArea.innerHTML = contentHtml;
+
+                // attach click handlers
+                document.querySelectorAll('.toc-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const id = btn.dataset.id;
+                        document.querySelectorAll('.toc-btn').forEach(b => b.classList.remove('active-toc'));
+                        document.querySelectorAll('.section-card').forEach(c => c.classList.remove('active-card'));
+
+                        btn.classList.add('active-toc');
+                        document.getElementById(`card-${id}`).classList.add('active-card');
+                        contentArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    });
+                });
+            }
+
+            render();
+        })();
+    </script>
+</body>
+
+</html>

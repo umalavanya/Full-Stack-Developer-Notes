@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📘 javascript events · error handling · dom · keywords</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f3ff;
+            color: #0f172a;
+            padding: 2rem 1rem;
+            line-height: 1.5;
+        }
+
+        .wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 2.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: #2e1065;
+            color: white;
+            padding: 2rem 2.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border-bottom: 5px solid #fbbf24;
+        }
+
+        .header h1 {
+            font-weight: 700;
+            font-size: 2.3rem;
+            letter-spacing: -0.02em;
+        }
+
+        .header span {
+            background: #fbbf24;
+            color: #2e1065;
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
+        }
+
+        .main-panel {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        /* sidebar table of contents */
+        .toc-panel {
+            background: #f8fafc;
+            width: 320px;
+            border-right: 1px solid #cbd5e1;
+            padding: 2rem 1rem;
+        }
+
+        .toc-panel h3 {
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            color: #475569;
+            margin-bottom: 1.8rem;
+            padding-left: 1rem;
+        }
+
+        .toc-list {
+            list-style: none;
+            max-height: 75vh;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+
+        .toc-list li {
+            margin-bottom: 0.2rem;
+        }
+
+        .toc-btn {
+            width: 100%;
+            text-align: left;
+            background: transparent;
+            border: none;
+            font-size: 0.9rem;
+            padding: 0.7rem 1rem;
+            border-radius: 14px;
+            color: #334155;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.1s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .toc-btn:hover {
+            background: #e2e8f0;
+            color: #0f172a;
+        }
+
+        .toc-btn.active {
+            background: white;
+            border-left: 3px solid #fbbf24;
+            font-weight: 600;
+            color: #0f172a;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.02);
+        }
+
+        /* content area */
+        .content-panel {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            padding: 2.5rem 2.8rem 4rem;
+        }
+
+        .section-card {
+            display: none;
+            animation: fade 0.2s;
+        }
+
+        .section-card.active-card {
+            display: block;
+        }
+
+        @keyframes fade {
+            0% {
+                opacity: 0.2;
+                transform: translateY(6px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            background: linear-gradient(145deg, #2e1065, #5b21b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            border-bottom: 3px solid #fbbf24;
+            padding-bottom: 0.5rem;
+            display: inline-block;
+            margin-bottom: 1.2rem;
+        }
+
+        .tag {
+            background: #f1f5f9;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            color: #334155;
+            display: inline-block;
+            margin: 0.2rem 0 1.8rem;
+        }
+
+        .notes-body {
+            color: #1e293b;
+        }
+
+        .notes-body h2 {
+            font-size: 1.7rem;
+            margin: 2rem 0 1rem;
+            font-weight: 600;
+        }
+
+        .notes-body h3 {
+            font-size: 1.3rem;
+            margin: 1.5rem 0 0.8rem;
+            color: #0f172a;
+        }
+
+        .notes-body p {
+            margin: 1rem 0;
+        }
+
+        .notes-body pre {
+            background: #0b1120;
+            color: #e2e8f0;
+            padding: 1.3rem;
+            border-radius: 18px;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.9rem;
+            border-left: 4px solid #fbbf24;
+            margin: 1.5rem 0;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .notes-body code:not(pre code) {
+            background: #f1f5f9;
+            padding: 0.2rem 0.6rem;
+            border-radius: 8px;
+            font-family: monospace;
+            color: #b45309;
+            font-size: 0.9rem;
+        }
+
+        .notes-body ul,
+        .notes-body ol {
+            margin: 0.8rem 0 1.2rem 1.8rem;
+        }
+
+        .notes-body li {
+            margin: 0.4rem 0;
+        }
+
+        .notes-body table {
+            border-collapse: collapse;
+            width: 100%;
+            background: #f8fafc;
+            border-radius: 16px;
+            border: 1px solid #cbd5e1;
+            margin: 1.5rem 0;
+        }
+
+        .notes-body th {
+            background: #e2e8f0;
+            font-weight: 600;
+            padding: 0.7rem 1rem;
+        }
+
+        .notes-body td {
+            padding: 0.7rem 1rem;
+            border-top: 1px solid #cbd5e1;
+        }
+
+        .hl {
+            background: #fef9c3;
+            color: #854d0e;
+            font-weight: 600;
+            padding: 0.2rem 0.5rem;
+            border-radius: 6px;
+        }
+
+        .footer-note {
+            margin-top: 3rem;
+            text-align: right;
+            border-top: 1px dashed #cbd5e1;
+            padding-top: 1.5rem;
+            color: #64748b;
+        }
+
+        @media (max-width: 800px) {
+            .main-panel {
+                flex-direction: column;
+            }
+
+            .toc-panel {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #cbd5e1;
+            }
+
+            .toc-list {
+                display: flex;
+                flex-wrap: wrap;
+            }
+
+            .toc-list li {
+                flex: 1 1 auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="header">
+            <h1>⚡ javascript events · error handling · DOM · keywords</h1>
+            <span>full reference</span>
+        </div>
+
+        <div class="main-panel">
+            <!-- table of contents sidebar -->
+            <nav class="toc-panel">
+                <h3>📌 chapters</h3>
+                <ul class="toc-list" id="tocList"></ul>
+            </nav>
+
+            <!-- dynamic content injected here -->
+            <main class="content-panel" id="contentArea"></main>
+        </div>
+        <div class="footer-note">
+            <i>⚡ complete notes — based on your tutorial</i>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            // ------------- All sections from your JavaScript Events / Error Handling / DOM / Keywords notes -------------
+            const sections = [
+                {
+                    id: "events-intro", title: "Introduction to events", content: `
+                <h2>Events & event handlers</h2>
+                <p>Events are actions (click, load, keypress). Handlers can be HTML attributes (<code>onclick="func()"</code>) or <code>addEventListener</code>. Event object contains details.</p>
+                <pre>&lt;button onclick="handleClick(event)"&gt;Click&lt;/button&gt;
+&lt;script&gt;
+function handleClick(e) { console.log(e.type); }
+&lt;/script&gt;</pre>
+                <p>Event objects: <code>MouseEvent</code>, <code>KeyboardEvent</code>, <code>FocusEvent</code>, etc.</p>
+            `},
+                {
+                    id: "dom-events", title: "DOM events", content: `
+                <h2>DOM events</h2>
+                <p>Events triggered on HTML elements: <code>click</code>, <code>dblclick</code>, <code>load</code>, <code>change</code>, <code>submit</code>, <code>keydown</code>, etc.</p>
+                <pre>element.onclick = function() { ... };
+// or
+element.addEventListener('click', handler);</pre>
+            `},
+                {
+                    id: "addeventlistener", title: "addEventListener()", content: `
+                <h2>addEventListener</h2>
+                <p>Attach event handler without overriding existing ones. Syntax:</p>
+                <pre>element.addEventListener(event, function, options);</pre>
+                <p>Options: <code>capture</code>, <code>once</code>, <code>passive</code>. Remove with <code>removeEventListener</code>.</p>
+                <pre>const btn = document.getElementById('btn');
+btn.addEventListener('click', () => alert('clicked'));</pre>
+            `},
+                {
+                    id: "mouse-events", title: "Mouse events", content: `
+                <h2>Mouse events</h2>
+                <p><code>click</code>, <code>dblclick</code>, <code>mousedown</code>, <code>mouseup</code>, <code>mousemove</code>, <code>mouseover</code>, <code>mouseout</code>, <code>contextmenu</code>, <code>wheel</code>.</p>
+                <pre>div.addEventListener('mousemove', (e) => {
+  console.log(e.clientX, e.clientY);
+});</pre>
+            `},
+                {
+                    id: "keyboard-events", title: "Keyboard events", content: `
+                <h2>Keyboard events</h2>
+                <p><code>keydown</code>, <code>keypress</code> (deprecated), <code>keyup</code>. Properties: <code>key</code>, <code>code</code>, <code>ctrlKey</code>, <code>shiftKey</code>, <code>altKey</code>, <code>metaKey</code>.</p>
+                <pre>document.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') console.log('Enter pressed');
+});</pre>
+            `},
+                {
+                    id: "form-events", title: "Form events", content: `
+                <h2>Form events</h2>
+                <p><code>submit</code>, <code>reset</code>, <code>change</code>, <code>input</code>, <code>focus</code>, <code>blur</code>.</p>
+                <pre>form.addEventListener('submit', (e) => {
+  e.preventDefault(); // stop submission
+  // validate
+});</pre>
+                <p><code>onchange</code> fires after blur if value changed, <code>oninput</code> fires immediately.</p>
+            `},
+                {
+                    id: "window-document-events", title: "Window/document events", content: `
+                <h2>Window & document events</h2>
+                <p><code>load</code>, <code>DOMContentLoaded</code>, <code>resize</code>, <code>scroll</code>, <code>unload</code>, <code>beforeunload</code>.</p>
+                <pre>window.addEventListener('resize', () => {
+  console.log(window.innerWidth);
+});
+document.addEventListener('DOMContentLoaded', () => {
+  // DOM ready, images not yet loaded
+});</pre>
+            `},
+                {
+                    id: "event-delegation", title: "Event delegation", content: `
+                <h2>Event delegation</h2>
+                <p>Attach a single listener to a parent, use <code>event.target</code> to handle children. Useful for dynamic elements.</p>
+                <pre>document.getElementById('list').addEventListener('click', (e) => {
+  if (e.target.tagName === 'LI') {
+    console.log('item clicked:', e.target.textContent);
+  }
+});</pre>
+            `},
+                {
+                    id: "event-bubbling", title: "Event bubbling", content: `
+                <h2>Event bubbling</h2>
+                <p>Event propagates from target element up to ancestors. Default phase: bubbling. Stop with <code>event.stopPropagation()</code>.</p>
+                <pre>parent.addEventListener('click', () => console.log('parent'));
+child.addEventListener('click', () => console.log('child'));
+// clicking child logs "child", then "parent"</pre>
+            `},
+                {
+                    id: "event-capturing", title: "Event capturing", content: `
+                <h2>Event capturing</h2>
+                <p>Opposite direction: from root down to target. Enable by setting third param to <code>true</code> in addEventListener.</p>
+                <pre>div.addEventListener('click', handler, true); // capturing</pre>
+                <p>Useful for intercepting events before they reach target.</p>
+            `},
+                {
+                    id: "custom-events", title: "Custom events", content: `
+                <h2>Custom events</h2>
+                <p>Create with <code>new Event()</code> or <code>new CustomEvent()</code> (adds <code>detail</code> property). Dispatch with <code>element.dispatchEvent(event)</code>.</p>
+                <pre>const event = new CustomEvent('myEvent', { detail: { data: 42 } });
+element.dispatchEvent(event);
+element.addEventListener('myEvent', (e) => console.log(e.detail.data));</pre>
+            `},
+                {
+                    id: "error-handling", title: "Errors & exceptions", content: `
+                <h2>Error handling</h2>
+                <p>Types: syntax, runtime (exceptions), logical. Handle with <code>try...catch...finally</code>, <code>throw</code>, <code>window.onerror</code>.</p>
+                <pre>try {
+  // risky code
+  if (condition) throw new Error('custom');
+} catch (err) {
+  console.log(err.name, err.message);
+} finally {
+  // always runs
+}</pre>
+                <p>Error constructors: <code>Error</code>, <code>SyntaxError</code>, <code>ReferenceError</code>, <code>TypeError</code>, <code>RangeError</code>, <code>URIError</code>.</p>
+            `},
+                {
+                    id: "try-catch", title: "try...catch", content: `
+                <h2>try...catch statement</h2>
+                <p>Catches runtime errors only (not syntax). <code>catch</code> can omit parameter if not needed (ES2019).</p>
+                <pre>try {
+  nonExistentFunc();
+} catch (err) {
+  console.log(err.message);
+} finally {
+  console.log('cleanup');
+}</pre>
+                <p>Rethrow: <code>throw err;</code> inside catch.</p>
+            `},
+                {
+                    id: "debugging", title: "Debugging", content: `
+                <h2>Debugging techniques</h2>
+                <p>Use browser devtools: <code>console.log()</code>, <code>console.error()</code>, <code>console.table()</code>, breakpoints, <code>debugger</code> statement.</p>
+                <pre>let x = 10;
+debugger; // execution pauses
+console.log(x);</pre>
+                <p>Sources panel: set breakpoints, watch variables, step through code.</p>
+            `},
+                {
+                    id: "custom-errors", title: "Custom errors", content: `
+                <h2>Custom errors</h2>
+                <p>Create by extending <code>Error</code> class or using <code>new Error()</code> with custom name.</p>
+                <pre>class ValidationError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = 'ValidationError';
+  }
+}
+throw new ValidationError('invalid input');</pre>
+                <p>Add custom properties (e.g., <code>field</code>).</p>
+            `},
+                {
+                    id: "extending-errors", title: "Extending errors", content: `
+                <h2>Extending Error</h2>
+                <p>Inherit built‑in Error to create custom error types. Use <code>super(message)</code>.</p>
+                <pre>class NotFoundError extends Error {
+  constructor(resource) {
+    super(\`\${resource} not found\`);
+    this.name = 'NotFoundError';
+    this.resource = resource;
+  }
+}</pre>
+            `},
+                {
+                    id: "this-keyword", title: "this keyword", content: `
+                <h2>'this' keyword</h2>
+                <p>Value depends on invocation:</p>
+                <ul><li>Global → <code>window</code> (or <code>undefined</code> in strict mode)</li>
+                <li>Function (non‑strict) → <code>window</code></li>
+                <li>Method → object</li>
+                <li>Constructor → new instance</li>
+                <li>Event handler → element</li>
+                <li>Arrow function → parent scope (lexical)</li></ul>
+                <pre>const obj = { name: 'Obj', show() { console.log(this.name); } };</pre>
+                <p>Explicit binding: <code>call</code>, <code>apply</code>, <code>bind</code>.</p>
+            `},
+                {
+                    id: "void-keyword", title: "void keyword", content: `
+                <h2>void operator</h2>
+                <p>Evaluates expression and returns <code>undefined</code>. Common use: <code>javascript:void(0)</code> in links to prevent navigation.</p>
+                <pre>&lt;a href="javascript:void(0)" onclick="doSomething()"&gt;click&lt;/a&gt;</pre>
+                <p><code>void function() { ... }()</code> ensures IIFE returns undefined.</p>
+            `},
+                {
+                    id: "new-keyword", title: "new keyword", content: `
+                <h2>'new' operator</h2>
+                <p>Creates instance of user‑defined or built‑in object (constructor function or class). Steps: create empty object, set prototype, bind <code>this</code>, execute constructor, return object.</p>
+                <pre>function Person(name) { this.name = name; }
+const p = new Person('John');</pre>
+                <p>Works with classes: <code>new MyClass()</code>.</p>
+            `},
+                {
+                    id: "var-keyword", title: "var keyword", content: `
+                <h2>var (function‑scoped)</h2>
+                <p>Declares variable with function scope (or global). Hoisted (declaration moved to top). Can be redeclared. No block scope.</p>
+                <pre>console.log(x); // undefined (hoisted)
+var x = 5;
+if (true) { var y = 10; }
+console.log(y); // 10</pre>
+                <p>Avoid in modern code; use <code>let</code>/<code>const</code>.</p>
+            `},
+                {
+                    id: "dom-intro", title: "DOM overview", content: `
+                <h2>Document Object Model</h2>
+                <p>Tree representation of HTML. JavaScript can access/modify elements via <code>document</code> object. Root: <code>document</code>. Nodes: element, text, comment, etc.</p>
+                <pre>document.body.style.backgroundColor = 'red';</pre>
+                <p>DOM interfaces: <code>NodeList</code>, <code>HTMLCollection</code>, <code>Element</code>, <code>Attr</code>.</p>
+            `},
+                {
+                    id: "dom-methods-properties", title: "DOM methods & properties", content: `
+                <h2>DOM methods & properties</h2>
+                <p>Methods: <code>getElementById()</code>, <code>querySelector()</code>, <code>addEventListener()</code>, <code>createElement()</code>, <code>appendChild()</code>, <code>removeChild()</code>, <code>setAttribute()</code>, <code>getAttribute()</code>.</p>
+                <p>Properties: <code>innerHTML</code>, <code>textContent</code>, <code>classList</code>, <code>style</code>, <code>id</code>, <code>tagName</code>, <code>children</code>, <code>parentNode</code>, <code>firstChild</code>, <code>lastChild</code>.</p>
+            `},
+                {
+                    id: "dom-document", title: "DOM Document", content: `
+                <h2>Document object</h2>
+                <p>Represents entire page. Properties: <code>title</code>, <code>URL</code>, <code>domain</code>, <code>cookie</code>, <code>forms</code>, <code>images</code>, <code>links</code>, <code>scripts</code>.</p>
+                <p>Methods: <code>write()</code>, <code>writeln()</code>, <code>createElement()</code>, <code>getElementById()</code>, etc.</p>
+                <pre>console.log(document.title);</pre>
+            `},
+                {
+                    id: "dom-elements", title: "DOM Elements", content: `
+                <h2>DOM Elements</h2>
+                <p>Each HTML element is an <code>Element</code> node. Access via <code>document</code> methods. Modify content, attributes, styles.</p>
+                <pre>const div = document.getElementById('myDiv');
+div.textContent = 'New text';
+div.setAttribute('data-custom', 'value');
+div.style.color = 'blue';</pre>
+                <p>Traverse with <code>children</code>, <code>parentElement</code>, <code>nextElementSibling</code>, etc.</p>
+            `},
+                {
+                    id: "dom-attr", title: "DOM Attribute (Attr)", content: `
+                <h2>Attr interface</h2>
+                <p>Represents an attribute of an element. Access via <code>element.attributes</code> (NamedNodeMap). Properties: <code>name</code>, <code>value</code>, <code>specified</code>.</p>
+                <pre>const attr = element.attributes[0];
+console.log(attr.name, attr.value);</pre>
+                <p><code>isId</code> property indicates if attribute is an ID.</p>
+            `},
+                {
+                    id: "dom-forms", title: "DOM Forms", content: `
+                <h2>DOM Forms</h2>
+                <p>Access forms via <code>document.forms</code> (HTMLCollection). Get form elements with <code>form.elements</code>.</p>
+                <pre>const form = document.forms[0];
+const input = form.elements['username'];</pre>
+                <p>Form validation: <code>checkValidity()</code>, <code>setCustomValidity()</code>, <code>reportValidity()</code>. Event <code>submit</code> to intercept.</p>
+            `},
+                {
+                    id: "changing-html", title: "Changing HTML", content: `
+                <h2>Changing HTML</h2>
+                <p>Properties: <code>innerHTML</code> (parse HTML), <code>outerHTML</code>, <code>textContent</code>, <code>innerText</code>. Methods: <code>appendChild()</code>, <code>replaceChild()</code>, <code>removeChild()</code>, <code>insertAdjacentHTML()</code>.</p>
+                <pre>document.getElementById('out').innerHTML = '&lt;b&gt;bold&lt;/b&gt;';</pre>
+                <p>Also <code>document.write()</code> (overwrites page if used after load).</p>
+            `},
+                {
+                    id: "changing-css", title: "Changing CSS", content: `
+                <h2>Changing CSS with JavaScript</h2>
+                <p>Use <code>element.style.property = 'value'</code> (camelCase: <code>backgroundColor</code>). Also <code>classList.add/remove/toggle</code>.</p>
+                <pre>const box = document.getElementById('box');
+box.style.backgroundColor = 'red';
+box.classList.add('highlight');</pre>
+                <p>Get computed style: <code>getComputedStyle(element)</code>.</p>
+            `},
+                {
+                    id: "dom-animation", title: "DOM Animation", content: `
+                <h2>DOM animation</h2>
+                <p>Animate by changing styles over time. Use <code>setInterval</code> or <code>requestAnimationFrame</code>.</p>
+                <pre>let pos = 0;
+const id = setInterval(() => {
+  if (pos >= 300) clearInterval(id);
+  else elem.style.left = (pos++) + 'px';
+}, 5);</pre>
+                <p><code>requestAnimationFrame</code> is more efficient for smooth animations.</p>
+            `},
+                {
+                    id: "dom-navigation", title: "DOM Navigation", content: `
+                <h2>DOM navigation</h2>
+                <p>Move between nodes using: <code>parentNode</code>, <code>childNodes</code>, <code>firstChild</code>, <code>lastChild</code>, <code>nextSibling</code>, <code>previousSibling</code>. For elements: <code>children</code>, <code>firstElementChild</code>, <code>lastElementChild</code>, <code>nextElementSibling</code>, <code>previousElementSibling</code>.</p>
+                <pre>const parent = elem.parentNode;
+const next = elem.nextElementSibling;</pre>
+                <p><code>nodeType</code> (1=element, 3=text, 8=comment), <code>nodeName</code>, <code>nodeValue</code>.</p>
+            `},
+                {
+                    id: "dom-collections", title: "DOM Collections (HTMLCollection)", content: `
+                <h2>HTMLCollection</h2>
+                <p>Array‑like live collection of elements (e.g., <code>getElementsByTagName()</code>, <code>children</code>). Properties: <code>length</code>. Methods: <code>item()</code>, <code>namedItem()</code>.</p>
+                <pre>const divs = document.getElementsByTagName('div');
+for (let i = 0; i &lt; divs.length; i++) {
+  console.log(divs[i].textContent);
+}</pre>
+                <p>Can't use array methods like <code>forEach</code> directly (convert using <code>Array.from()</code>).</p>
+            `},
+                {
+                    id: "dom-nodelist", title: "DOM NodeList", content: `
+                <h2>NodeList</h2>
+                <p>Collection of nodes (elements, text, comments). Returned by <code>querySelectorAll()</code> and <code>childNodes</code>. Can be static (querySelectorAll) or live (childNodes). Methods: <code>forEach()</code>, <code>item()</code>, <code>entries()</code>, <code>keys()</code>, <code>values()</code>. Property <code>length</code>.</p>
+                <pre>document.querySelectorAll('p').forEach(p => p.style.color = 'red');</pre>
+            `},
+                {
+                    id: "dom-domtokenlist", title: "DOM DOMTokenList", content: `
+                <h2>DOMTokenList</h2>
+                <p>Represents space‑separated tokens (e.g., <code>classList</code>, <code>relList</code>). Methods: <code>add()</code>, <code>remove()</code>, <code>toggle()</code>, <code>contains()</code>, <code>replace()</code>, <code>item()</code>, <code>forEach()</code>.</p>
+                <pre>div.classList.add('newClass');
+if (div.classList.contains('active')) { ... }</pre>
+                <p>Properties: <code>length</code>, <code>value</code>.</p>
+            `}
+            ];
+
+            const tocContainer = document.getElementById('tocList');
+            const contentArea = document.getElementById('contentArea');
+
+            function render() {
+                let tocHtml = '';
+                let contentHtml = '';
+
+                sections.forEach((sec, idx) => {
+                    const activeClass = idx === 0 ? 'active' : '';
+                    tocHtml += `<li><button class="toc-btn ${activeClass}" data-id="${sec.id}">${sec.title}</button></li>`;
+
+                    contentHtml += `<div id="card-${sec.id}" class="section-card ${idx === 0 ? 'active-card' : ''}">`;
+                    contentHtml += `<div class="section-title">${sec.title}</div>`;
+                    contentHtml += `<div class="tag">topic · ${sec.id}</div>`;
+                    contentHtml += `<div class="notes-body">${sec.content}</div>`;
+                    contentHtml += `</div>`;
+                });
+
+                tocContainer.innerHTML = tocHtml;
+                contentArea.innerHTML = contentHtml;
+
+                // attach click handlers
+                document.querySelectorAll('.toc-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const id = btn.dataset.id;
+                        document.querySelectorAll('.toc-btn').forEach(b => b.classList.remove('active'));
+                        document.querySelectorAll('.section-card').forEach(c => c.classList.remove('active-card'));
+
+                        btn.classList.add('active');
+                        document.getElementById(`card-${id}`).classList.add('active-card');
+                        contentArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    });
+                });
+            }
+
+            render();
+        })();
+    </script>
+</body>
+
+</html>
