@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeetCode · vibrant Java solutions</title>
+    <!-- Font Awesome 6 (free) for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(145deg, #f9e3e0 0%, #d9e9f2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        /* main interactive card */
+        .dashboard {
+            max-width: 1400px;
+            width: 100%;
+            height: 90vh;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 2.5rem;
+            box-shadow: 0 25px 60px -15px rgba(255, 92, 154, 0.5), 0 10px 30px -10px rgba(79, 108, 235, 0.6);
+            display: flex;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            transition: all 0.2s ease;
+        }
+
+        /* ---------- SIDE PANE (vibrant & playful) ---------- */
+        .side-pane {
+            width: 300px;
+            background: linear-gradient(195deg, #ff6f61 0%, #de5b9f 45%, #9b5eff 100%);
+            backdrop-filter: blur(4px);
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            color: white;
+            border-right: 4px solid #ffd966;
+            box-shadow: inset -3px 0 20px rgba(255, 215, 0, 0.3);
+            transition: width 0.3s ease;
+        }
+
+        .side-pane i {
+            filter: drop-shadow(0 4px 6px #b83b8b);
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.8rem 1.2rem;
+            border-radius: 3rem;
+            border: 2px solid #fff0b5;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .profile:hover {
+            transform: scale(1.02);
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .avatar {
+            width: 48px;
+            height: 48px;
+            background: #ffd966;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: #b8378c;
+            border: 3px solid white;
+        }
+
+        .profile-text h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .profile-text p {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            padding: 0.9rem 1.2rem;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 2rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+            color: white;
+        }
+
+        .nav-item i {
+            width: 28px;
+            font-size: 1.4rem;
+            color: #ffecaa;
+        }
+
+        .nav-item:hover {
+            background: #fef9d7;
+            color: #b03a8f;
+            border-color: #ffb3aa;
+            box-shadow: 0 8px 0 #b45fbb;
+            transform: translateY(-4px);
+        }
+
+        .nav-item.active {
+            background: #fffdcc;
+            color: #a13d81;
+            border: 2px solid #ffaa80;
+            box-shadow: 0 8px 0 #8f4c9b;
+        }
+
+        .nav-item.active i {
+            color: #cb3b3b;
+        }
+
+        .challenge-badge {
+            background: #ffb347;
+            padding: 1.4rem 1rem;
+            border-radius: 1.8rem;
+            text-align: center;
+            background: linear-gradient(45deg, #fdbb4c, #ff8c8c);
+            border: 3px solid white;
+            box-shadow: 0 10px 0 #a743a0;
+        }
+
+        .challenge-badge h3 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            color: #2e1b3a;
+        }
+
+        .challenge-badge p {
+            background: white;
+            color: #c4449b;
+            border-radius: 2rem;
+            padding: 0.5rem;
+            margin-top: 0.5rem;
+            font-weight: bold;
+            font-size: 1.3rem;
+        }
+
+        /* ---------- MAIN CONTENT (problem + solutions) ---------- */
+        .main-panel {
+            flex: 1;
+            padding: 2rem 2.5rem;
+            overflow-y: auto;
+            background: rgba(251, 240, 240, 0.3);
+            backdrop-filter: blur(4px);
+            scroll-behavior: smooth;
+        }
+
+        /* section cards */
+        .problem-card {
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 2rem;
+            padding: 1.8rem 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 15px 30px -10px rgba(255, 99, 146, 0.4);
+            border: 2px solid rgba(255, 212, 132, 0.8);
+            transition: all 0.25s;
+        }
+
+        .problem-card:hover {
+            box-shadow: 0 20px 30px -5px #ff94b6;
+            transform: scale(1.01);
+            background: white;
+        }
+
+        .problem-title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .problem-title h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ee4b5a, #a55eea);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .difficulty {
+            background: #2eb872;
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: white;
+            letter-spacing: 0.5px;
+            border: 2px solid #fbffb1;
+        }
+
+        .difficulty.medium {
+            background: #f3b33d;
+        }
+
+        .difficulty.hard {
+            background: #fd5e5e;
+        }
+
+        .description {
+            font-size: 1.2rem;
+            margin: 1.2rem 0;
+            padding-left: 0.5rem;
+            border-left: 8px solid #ffaa80;
+            background: #fff7e8;
+            padding: 1rem 1.5rem;
+            border-radius: 1.5rem;
+            color: #2b2b4b;
+            font-weight: 500;
+        }
+
+        /* solution box (java) */
+        .solution-box {
+            background: #17212b;
+            border-radius: 1.5rem;
+            margin: 1.5rem 0 0.8rem 0;
+            border: 4px solid #ffb86b;
+            box-shadow: inset 0 0 15px #242e3a, 0 10px 0 #794f8b;
+        }
+
+        .solution-header {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.8rem 1.5rem;
+            background: #f6b26b;
+            border-top-left-radius: 1.2rem;
+            border-top-right-radius: 1.2rem;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #1f2a36;
+            border-bottom: 3px solid white;
+        }
+
+        .solution-header i {
+            font-size: 1.8rem;
+            color: #bc42a6;
+        }
+
+        pre {
+            margin: 0;
+            padding: 1.5rem;
+            color: #f8f8f2;
+            background: transparent;
+            font-family: 'Fira Code', 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        code {
+            font-family: 'Fira Code', monospace;
+        }
+
+        /* interactive accordion for approach */
+        .approach-toggle {
+            background: #e6d5ff;
+            margin-top: 0.5rem;
+            border-radius: 3rem;
+            padding: 0.5rem 1.5rem 0.5rem 1.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 3px solid #ff89b0;
+            font-weight: 600;
+            color: #3f2b4b;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .approach-toggle i {
+            font-size: 1.5rem;
+            background: white;
+            border-radius: 50%;
+            padding: 0.4rem;
+        }
+
+        .approach-toggle:hover {
+            background: #fbb3d9;
+            color: #1b1b2c;
+        }
+
+        .approach-detail {
+            display: none;
+            background: #fff2d4;
+            padding: 1.2rem 1.8rem;
+            border-radius: 2rem;
+            margin-top: 0.8rem;
+            border: 2px dashed #d56bc2;
+            color: #2f2142;
+        }
+
+        .approach-detail.show {
+            display: block;
+        }
+
+        /* additional interactive tags */
+        .tag-list {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+        }
+
+        .tag {
+            background: #bde4ff;
+            padding: 0.3rem 1rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            border: 1px solid magenta;
+            color: #1c0340;
+            transition: 0.1s;
+        }
+
+        .tag:hover {
+            background: gold;
+            transform: scale(1.1);
+        }
+
+        /* responsive */
+        @media (max-width: 900px) {
+            .dashboard {
+                flex-direction: column;
+                height: auto;
+            }
+
+            .side-pane {
+                width: 100%;
+                border-right: none;
+                border-bottom: 4px solid #ffd966;
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 0.8rem;
+            }
+
+            .profile {
+                width: 100%;
+            }
+
+            .nav-links {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+
+            .nav-item {
+                flex: 1 0 auto;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .main-panel {
+                padding: 1.5rem;
+            }
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            color: #424874;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard">
+        <!-- SIDE PANE - vibrant, with interactive icons -->
+        <div class="side-pane">
+            <div class="profile">
+                <div class="avatar"><i class="fas fa-bolt"></i></div>
+                <div class="profile-text">
+                    <h3>LeetCoder.java</h3>
+                    <p><i class="fas fa-fire" style="color:#ff0;"></i> 228 days streak</p>
+                </div>
+            </div>
+            <div class="nav-links">
+                <div class="nav-item active" onclick="switchTab(this)" data-target="all"><i
+                        class="fas fa-layer-group"></i> Problems</div>
+                <div class="nav-item" onclick="switchTab(this)" data-target="java"><i class="fab fa-java"></i> Java
+                    solutions</div>
+                <div class="nav-item" onclick="switchTab(this)" data-target="trending"><i class="fas fa-chart-line"></i>
+                    Trending</div>
+                <div class="nav-item" onclick="switchTab(this)" data-target="bookmark"><i class="fas fa-bookmark"></i>
+                    Bookmarks</div>
+            </div>
+            <div class="challenge-badge">
+                <h3><i class="fas fa-crown"></i> DAILY</h3>
+                <p>#300 Longest Inc Subsequence</p>
+                <small style="color:darkblue;">Java · O(n log n)</small>
+            </div>
+            <div
+                style="margin-top: auto; font-size: 1.1rem; background: #ffb284; padding: 1rem; border-radius: 3rem; border: 2px solid white;">
+                <i class="fas fa-mug-hot"></i> 12 solved today
+            </div>
+        </div>
+
+        <!-- MAIN PANEL: problem + solutions (Java) -->
+        <div class="main-panel" id="mainPanel">
+            <!-- Problem 1: Two Sum -->
+            <div class="problem-card" id="two-sum">
+                <div class="problem-title">
+                    <h2>1. Two Sum</h2>
+                    <span class="difficulty">Easy</span>
+                </div>
+                <div class="description">
+                    <i class="fas fa-quote-left" style="color:#ff6b6b;"></i>
+                    Given an array of integers nums and an integer target, return indices of two numbers that add up to
+                    target.
+                </div>
+                <div class="tag-list">
+                    <span class="tag">#array</span>
+                    <span class="tag">#hash-table</span>
+                    <span class="tag">#meta</span>
+                </div>
+                <!-- Java solution -->
+                <div class="solution-box">
+                    <div class="solution-header"><i class="fab fa-java"></i> O(n) · HashMap solution</div>
+                    <pre><code>public int[] twoSum(int[] nums, int target) {
+    Map&lt;Integer, Integer&gt; map = new HashMap&lt;&gt;();
+    for (int i = 0; i &lt; nums.length; i++) {
+        int complement = target - nums[i];
+        if (map.containsKey(complement)) {
+            return new int[] { map.get(complement), i };
+        }
+        map.put(nums[i], i);
+    }
+    return new int[0]; // no solution
+}</code></pre>
+                </div>
+                <!-- interactive toggle (approach) -->
+                <div class="approach-toggle" onclick="toggleApproach(this)">
+                    <span><i class="fas fa-lightbulb"></i> Approach (click to expand)</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="approach-detail">
+                    ✅ One-pass hash table: store each element's index. For every new element, check if (target -
+                    current) is already in the map. If yes, return both indices.
+                </div>
+            </div>
+
+            <!-- Problem 2: Add Two Numbers (medium) -->
+            <div class="problem-card" id="add-two">
+                <div class="problem-title">
+                    <h2>2. Add Two Numbers</h2>
+                    <span class="difficulty medium">Medium</span>
+                </div>
+                <div class="description">
+                    <i class="fas fa-quote-left" style="color:#ff6b6b;"></i>
+                    You are given two non-empty linked lists representing two non-negative integers. Digits are stored
+                    in reverse order, add them and return the sum as a linked list.
+                </div>
+                <div class="tag-list">
+                    <span class="tag">#linked-list</span>
+                    <span class="tag">#math</span>
+                    <span class="tag">#recursion</span>
+                </div>
+                <div class="solution-box">
+                    <div class="solution-header"><i class="fab fa-java"></i> O(max(n,m)) · Sentinel head</div>
+                    <pre><code>public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+    ListNode dummy = new ListNode(0);
+    ListNode curr = dummy;
+    int carry = 0;
+    while (l1 != null || l2 != null || carry != 0) {
+        int sum = carry;
+        if (l1 != null) { sum += l1.val; l1 = l1.next; }
+        if (l2 != null) { sum += l2.val; l2 = l2.next; }
+        carry = sum / 10;
+        curr.next = new ListNode(sum % 10);
+        curr = curr.next;
+    }
+    return dummy.next;
+}</code></pre>
+                </div>
+                <div class="approach-toggle" onclick="toggleApproach(this)">
+                    <span><i class="fas fa-lightbulb"></i> Approach (click to expand)</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="approach-detail">
+                    🔁 Traverse both lists, add values + carry. Build new list progressively. At the end, if carry
+                    remains, add extra node.
+                </div>
+            </div>
+
+            <!-- Problem 3: Longest Substring Without Repeating Characters (medium) -->
+            <div class="problem-card" id="longest-substring">
+                <div class="problem-title">
+                    <h2>3. Longest Substring</h2>
+                    <span class="difficulty medium">Medium</span>
+                </div>
+                <div class="description">
+                    <i class="fas fa-quote-left" style="color:#ff6b6b;"></i>
+                    Given a string s, find the length of the longest substring without repeating characters.
+                </div>
+                <div class="tag-list">
+                    <span class="tag">#string</span>
+                    <span class="tag">#sliding-window</span>
+                    <span class="tag">#hashset</span>
+                </div>
+                <div class="solution-box">
+                    <div class="solution-header"><i class="fab fa-java"></i> O(n) · sliding window with HashMap</div>
+                    <pre><code>public int lengthOfLongestSubstring(String s) {
+    Map&lt;Character, Integer&gt; map = new HashMap&lt;&gt;();
+    int left = 0, maxLen = 0;
+    for (int right = 0; right &lt; s.length(); right++) {
+        char c = s.charAt(right);
+        if (map.containsKey(c) && map.get(c) >= left) {
+            left = map.get(c) + 1;
+        }
+        map.put(c, right);
+        maxLen = Math.max(maxLen, right - left + 1);
+    }
+    return maxLen;
+}</code></pre>
+                </div>
+                <div class="approach-toggle" onclick="toggleApproach(this)">
+                    <span><i class="fas fa-lightbulb"></i> Approach (click to expand)</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="approach-detail">
+                    🪟 Sliding window with two pointers, store latest index of each char. If a repeat is found within
+                    window, move left boundary.
+                </div>
+            </div>
+
+            <!-- extra interactive note / demo -->
+            <div
+                style="display: flex; gap: 1rem; align-items: center; justify-content: center; background: #dab3ff; border-radius: 3rem; padding: 1rem; border: 3px solid #fe9898; margin: 2rem 0 1rem;">
+                <i class="fas fa-mouse-pointer" style="font-size: 2rem; color:#ba2b75;"></i>
+                <span style="font-weight: bold; font-size: 1.3rem;">⬇️ Click on any approach below a problem to reveal
+                    details! ⬇️</span>
+            </div>
+            <footer>🚀 vibrant LeetCode · all solutions in Java</footer>
+        </div>
+    </div>
+
+    <script>
+        // toggle approach details (interactive)
+        function toggleApproach(element) {
+            const detailDiv = element.nextElementSibling;
+            if (detailDiv && detailDiv.classList.contains('approach-detail')) {
+                detailDiv.classList.toggle('show');
+                // change icon rotation
+                const icon = element.querySelector('i.fa-chevron-down, i.fa-chevron-up');
+                if (icon) {
+                    if (detailDiv.classList.contains('show')) {
+                        icon.classList.remove('fa-chevron-down');
+                        icon.classList.add('fa-chevron-up');
+                    } else {
+                        icon.classList.remove('fa-chevron-up');
+                        icon.classList.add('fa-chevron-down');
+                    }
+                }
+            }
+        }
+
+        // switch active tab (side pane interaction demo)
+        function switchTab(clickedItem) {
+            // remove active from all nav items
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => item.classList.remove('active'));
+            clickedItem.classList.add('active');
+
+            // get target from data attribute (just for show — highlight)
+            const target = clickedItem.getAttribute('data-target');
+            // optional visual feedback (we don't have different pages, but we can change main panel bg or something)
+            const mainPanel = document.getElementById('mainPanel');
+            mainPanel.style.transition = 'background 0.3s';
+            mainPanel.style.background = 'rgba(245, 235, 200, 0.6)';
+            setTimeout(() => {
+                mainPanel.style.background = 'rgba(251, 240, 240, 0.3)';
+            }, 300);
+
+            // subtle message (just to show interactivity)
+            const footer = document.querySelector('footer');
+            if (target === 'java') {
+                footer.innerHTML = '🔥 you selected JAVA — all solutions already in Java!';
+            } else if (target === 'trending') {
+                footer.innerHTML = '📈 trending problems: Two Sum, Add Two Numbers, Longest Substring (showing them now)';
+            } else if (target === 'bookmark') {
+                footer.innerHTML = '🔖 bookmarked problems would appear — interactive demo';
+            } else {
+                footer.innerHTML = '🚀 vibrant LeetCode · all solutions in Java';
+            }
+        }
+
+        // open first approach by default? no, but we can set one as open for demo (optional)
+        window.addEventListener('load', function () {
+            // just for demo: open first approach automatically? but we keep them closed, user sees expandable.
+            // we'll open the Two Sum approach detail on load to show it's possible.
+            const firstApproach = document.querySelector('.approach-detail');
+            if (firstApproach) {
+                // firstApproach.classList.add('show');  // uncomment to pre-open
+                // and fix icon: 
+                // const firstToggle = document.querySelector('.approach-toggle i.fa-chevron-down');
+                // if(firstToggle) firstToggle.classList.replace('fa-chevron-down','fa-chevron-up');
+            }
+        });
+    </script>
+
+    <!-- tiny style for open state -->
+    <style>
+        .approach-detail.show {
+            display: block;
+        }
+
+        .nav-item {
+            cursor: pointer;
+        }
+
+        .problem-card {
+            transition: all 0.2s;
+        }
+
+        i.fa-chevron-down,
+        i.fa-chevron-up {
+            transition: 0.2s;
+        }
+    </style>
+</body>
+
+</html>
