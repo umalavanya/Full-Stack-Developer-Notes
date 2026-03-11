@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS notes · part5 · colors · backgrounds · fonts · text · transforms · animations · RWD</title>
+    <!-- Google Fonts + Font Awesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..700&family=Fira+Code:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f5faff;
+            color: #123456;
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ===== LEFT PANEL — refined dark ===== */
+        .side-pane {
+            width: 290px;
+            background: #0a1a2f;
+            color: #dde9ff;
+            overflow-y: auto;
+            padding: 2rem 1rem 2.5rem 1.3rem;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            box-shadow: 6px 0 25px rgba(0, 0, 0, 0.25);
+            scrollbar-width: thin;
+            scrollbar-color: #3f6185 #0f243e;
+        }
+
+        .side-pane::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .side-pane::-webkit-scrollbar-track {
+            background: #0f243e;
+        }
+
+        .side-pane::-webkit-scrollbar-thumb {
+            background: #3f6185;
+            border-radius: 20px;
+        }
+
+        .pane-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.2rem;
+            border-bottom: 1px solid #26486b;
+        }
+
+        .pane-header i {
+            font-size: 2.2rem;
+            color: #7eb2ff;
+        }
+
+        .pane-header span {
+            font-size: 1.5rem;
+            font-weight: 600;
+            background: linear-gradient(145deg, #ffffff, #b3d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .side-pane h3 {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.6px;
+            color: #9bb7e0;
+            margin: 2rem 0 0.8rem 0;
+            padding-left: 0.8rem;
+            border-left: 3px solid #679eff;
+        }
+
+        .side-pane ul {
+            list-style: none;
+            margin-bottom: 1.4rem;
+        }
+
+        .side-pane li {
+            margin: 0.2rem 0;
+        }
+
+        .side-pane a {
+            display: block;
+            padding: 0.4rem 1rem 0.4rem 1.8rem;
+            color: #c8dcff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            border-radius: 0 30px 30px 0;
+            transition: 0.2s;
+            border-left: 3px solid transparent;
+        }
+
+        .side-pane a:hover {
+            background: #1f3b5c;
+            color: white;
+            border-left-color: #679eff;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            flex: 1;
+            max-width: calc(100% - 290px);
+            background: white;
+            padding: 2.8rem 3.8rem;
+            box-shadow: -1px 0 0 rgba(0, 0, 0, 0.02);
+        }
+
+        h1,
+        h2,
+        h3 {
+            scroll-margin-top: 1.8rem;
+        }
+
+        .main-content h1 {
+            font-size: 2.6rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #0d2d47, #2e67a3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.3rem;
+            border-bottom: 4px solid #e4efff;
+            padding-bottom: 0.3rem;
+        }
+
+        .main-content h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #123c60;
+            margin: 3rem 0 1.2rem 0;
+            border-bottom: 2px solid #deecfd;
+            padding-bottom: 0.4rem;
+        }
+
+        .main-content h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #1f4f7c;
+            margin: 2rem 0 1rem 0;
+        }
+
+        p {
+            margin-bottom: 1.2rem;
+            color: #254968;
+        }
+
+        pre {
+            background: #1d3149;
+            color: #edf4ff;
+            padding: 1.5rem;
+            border-radius: 24px;
+            overflow-x: auto;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            margin: 1.8rem 0;
+            border-left: 6px solid #679eff;
+            box-shadow: 0 12px 28px rgba(0, 30, 60, 0.1);
+        }
+
+        code {
+            background: #eaf1ff;
+            color: #055aa0;
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+        }
+
+        pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+        }
+
+        .props-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fbfdff;
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 30, 70, 0.06);
+            margin: 2rem 0;
+        }
+
+        .props-table th {
+            background: #1e4062;
+            color: white;
+            font-weight: 600;
+            padding: 0.9rem 1.2rem;
+        }
+
+        .props-table td {
+            border: 1px solid #d9e6f5;
+            padding: 0.9rem 1.2rem;
+            color: #1d4169;
+        }
+
+        .demo-row {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            background: #f0f6ff;
+            padding: 2rem;
+            border-radius: 50px;
+            margin: 2rem 0;
+            align-items: center;
+        }
+
+        .color-swatch {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            border: 2px solid white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .bg-example {
+            background: linear-gradient(145deg, #ffe0b0, #ffb0b0);
+            padding: 1rem;
+            border-radius: 40px;
+        }
+
+        .print-prev {
+            display: flex;
+            gap: 2.8rem;
+            margin: 3rem 0 1.5rem;
+            padding: 1.3rem 2rem;
+            border-top: 2px dashed #b8d3fc;
+            border-bottom: 2px dashed #b8d3fc;
+            font-weight: 600;
+            color: #2f5f92;
+            background: #f5fbff;
+            border-radius: 60px;
+            justify-content: center;
+        }
+
+        .advert {
+            background: #e8f1fe;
+            text-align: center;
+            padding: 1rem;
+            border-radius: 60px;
+            color: #3873b0;
+            font-size: 0.95rem;
+            margin: 2rem 0;
+            border: 1px dashed #accaf5;
+        }
+
+        @media (max-width: 1000px) {
+            body {
+                flex-direction: column;
+            }
+
+            .side-pane {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .main-content {
+                max-width: 100%;
+                padding: 2rem;
+            }
+        }
+
+        /* demo animation */
+        @keyframes move {
+            0% {
+                offset-distance: 0%;
+            }
+
+            100% {
+                offset-distance: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- left navigation: all part5 topics (colors, backgrounds, fonts, text, 2D/3D, transitions, animations, columns, box-sizing, tooltips, buttons, pagination, variables, media queries, RWD, mask, shape, specificity, custom props, etc) -->
+    <nav class="side-pane">
+        <div class="pane-header">
+            <i class="fa-brands fa-css3-alt"></i>
+            <span>css·part5</span>
+        </div>
+        <h3>colors & backgrounds</h3>
+        <ul>
+            <li><a href="#colors">CSS Colors (keyword, hex, rgb, hsl, etc)</a></li>
+            <li><a href="#backgrounds">CSS Backgrounds</a></li>
+        </ul>
+        <h3>fonts & text</h3>
+        <ul>
+            <li><a href="#fonts">CSS Fonts</a></li>
+            <li><a href="#styling-text">Styling Text</a></li>
+        </ul>
+        <h3>transforms & transitions</h3>
+        <ul>
+            <li><a href="#2d-transforms">2D Transforms</a></li>
+            <li><a href="#3d-transforms">3D Transforms</a></li>
+            <li><a href="#transition">transition</a></li>
+            <li><a href="#animations">Animations</a></li>
+        </ul>
+        <h3>layout & advanced</h3>
+        <ul>
+            <li><a href="#multi-column">Multiple Columns</a></li>
+            <li><a href="#box-sizing">Box Sizing</a></li>
+            <li><a href="#tooltips">Tooltips</a></li>
+            <li><a href="#buttons">CSS Buttons</a></li>
+            <li><a href="#pagination">Pagination</a></li>
+            <li><a href="#variables">CSS Variables</a></li>
+            <li><a href="#media-queries">Media Queries</a></li>
+            <li><a href="#value-functions">Value Functions</a></li>
+            <li><a href="#math-functions">Math Functions</a></li>
+        </ul>
+        <h3>masks & shapes</h3>
+        <ul>
+            <li><a href="#mask">mask</a></li>
+            <li><a href="#shape-outside">shape-outside</a></li>
+            <li><a href="#styling-images">Styling Images</a></li>
+        </ul>
+        <h3>specificity & custom</h3>
+        <ul>
+            <li><a href="#specificity">Specificity</a></li>
+            <li><a href="#custom-properties">Custom Properties</a></li>
+        </ul>
+        <h3>responsive design</h3>
+        <ul>
+            <li><a href="#rwd-intro">RWD Introduction</a></li>
+            <li><a href="#viewport">Viewport</a></li>
+            <li><a href="#grid-view">Grid view</a></li>
+            <li><a href="#rwd-media-query">RWD Media Query</a></li>
+            <li><a href="#rwd-images">RWD Images</a></li>
+            <li><a href="#rwd-videos">RWD Videos</a></li>
+            <li><a href="#frameworks">RWD Frameworks</a></li>
+        </ul>
+        <h3>extras</h3>
+        <ul>
+            <li><a href="#print-page">Print / Previous / Next</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+
+        <!-- ===== COLORS ===== -->
+        <h1 id="colors">CSS Colors</h1>
+        <p><span class="print-prev" style="display:inline-flex; padding:0.3rem 2rem;">◀ Previous Quiz Next ▶</span></p>
+        <p>Color formats: keyword, hex, rgb, rgba, hsl, hsla, currentcolor, system.</p>
+        <div class="props-table">
+            <table>
+                <tr>
+                    <th>Format</th>
+                    <th>Example</th>
+                </tr>
+                <tr>
+                    <td>Keyword</td>
+                    <td><code>red, blue, aquamarine</code></td>
+                </tr>
+                <tr>
+                    <td>Hex</td>
+                    <td><code>#FF0000, #0F0</code></td>
+                </tr>
+                <tr>
+                    <td>RGB / RGBA</td>
+                    <td><code>rgb(255,0,0), rgba(0,0,255,0.5)</code></td>
+                </tr>
+                <tr>
+                    <td>HSL / HSLA</td>
+                    <td><code>hsl(120,100%,50%), hsla(240,100%,50%,0.3)</code></td>
+                </tr>
+                <tr>
+                    <td>currentcolor</td>
+                    <td><code>border: 5px solid currentcolor;</code></td>
+                </tr>
+            </table>
+        </div>
+        <div class="demo-row">
+            <div class="color-swatch" style="background:aqua;"></div>
+            <div class="color-swatch" style="background:#00ff00;"></div>
+            <div class="color-swatch" style="background:rgb(255,200,100);"></div>
+            <div class="color-swatch" style="background:hsl(200,80%,60%);"></div>
+        </div>
+
+        <!-- BACKGROUNDS -->
+        <h2 id="backgrounds">CSS Backgrounds</h2>
+        <div class="bg-example"
+            style="background:lightgray url('data:image/svg+xml,%3Csvg width=\'40\' height=\'40\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Ccircle cx=\'20\' cy=\'20\' r=\'8\' fill=\'%23aaccff\'/%3E%3C/svg%3E') repeat; background-size:30px;">
+            background shorthand, color, image, position, size, repeat, origin, clip, attachment.</div>
+
+        <!-- FONTS -->
+        <h2 id="fonts">CSS Fonts</h2>
+        <p style="font-family:'Courier New', monospace; font-size:1.3rem; font-weight:600;">font-family, size, weight,
+            style, shorthand.</p>
+
+        <!-- STYLING TEXT -->
+        <h2 id="styling-text">Styling Text</h2>
+        <p style="text-decoration:underline wavy red; text-transform:uppercase;">text-decoration, transform, shadow,
+            align, indent, spacing.</p>
+
+        <!-- 2D TRANSFORMS -->
+        <h2 id="2d-transforms">2D Transforms</h2>
+        <div style="display:flex; gap:2rem;">
+            <div style="width:80px; height:80px; background:#8ab3ff; transform:translate(20px,10px);">translate</div>
+            <div style="width:80px; height:80px; background:#8ab3ff; transform:rotate(15deg);">rotate</div>
+            <div style="width:80px; height:80px; background:#8ab3ff; transform:scale(1.2);">scale</div>
+            <div style="width:80px; height:80px; background:#8ab3ff; transform:skewX(10deg);">skew</div>
+        </div>
+
+        <!-- 3D TRANSFORMS -->
+        <h2 id="3d-transforms">3D Transforms</h2>
+        <div style="perspective:400px; width:150px;">
+            <div style="width:100px; height:100px; background:#b3a0ff; transform:rotate3d(1,1,0,45deg);">rotate3d</div>
+        </div>
+
+        <!-- TRANSITION -->
+        <h2 id="transition">transition</h2>
+        <div style="width:150px; background:#9ac5ff; transition:all 0.4s; padding:0.5rem;"
+            onmouseover="this.style.background='#ffb57c';" onmouseout="this.style.background='#9ac5ff';">hover me →
+            background transition</div>
+
+        <!-- ANIMATIONS -->
+        <h2 id="animations">Animations</h2>
+        <style>
+            @keyframes slide {
+                0% {
+                    transform: translateX(0);
+                }
+
+                100% {
+                    transform: translateX(80px);
+                }
+            }
+        </style>
+        <div
+            style="width:60px; height:60px; background:#ffb381; border-radius:50%; animation:slide 2s infinite alternate;">
+        </div>
+
+        <!-- MULTI-COLUMN -->
+        <h2 id="multi-column">Multiple Column Layout</h2>
+        <div style="column-count:3; column-gap:2rem; background:#ecf3fe; padding:1rem;">Lorem ipsum dolor sit amet,
+            consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+            minim veniam, quis nostrud exercitation.</div>
+
+        <!-- BOX SIZING -->
+        <h2 id="box-sizing">Box Sizing</h2>
+        <div style="width:200px; padding:20px; border:10px solid #b0caf5; box-sizing:border-box; background:#dae8ff;">
+            border-box (width includes padding+border)</div>
+
+        <!-- TOOLTIPS -->
+        <h2 id="tooltips">Tooltips</h2>
+        <div style="position:relative; display:inline-block; cursor:help; border-bottom:1px dotted;">Hover me <span
+                style="visibility:hidden; position:absolute; bottom:100%; left:0; background:#333; color:white; padding:4px; border-radius:6px; white-space:nowrap;"
+                class="tooltip-content">tooltip text</span></div>
+        <style>
+            .tooltip-content {
+                visibility: hidden;
+            }
+
+            div:hover .tooltip-content {
+                visibility: visible;
+            }
+        </style>
+
+        <!-- BUTTONS -->
+        <h2 id="buttons">CSS Buttons</h2>
+        <button
+            style="background:#5a8fcc; border:none; padding:0.5rem 1.5rem; border-radius:40px; color:white; cursor:pointer;">button</button>
+
+        <!-- PAGINATION -->
+        <h2 id="pagination">Pagination</h2>
+        <div style="display:flex; gap:0.3rem;"><a href="#"
+                style="padding:0.3rem 0.8rem; border:1px solid #abc; border-radius:6px;">1</a><a href="#"
+                style="padding:0.3rem 0.8rem;">2</a><a href="#">3</a></div>
+
+        <!-- VARIABLES -->
+        <h2 id="variables">CSS Variables</h2>
+        <style>
+            :root {
+                --main-color: #3f7eb3;
+            }
+
+            .var-demo {
+                background: var(--main-color);
+                color: white;
+                padding: 0.5rem;
+            }
+        </style>
+        <div class="var-demo">--main-color used</div>
+
+        <!-- MEDIA QUERIES -->
+        <h2 id="media-queries">Media Queries</h2>
+        <p>@media (max-width:600px) { ... }</p>
+
+        <!-- VALUE FUNCTIONS -->
+        <h2 id="value-functions">Value Functions</h2>
+        <p>calc(), min(), max(), clamp(), transform functions, filter functions, color functions, etc.</p>
+
+        <!-- MATH FUNCTIONS -->
+        <h2 id="math-functions">Math Functions</h2>
+        <div style="width:clamp(200px, 50%, 400px); background:#d5e6ff;">width: clamp(200px, 50%, 400px)</div>
+
+        <!-- MASK -->
+        <h2 id="mask">mask property</h2>
+        <div
+            style="width:150px; height:80px; background: linear-gradient(90deg, #9ab, #cef); mask: radial-gradient(circle at 30% 50%, black 40%, transparent 70%);">
+        </div>
+
+        <!-- SHAPE-OUTSIDE -->
+        <h2 id="shape-outside">shape-outside</h2>
+        <div
+            style="float:left; width:100px; height:100px; background:#9cb9f0; shape-outside:circle(50%); margin-right:1rem;">
+        </div>
+        <p>text wraps around circle shape.</p>
+
+        <!-- STYLING IMAGES -->
+        <h2 id="styling-images">Styling Images</h2>
+        <img src="data:image/svg+xml,%3Csvg width='80' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='80' height='60' fill='%23aaccdd'/%3E%3C/svg%3E"
+            style="border-radius:20px; box-shadow:0 8px 12px rgba(0,0,0,0.2); filter:grayscale(0.3);">
+
+        <!-- SPECIFICITY -->
+        <h2 id="specificity">Specificity</h2>
+        <p>!important > inline > id > class > element</p>
+
+        <!-- CUSTOM PROPERTIES -->
+        <h2 id="custom-properties">Custom Properties</h2>
+        <p>same as CSS variables (--custom: value;)</p>
+
+        <!-- RWD INTRO -->
+        <h2 id="rwd-intro">RWD Introduction</h2>
+        <p>Responsive Web Design: flexible grids, media queries, responsive images/videos.</p>
+
+        <!-- VIEWPORT -->
+        <h2 id="viewport">Viewport</h2>
+        <p>&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;</p>
+
+        <!-- GRID VIEW -->
+        <h2 id="grid-view">Grid view (12‑column)</h2>
+        <div style="display:grid; grid-template-columns:repeat(12,1fr); gap:2px; background:#dae9fc;">
+            <div style="grid-column:span 3; background:#b1cff5;">3</div>
+            <div style="grid-column:span 6;">6</div>
+            <div style="grid-column:span 3;">3</div>
+        </div>
+
+        <!-- RWD MEDIA QUERY -->
+        <h2 id="rwd-media-query">RWD Media Query</h2>
+        <p>@media (orientation: landscape) { … }</p>
+
+        <!-- RWD IMAGES -->
+        <h2 id="rwd-images">RWD Images</h2>
+        <img src="data:image/svg+xml,%3Csvg width='200' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='200' height='100' fill='%23aacc99'/%3E%3C/svg%3E"
+            style="max-width:100%; height:auto;">
+
+        <!-- RWD VIDEOS -->
+        <h2 id="rwd-videos">RWD Videos</h2>
+        <video width="200" style="max-width:100%;" controls>
+            <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+        </video>
+
+        <!-- FRAMEWORKS -->
+        <h2 id="frameworks">RWD Frameworks</h2>
+        <p>Bootstrap, Tailwind, Skeleton, Semantic UI</p>
+
+        <!-- final print block -->
+        <div class="print-prev" id="print-page">
+            <i class="fa-regular fa-file-lines"></i> Print Page <span style="color:#3b70aa;">◀ Previous</span>
+            <span>Next ▶</span>
+        </div>
+        <div class="advert">
+            <i class="fa-regular fa-star"></i> Advertisements · CSS part5 · advanced & responsive
+        </div>
+        <p style="margin-top:2rem; font-style:italic; color:#3a70a5;">— end of CSS notes part 5 —</p>
+    </main>
+</body>
+
+</html>
