@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS notes · part 2 · refined</title>
+    <!-- Google Fonts & Font Awesome for icons (subtle) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=Fira+Code:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            color: #0b1e33;
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ===== LEFT SIDE PANE (improved) ===== */
+        .side-pane {
+            width: 280px;
+            background: #0f182a;
+            color: #e0e7ff;
+            overflow-y: auto;
+            padding: 2rem 1rem 3rem 1.2rem;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            box-shadow: 6px 0 20px rgba(0, 0, 0, 0.2);
+            scrollbar-width: thin;
+            scrollbar-color: #3b4e6b #111e33;
+        }
+
+        .side-pane::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .side-pane::-webkit-scrollbar-track {
+            background: #111e33;
+        }
+
+        .side-pane::-webkit-scrollbar-thumb {
+            background: #3b4e6b;
+            border-radius: 20px;
+        }
+
+        .pane-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #263a56;
+        }
+
+        .pane-header i {
+            font-size: 2rem;
+            color: #5fb4f4;
+        }
+
+        .pane-header span {
+            font-size: 1.4rem;
+            font-weight: 600;
+            background: linear-gradient(145deg, #fff, #b1d0ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .side-pane h3 {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #90a9c7;
+            margin: 1.8rem 0 0.7rem 0;
+            padding-left: 0.8rem;
+            border-left: 3px solid #5fb4f4;
+        }
+
+        .side-pane ul {
+            list-style: none;
+            margin-bottom: 1.2rem;
+        }
+
+        .side-pane li {
+            margin: 0.2rem 0;
+        }
+
+        .side-pane a {
+            display: block;
+            padding: 0.4rem 0.8rem 0.4rem 1.5rem;
+            color: #c9d9f0;
+            text-decoration: none;
+            font-size: 0.9rem;
+            border-radius: 0 20px 20px 0;
+            transition: all 0.15s;
+            border-left: 3px solid transparent;
+        }
+
+        .side-pane a:hover {
+            background: #1c2c44;
+            color: white;
+            border-left-color: #5fb4f4;
+        }
+
+        /* ===== MAIN CONTENT (refined) ===== */
+        .main-content {
+            flex: 1;
+            max-width: calc(100% - 280px);
+            background: white;
+            padding: 2.5rem 3.5rem;
+            box-shadow: -1px 0 0 rgba(0, 0, 0, 0.03);
+        }
+
+        h1,
+        h2,
+        h3 {
+            scroll-margin-top: 1.5rem;
+        }
+
+        .main-content h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #0f182a, #2d4b7c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            border-bottom: 4px solid #e4ecf9;
+            padding-bottom: 0.2rem;
+        }
+
+        .main-content h2 {
+            font-size: 1.9rem;
+            font-weight: 600;
+            color: #13273e;
+            margin: 2.8rem 0 1.2rem 0;
+            border-bottom: 2px solid #dde7f5;
+            padding-bottom: 0.4rem;
+        }
+
+        .main-content h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #1e3a5f;
+            margin: 2rem 0 1rem 0;
+        }
+
+        .main-content p {
+            margin-bottom: 1.2rem;
+            color: #2a3f5e;
+        }
+
+        /* code & pre — nicer */
+        pre {
+            background: #1d2b3f;
+            color: #e7f1ff;
+            padding: 1.4rem;
+            border-radius: 18px;
+            overflow-x: auto;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            margin: 1.8rem 0;
+            border-left: 6px solid #5fb4f4;
+            box-shadow: 0 8px 20px rgba(0, 35, 70, 0.1);
+        }
+
+        code {
+            background: #ecf8ff;
+            color: #024e7e;
+            padding: 0.2rem 0.6rem;
+            border-radius: 30px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+        }
+
+        pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+        }
+
+        /* inline demo boxes / visual examples */
+        .demo-box {
+            background: #f0f5fe;
+            border-radius: 24px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border: 1px solid #d7e3f5;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.02);
+        }
+
+        .demo-flex {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        /* tables */
+        .props-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fbfdff;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 20, 40, 0.05);
+            margin: 1.5rem 0;
+        }
+
+        .props-table th {
+            background: #1e3148;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 0.8rem 1rem;
+        }
+
+        .props-table td {
+            border: 1px solid #dbe5f0;
+            padding: 0.9rem 1rem;
+            color: #1c3a5e;
+        }
+
+        .props-table tr:nth-child(even) {
+            background: #f8fcff;
+        }
+
+        /* note block */
+        .note-tip {
+            background: #eef7e8;
+            border-left: 8px solid #2e9b5c;
+            padding: 1.3rem 2rem;
+            border-radius: 16px;
+            font-weight: 500;
+            margin: 2rem 0;
+        }
+
+        /* advertisement/print block */
+        .print-prev {
+            display: flex;
+            gap: 2.5rem;
+            margin: 3rem 0 1.5rem;
+            padding: 1.2rem 1rem;
+            border-top: 2px dashed #bdd3f0;
+            border-bottom: 2px dashed #bdd3f0;
+            font-weight: 600;
+            color: #2d5480;
+            background: #f6fafe;
+            border-radius: 40px;
+            justify-content: center;
+        }
+
+        .advert {
+            background: #edf3fc;
+            text-align: center;
+            padding: 0.8rem;
+            border-radius: 40px;
+            color: #476b96;
+            font-size: 0.9rem;
+            margin: 1.8rem 0;
+            border: 1px dashed #94b5de;
+        }
+
+        /* small interactive example inside visibility / overflow */
+        .vis-demo {
+            display: flex;
+            gap: 1.5rem;
+            background: #deeaf9;
+            padding: 1.5rem;
+            border-radius: 32px;
+        }
+
+        .vis-card {
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 20px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        /* responsive */
+        @media (max-width: 900px) {
+            body {
+                flex-direction: column;
+            }
+
+            .side-pane {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 1rem;
+            }
+
+            .main-content {
+                max-width: 100%;
+                padding: 1.8rem;
+            }
+        }
+
+        /* custom demo for float/clearfix etc */
+        .float-demo {
+            border: 2px solid #2e5f8a;
+            padding: 1rem;
+            background: #fff;
+            border-radius: 24px;
+        }
+
+        .float-demo img {
+            width: 100px;
+            height: auto;
+            border-radius: 12px;
+            margin: 0 1rem 0.5rem 0;
+        }
+
+        .clearfix::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- left navigation — all headings covered -->
+    <nav class="side-pane">
+        <div class="pane-header">
+            <i class="fa-brands fa-css3-alt"></i>
+            <span>css deep</span>
+        </div>
+        <h3>visibility & overflow</h3>
+        <ul>
+            <li><a href="#visibility">visibility</a></li>
+            <li><a href="#overflow">overflow</a></li>
+            <li><a href="#clearfix">clearfix</a></li>
+            <li><a href="#float">float</a></li>
+        </ul>
+        <h3>arrows & interact</h3>
+        <ul>
+            <li><a href="#arrows">arrows</a></li>
+            <li><a href="#resize">resize</a></li>
+            <li><a href="#quotes">quotes</a></li>
+            <li><a href="#order">order (flex)</a></li>
+        </ul>
+        <h3>position & layout</h3>
+        <ul>
+            <li><a href="#position">position</a></li>
+            <li><a href="#hyphens">hyphens</a></li>
+            <li><a href="#hover-effects">hover effects</a></li>
+            <li><a href="#display">display</a></li>
+            <li><a href="#focus-effects">focus effects</a></li>
+        </ul>
+        <h3>transforms & sizing</h3>
+        <ul>
+            <li><a href="#zoom">zoom</a></li>
+            <li><a href="#translate">translate</a></li>
+            <li><a href="#height">height</a></li>
+            <li><a href="#hyphenate-character">hyphenate‑char</a></li>
+            <li><a href="#width">width</a></li>
+            <li><a href="#opacity">opacity</a></li>
+        </ul>
+        <h3>stacking & offsets</h3>
+        <ul>
+            <li><a href="#z-index">z-index</a></li>
+            <li><a href="#bottom">bottom</a></li>
+            <li><a href="#navbar">navigation bar</a></li>
+            <li><a href="#overlay">overlay</a></li>
+            <li><a href="#forms">forms</a></li>
+            <li><a href="#align">align</a></li>
+        </ul>
+        <h3>extras</h3>
+        <ul>
+            <li><a href="#print-page">print / previous / next</a></li>
+            <li><a href="#advertisements">advertisements</a></li>
+        </ul>
+    </nav>
+
+    <!-- MAIN CONTENT (all topics from prompt with improved styling) -->
+    <main class="main-content">
+
+        <!-- visibility -->
+        <h2 id="visibility">CSS visibility Property</h2>
+        <p><span class="print-prev" style="margin:0; padding:0.5rem 2rem; display:inline-flex; gap:1rem;">Previous ◀
+                Quiz ▶ Next</span></p>
+        <p>The <code>visibility</code> property allows you to show or hide an element without changing the layout.
+            Hidden elements still take up space.</p>
+        <div class="props-table">
+            <table>
+                <tr>
+                    <th>Value</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>visible</td>
+                    <td>default, element visible</td>
+                </tr>
+                <tr>
+                    <td>hidden</td>
+                    <td>hides element but retains space</td>
+                </tr>
+                <tr>
+                    <td>collapse</td>
+                    <td>for table rows/cols, removes like hidden</td>
+                </tr>
+                <tr>
+                    <td>initial, inherit</td>
+                    <td>standard</td>
+                </tr>
+            </table>
+        </div>
+        <div class="vis-demo">
+            <div class="vis-card"><span style="visibility:visible;">🔷 visible</span></div>
+            <div class="vis-card"><span style="visibility:hidden;">🔶 hidden (invisible but space)</span></div>
+            <div class="vis-card"><span style="visibility:collapse; background:#eee;">collapse (non-table =
+                    hidden)</span></div>
+        </div>
+        <pre><code>&lt;style&gt; h2 { visibility: hidden; } &lt;/style&gt;</code></pre>
+
+        <!-- overflow -->
+        <h2 id="overflow">CSS overflow Property</h2>
+        <p>Controls how content overflowing its box is handled.</p>
+        <div class="demo-box">
+            <p><strong>overflow: visible;</strong> <span
+                    style="display:inline-block; width:150px; height:40px; background:lightblue; overflow:visible; white-space:nowrap;">long
+                    unbroken content spills out</span></p>
+            <p><strong>overflow: hidden;</strong> <span
+                    style="display:inline-block; width:150px; height:40px; background:lightcoral; overflow:hidden; white-space:nowrap;">long
+                    unbroken content disappears</span></p>
+            <p><strong>overflow: scroll;</strong> <span
+                    style="display:inline-block; width:150px; height:50px; background:#c8e6c9; overflow:scroll; white-space:nowrap;">scroll
+                    to see hidden part</span></p>
+        </div>
+
+        <!-- clearfix -->
+        <h2 id="clearfix">CSS Clearfix</h2>
+        <div class="float-demo clearfix">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='80' viewBox='0 0 100 80'%3E%3Crect width='100' height='80' fill='%233b9e6d'/%3E%3Ctext x='10' y='45' fill='white' font-size='16'%3Efloat%3C/text%3E%3C/svg%3E"
+                style="float:right; margin-left:1rem;">
+            <p><strong>Without clearfix</strong> container collapses. With <code>.clearfix::after { clear:both; }</code>
+                parent contains floats.</p>
+        </div>
+
+        <!-- float -->
+        <h2 id="float">CSS float Property</h2>
+        <div class="demo-box">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='60'%3E%3Ccircle cx='40' cy='30' r='25' fill='%23d45d5d'/%3E%3C/svg%3E"
+                style="float:left; margin-right:1rem;">
+            <p><code>float: left;</code> text wraps around. Clear both to stop wrapping.</p>
+        </div>
+
+        <!-- arrows -->
+        <h2 id="arrows">CSS Arrows</h2>
+        <div style="display:flex; gap:30px; align-items:center;">
+            <div
+                style="width:0; height:0; border-left:15px solid transparent; border-right:15px solid transparent; border-bottom:20px solid #1e4f7a;">
+            </div>
+            <div
+                style="width:16px; height:16px; border-left:4px solid black; border-top:4px solid black; transform:rotate(45deg);">
+            </div>
+            <i class="fas fa-arrow-right fa-2x" style="color:#0f5b9c;"></i>
+        </div>
+
+        <!-- resize -->
+        <h2 id="resize">CSS resize</h2>
+        <textarea
+            style="resize:both; width:200px; height:80px; border-radius:16px; padding:0.5rem;">drag corner ↘</textarea>
+
+        <!-- quotes -->
+        <h2 id="quotes">CSS quotes</h2>
+        <p><q style="quotes:'❝' '❞';">nested quotes</q> with custom strings</p>
+
+        <!-- order -->
+        <h2 id="order">CSS order (flex)</h2>
+        <div style="display:flex; gap:1rem; background:#deeafc; padding:1rem; border-radius:2rem;">
+            <div style="order:3; background:#b3d9ff; padding:1rem;">3rd</div>
+            <div style="order:1; background:#b3d9ff; padding:1rem;">1st</div>
+            <div style="order:2; background:#b3d9ff; padding:1rem;">2nd</div>
+        </div>
+
+        <!-- position -->
+        <h2 id="position">CSS position</h2>
+        <p>static, relative, absolute, fixed, sticky. Example: relative + top</p>
+        <div style="position:relative; height:50px; background:#f5e9d8; border-radius:1rem;">
+            <div
+                style="position:absolute; bottom:5px; right:10px; background:#7d9fc1; padding:0.5rem 1.5rem; border-radius:2rem;">
+                absolute</div>
+        </div>
+
+        <!-- hyphens -->
+        <h2 id="hyphens">hyphens</h2>
+        <p style="width:80px; hyphens:auto; border:1px solid; background:#f7f7f7;">An extraorinarily long word
+            demonstrates hyphenation.</p>
+
+        <!-- hover effects -->
+        <h2 id="hover-effects">hover effects</h2>
+        <button
+            style="background:#3b7fb0; border:none; color:white; padding:0.8rem 2rem; border-radius:40px; transition:0.2s;">hover
+            → scale</button>
+        <style>
+            .hover-glow:hover {
+                box-shadow: 0 0 15px cyan;
+            }
+        </style>
+
+        <!-- display -->
+        <h2 id="display">display property</h2>
+        <p><span style="display:block; background:#afc8e8;">block</span> <span
+                style="display:inline-block; background:#cfb0e8;">inline-block</span></p>
+
+        <!-- focus effects -->
+        <h2 id="focus-effects">focus effects</h2>
+        <input placeholder="tab to focus"
+            style="padding:0.5rem; border-radius:40px; border:2px solid #ccc; transition:0.2s;" class="focus-glow">
+
+        <!-- zoom -->
+        <h2 id="zoom">zoom (non‑standard, but useful)</h2>
+        <div style="zoom:1.5; background:khaki; width:fit-content; padding:0.5rem;">zoomed x1.5</div>
+
+        <!-- translate -->
+        <h2 id="translate">translate</h2>
+        <div style="background:#a4c7f0; padding:1rem; border-radius:2rem; transition:0.2s;" class="translate-demo">hover
+            moves 5px right</div>
+        <style>
+            .translate-demo:hover {
+                translate: 5px 0;
+            }
+        </style>
+
+        <!-- height / width -->
+        <h2 id="height">height & width</h2>
+        <div style="height:60px; width:200px; background: #c2e0c2; border-radius:12px;">fixed 200x60</div>
+
+        <!-- hyphenate-character -->
+        <h2 id="hyphenate-character">hyphenate‑character</h2>
+        <p style="width:70px; hyphens:auto; hyphenate-character:'='; background:#ebf3ff;">hyphenation character changed.
+        </p>
+
+        <!-- opacity -->
+        <h2 id="opacity">opacity</h2>
+        <div style="opacity:0.6; background:#d49b9b; padding:1rem;">60% opacity</div>
+
+        <!-- z-index -->
+        <h2 id="z-index">z-index</h2>
+        <div style="position:relative; height:70px; background:#ddd;">
+            <div style="position:absolute; z-index:2; background:#bada55; padding:1rem; top:10px; left:10px;">z=2</div>
+            <div style="position:absolute; z-index:1; background:#fa8072; padding:1rem; top:25px; left:25px;">z=1 behind
+            </div>
+        </div>
+
+        <!-- bottom -->
+        <h2 id="bottom">bottom property</h2>
+        <div style="position:relative; height:100px;">
+            <div style="position:absolute; bottom:10px; right:0; background:#b2d8b2;">bottom 10px</div>
+        </div>
+
+        <!-- navigation bar -->
+        <h2 id="navbar">navigation bar</h2>
+        <ul
+            style="list-style:none; background:#23415c; display:flex; border-radius:60px; padding:0.8rem 2rem; color:white; gap:2rem;">
+            <li>home</li>
+            <li>about</li>
+            <li>courses</li>
+        </ul>
+
+        <!-- overlay -->
+        <h2 id="overlay">overlay</h2>
+        <div style="position:relative; display:inline-block;">
+            <img src="data:image/svg+xml,%3Csvg width='120' height='80' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='120' height='80' fill='%239999cc'/%3E%3C/svg%3E"
+                style="border-radius:20px;">
+            <div style="position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,40,80,0.5); opacity:0; transition:0.3s; border-radius:20px; display:flex; align-items:center; justify-content:center; color:white;"
+                class="overlay-hover">hover</div>
+        </div>
+        <style>
+            .overlay-hover:hover {
+                opacity: 1;
+            }
+        </style>
+
+        <!-- forms & align -->
+        <h2 id="forms">forms & align</h2>
+        <div style="display:flex; align-items:center; gap:2rem;">
+            <input placeholder="name" style="padding:0.8rem; border-radius:60px; border:1px solid #b3caf5;">
+            <button
+                style="background:#2b5d8c; color:white; border:none; padding:0.8rem 2rem; border-radius:60px;">submit</button>
+        </div>
+        <h2 id="align">align examples</h2>
+        <div style="text-align:center; background:#ecf2f9; padding:1rem;">centered text</div>
+        <div style="display:flex; justify-content:center; background:#deecfd; margin:1rem 0; padding:1rem;">flex center
+        </div>
+
+        <!-- final print/ad blocks -->
+        <div class="print-prev" id="print-page">
+            <i class="fa-regular fa-file-lines"></i> Print Page <span style="color:#3a6993;">◀ Previous</span>
+            <span>Next ▶</span>
+        </div>
+        <div class="advert" id="advertisements">
+            <i class="fa-solid fa-crown"></i> Advertisements · CSS continues · All rights reserved.
+        </div>
+        <p style="margin-top:2rem; text-align:right; color:#5d7aa6;"><i>— improved notes with interactive demos —</i>
+        </p>
+    </main>
+</body>
+
+</html>

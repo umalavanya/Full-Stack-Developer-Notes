@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS notes · part 4 · advanced · effects · selectors · layout</title>
+    <!-- Google Fonts + Font Awesome (for icons/demos) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..700&family=Fira+Code:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f4f9ff;
+            color: #122b44;
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ===== LEFT SIDE PANE — refined dark ===== */
+        .side-pane {
+            width: 290px;
+            background: #0c1d30;
+            color: #ddeaff;
+            overflow-y: auto;
+            padding: 2rem 1rem 2.5rem 1.3rem;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            box-shadow: 6px 0 25px rgba(0, 0, 0, 0.25);
+            scrollbar-width: thin;
+            scrollbar-color: #3f6185 #10233a;
+        }
+
+        .side-pane::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .side-pane::-webkit-scrollbar-track {
+            background: #10233a;
+        }
+
+        .side-pane::-webkit-scrollbar-thumb {
+            background: #3f6185;
+            border-radius: 20px;
+        }
+
+        .pane-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.2rem;
+            border-bottom: 1px solid #26486b;
+        }
+
+        .pane-header i {
+            font-size: 2.2rem;
+            color: #7eb2ff;
+        }
+
+        .pane-header span {
+            font-size: 1.5rem;
+            font-weight: 600;
+            background: linear-gradient(145deg, #ffffff, #b3d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .side-pane h3 {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.6px;
+            color: #97b3d9;
+            margin: 2rem 0 0.8rem 0;
+            padding-left: 0.8rem;
+            border-left: 3px solid #679eff;
+        }
+
+        .side-pane ul {
+            list-style: none;
+            margin-bottom: 1.4rem;
+        }
+
+        .side-pane li {
+            margin: 0.2rem 0;
+        }
+
+        .side-pane a {
+            display: block;
+            padding: 0.4rem 1rem 0.4rem 1.8rem;
+            color: #c8dcff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            border-radius: 0 30px 30px 0;
+            transition: 0.2s;
+            border-left: 3px solid transparent;
+        }
+
+        .side-pane a:hover {
+            background: #1f3b5c;
+            color: white;
+            border-left-color: #679eff;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            flex: 1;
+            max-width: calc(100% - 290px);
+            background: white;
+            padding: 2.8rem 3.8rem;
+            box-shadow: -1px 0 0 rgba(0, 0, 0, 0.02);
+        }
+
+        h1,
+        h2,
+        h3 {
+            scroll-margin-top: 1.8rem;
+        }
+
+        .main-content h1 {
+            font-size: 2.6rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #0d2d47, #2e67a3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.3rem;
+            border-bottom: 4px solid #e4efff;
+            padding-bottom: 0.3rem;
+        }
+
+        .main-content h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #123c60;
+            margin: 3rem 0 1.2rem 0;
+            border-bottom: 2px solid #deecfd;
+            padding-bottom: 0.4rem;
+        }
+
+        .main-content h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #1f4f7c;
+            margin: 2rem 0 1rem 0;
+        }
+
+        p {
+            margin-bottom: 1.2rem;
+            color: #25445f;
+        }
+
+        pre {
+            background: #1d3149;
+            color: #edf4ff;
+            padding: 1.5rem;
+            border-radius: 24px;
+            overflow-x: auto;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            margin: 1.8rem 0;
+            border-left: 6px solid #679eff;
+            box-shadow: 0 12px 28px rgba(0, 30, 60, 0.1);
+        }
+
+        code {
+            background: #eaf1ff;
+            color: #055aa0;
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+        }
+
+        pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+        }
+
+        .props-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fbfdff;
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 30, 70, 0.06);
+            margin: 2rem 0;
+        }
+
+        .props-table th {
+            background: #1e4062;
+            color: white;
+            font-weight: 600;
+            padding: 0.9rem 1.2rem;
+        }
+
+        .props-table td {
+            border: 1px solid #d9e6f5;
+            padding: 0.9rem 1.2rem;
+            color: #1d4169;
+        }
+
+        .demo-row {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            background: #f0f6ff;
+            padding: 2rem;
+            border-radius: 50px;
+            margin: 2rem 0;
+            align-items: center;
+        }
+
+        .blend-box {
+            width: 120px;
+            height: 100px;
+            background: #4466aa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .blend-box img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover;
+        }
+
+        .print-prev {
+            display: flex;
+            gap: 2.8rem;
+            margin: 3rem 0 1.5rem;
+            padding: 1.3rem 2rem;
+            border-top: 2px dashed #b8d3fc;
+            border-bottom: 2px dashed #b8d3fc;
+            font-weight: 600;
+            color: #2f5f92;
+            background: #f5fbff;
+            border-radius: 60px;
+            justify-content: center;
+        }
+
+        .advert {
+            background: #e8f1fe;
+            text-align: center;
+            padding: 1rem;
+            border-radius: 60px;
+            color: #3873b0;
+            font-size: 0.95rem;
+            margin: 2rem 0;
+            border: 1px dashed #accaf5;
+        }
+
+        @media (max-width: 1000px) {
+            body {
+                flex-direction: column;
+            }
+
+            .side-pane {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .main-content {
+                max-width: 100%;
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- left nav: all topics from part4 (mix-blend, max/min inline, offset, accent, user-select, cascading, selectors, grid/flex, rounded corners, border images, multiple bg, etc) -->
+    <nav class="side-pane">
+        <div class="pane-header">
+            <i class="fa-brands fa-css3-alt"></i>
+            <span>css·part4</span>
+        </div>
+        <h3>blending & sizing</h3>
+        <ul>
+            <li><a href="#mix-blend-mode">mix-blend-mode</a></li>
+            <li><a href="#max-inline-size">max-inline-size</a></li>
+            <li><a href="#min-inline-size">min-inline-size</a></li>
+            <li><a href="#offset">offset (path animation)</a></li>
+            <li><a href="#accent-color">accent-color</a></li>
+            <li><a href="#user-select">user-select</a></li>
+        </ul>
+        <h3>cascading & selectors</h3>
+        <ul>
+            <li><a href="#cascading">CSS cascading</a></li>
+            <li><a href="#universal">universal selector</a></li>
+            <li><a href="#id-selector">ID selector</a></li>
+            <li><a href="#group-selector">group selector</a></li>
+            <li><a href="#class-selector">class selector</a></li>
+            <li><a href="#child-selector">child selector</a></li>
+            <li><a href="#element-selector">element selector</a></li>
+            <li><a href="#descendant-selector">descendant selector</a></li>
+            <li><a href="#general-sibling">general sibling</a></li>
+            <li><a href="#adjacent-sibling">adjacent sibling</a></li>
+        </ul>
+        <h3>grid & flex</h3>
+        <ul>
+            <li><a href="#grid">grid property</a></li>
+            <li><a href="#grid-layout">grid layout</a></li>
+            <li><a href="#flexbox">flexbox</a></li>
+        </ul>
+        <h3>visibility / positioning</h3>
+        <ul>
+            <li><a href="#visibility">visibility</a></li>
+            <li><a href="#positioning">positioning</a></li>
+            <li><a href="#layers">layers (z-index)</a></li>
+        </ul>
+        <h3>pseudo-classes & elements</h3>
+        <ul>
+            <li><a href="#pseudo-classes">pseudo-classes</a></li>
+            <li><a href="#pseudo-elements">pseudo-elements</a></li>
+        </ul>
+        <h3>@rules & text effects</h3>
+        <ul>
+            <li><a href="#at-rules">@ rules</a></li>
+            <li><a href="#text-effects">text effects</a></li>
+            <li><a href="#paged-media">paged media</a></li>
+            <li><a href="#printing">printing</a></li>
+            <li><a href="#layouts">layouts (normal, float, etc)</a></li>
+        </ul>
+        <h3>advanced ui</h3>
+        <ul>
+            <li><a href="#validations">validations</a></li>
+            <li><a href="#image-sprites">image sprites</a></li>
+            <li><a href="#important">!important</a></li>
+            <li><a href="#data-types">data types</a></li>
+            <li><a href="#rounded-corners">rounded corners</a></li>
+            <li><a href="#border-images">border images</a></li>
+            <li><a href="#multiple-bg">multiple backgrounds</a></li>
+        </ul>
+        <h3>extras</h3>
+        <ul>
+            <li><a href="#print-page">print/previous/next</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+
+        <!-- ===== mix-blend-mode ===== -->
+        <h1 id="mix-blend-mode">CSS mix-blend-mode</h1>
+        <p><span class="print-prev" style="display:inline-flex; padding:0.3rem 2rem;">◀ Previous Quiz Next ▶</span></p>
+        <p>Controls how an element blends with its parent background.</p>
+        <div class="demo-row">
+            <div class="blend-box" style="background:#466bb0;"><img
+                    src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='60'%3E%3Crect width='80' height='60' fill='%23ffaa33'/%3E%3C/svg%3E"
+                    style="mix-blend-mode:multiply;"></div>
+            <div class="blend-box" style="background:#466bb0;"><img
+                    src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='60'%3E%3Crect width='80' height='60' fill='%23ffaa33'/%3E%3C/svg%3E"
+                    style="mix-blend-mode:screen;"></div>
+            <div class="blend-box" style="background:#466bb0;"><img
+                    src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='60'%3E%3Crect width='80' height='60' fill='%23ffaa33'/%3E%3C/svg%3E"
+                    style="mix-blend-mode:difference;"></div>
+        </div>
+        <pre>multiply · screen · difference · overlay · etc.</pre>
+
+        <!-- max-inline-size -->
+        <h2 id="max-inline-size">max-inline-size</h2>
+        <p>Limits the inline size (width in horizontal writing mode).</p>
+        <div style="max-inline-size:300px; background:#c3dcff; padding:1rem; border-radius:30px;">This box max width
+            300px (inline).</div>
+
+        <!-- min-inline-size -->
+        <h2 id="min-inline-size">min-inline-size</h2>
+        <div style="min-inline-size:250px; background:#d2e5ff; display:inline-block;">minimum 250px inline.</div>
+
+        <!-- offset property -->
+        <h2 id="offset">CSS offset (path animation)</h2>
+        <div style="height:100px; position:relative; background:#ecf3fe; border-radius:40px;">
+            <div
+                style="width:40px; height:40px; background:#d55; border-radius:50%; offset:path('M10 50 Q 50 20 90 50 T 170 50') auto; animation:move 4s infinite alternate;">
+            </div>
+        </div>
+        <style>
+            @keyframes move {
+                0% {
+                    offset-distance: 0%;
+                }
+
+                100% {
+                    offset-distance: 100%;
+                }
+            }
+        </style>
+
+        <!-- accent-color -->
+        <h2 id="accent-color">accent-color</h2>
+        <input type="checkbox" checked style="accent-color:#2a7faa;"> checkbox
+        <input type="radio" checked style="accent-color:#c45b5b;"> radio
+        <input type="range" style="accent-color:#3f8e5a;">
+
+        <!-- user-select -->
+        <h2 id="user-select">user-select</h2>
+        <p style="user-select:none; background:#eee;">this text cannot be selected (user-select: none)</p>
+
+        <!-- cascading -->
+        <h2 id="cascading">CSS Cascading</h2>
+        <p>Specificity, importance, source order. <code>!important</code> > inline > id > class > element.</p>
+
+        <!-- universal selector -->
+        <h2 id="universal">Universal selector (*)</h2>
+        <pre>* { margin:0; } /* applies to all */</pre>
+
+        <!-- ID selector -->
+        <h2 id="id-selector">ID selector</h2>
+        <pre>#unique { color: #1e6f9f; }</pre>
+
+        <!-- group selector -->
+        <h2 id="group-selector">Group selector</h2>
+        <pre>h1, .special, #title { font-weight: 600; }</pre>
+
+        <!-- class selector -->
+        <h2 id="class-selector">Class selector</h2>
+        <pre>.box { border-radius: 20px; }</pre>
+
+        <!-- child selector -->
+        <h2 id="child-selector">Child selector (>)</h2>
+        <pre>div > p { color: navy; } /* direct child */</pre>
+
+        <!-- element selector -->
+        <h2 id="element-selector">Element selector</h2>
+        <pre>p { line-height: 1.5; }</pre>
+
+        <!-- descendant selector -->
+        <h2 id="descendant-selector">Descendant selector (space)</h2>
+        <pre>article p { } /* any p inside article */</pre>
+
+        <!-- general sibling -->
+        <h2 id="general-sibling">General sibling (~)</h2>
+        <pre>h2 ~ p { } /* all p after h2 */</pre>
+
+        <!-- adjacent sibling -->
+        <h2 id="adjacent-sibling">Adjacent sibling (+)</h2>
+        <pre>h2 + p { } /* p immediately after h2 */</pre>
+
+        <!-- grid property -->
+        <h2 id="grid">CSS grid property (shorthand)</h2>
+        <pre>grid: 100px / 1fr 1fr;</pre>
+
+        <!-- grid layout -->
+        <h2 id="grid-layout">Grid Layout</h2>
+        <div
+            style="display:grid; grid-template-columns:1fr 2fr; gap:10px; background:#dae9fc; padding:1rem; border-radius:30px;">
+            <div style="background:#8fb9ee; padding:1rem;">1</div>
+            <div style="background:#8fb9ee; padding:1rem;">2</div>
+        </div>
+
+        <!-- flexbox -->
+        <h2 id="flexbox">Flexbox</h2>
+        <div style="display:flex; gap:1rem; background:#dae9fc; padding:1rem; border-radius:30px;">
+            <div style="background:#9ac0f0; padding:1rem;">flex</div>
+            <div style="background:#9ac0f0; padding:1rem;">box</div>
+        </div>
+
+        <!-- visibility -->
+        <h2 id="visibility">visibility</h2>
+        <p style="visibility:hidden;">hidden (still occupies space)</p>
+
+        <!-- positioning -->
+        <h2 id="positioning">Positioning</h2>
+        <div style="position:relative; height:60px; background:#e9f0fa;">
+            <div style="position:absolute; bottom:5px; right:10px;">absolute</div>
+        </div>
+
+        <!-- layers / z-index -->
+        <h2 id="layers">Layers (z-index)</h2>
+        <div style="position:relative; height:80px;">
+            <div style="position:absolute; z-index:2; background:#b3cef5; padding:0.5rem;">z2</div>
+            <div style="position:absolute; z-index:1; top:20px; left:20px; background:#e0b3f5;">z1 behind</div>
+        </div>
+
+        <!-- pseudo-classes -->
+        <h2 id="pseudo-classes">Pseudo-classes</h2>
+        <p>:hover, :active, :focus, :nth-child, etc. <button style="background:#c7dfff;">hover me</button></p>
+
+        <!-- pseudo-elements -->
+        <h2 id="pseudo-elements">Pseudo-elements</h2>
+        <p><span style="display:block; ">::before and ::after</span></p>
+
+        <!-- @rules -->
+        <h2 id="at-rules">@ Rules</h2>
+        <pre>@media, @keyframes, @font-face, @page, @property …</pre>
+
+        <!-- text effects -->
+        <h2 id="text-effects">Text effects</h2>
+        <p style="width:200px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;">Very long text that gets
+            ellipsis...</p>
+
+        <!-- paged media -->
+        <h2 id="paged-media">Paged media</h2>
+        <p>@page, orphans, widows, break-* properties for print.</p>
+
+        <!-- printing -->
+        <h2 id="printing">CSS Printing</h2>
+        <p>Use <code>@media print</code> to style printed version.</p>
+
+        <!-- layouts -->
+        <h2 id="layouts">Layouts (normal, float, etc)</h2>
+        <div style="float:left; width:60px; height:40px; background:#b6d3fa; margin-right:1rem;">float</div>
+        <p>Text wraps around float.</p>
+
+        <!-- validations -->
+        <h2 id="validations">CSS Validations</h2>
+        <p>W3C CSS validator checks for errors & warnings.</p>
+
+        <!-- image sprites -->
+        <h2 id="image-sprites">Image sprites</h2>
+        <div
+            style="width:80px; height:80px; background:url('data:image/svg+xml,%3Csvg width=\'160\' height=\'80\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Crect width=\'80\' height=\'80\' fill=\'%23336699\'/%3E%3Crect x=\'80\' width=\'80\' height=\'80\' fill=\'%236699cc\'/%3E%3C/svg%3E') -80px 0;">
+        </div>
+
+        <!-- !important -->
+        <h2 id="important">!important rule</h2>
+        <pre>p { color: black !important; }</pre>
+
+        <!-- data types -->
+        <h2 id="data-types">CSS Data Types</h2>
+        <p>&lt;integer&gt;, &lt;length&gt;, &lt;color&gt;, &lt;angle&gt; …</p>
+
+        <!-- rounded corners -->
+        <h2 id="rounded-corners">Rounded corners (border-radius)</h2>
+        <div style="width:150px; height:80px; background:#c3daf5; border-radius:30px 10px;"></div>
+
+        <!-- border images -->
+        <h2 id="border-images">Border images</h2>
+        <div
+            style="width:200px; border:15px solid transparent; border-image: repeating-linear-gradient(45deg, #4a90e2, #b3d4ff 20px) 30; padding:0.5rem;">
+            border-image</div>
+
+        <!-- multiple backgrounds -->
+        <h2 id="multiple-bg">Multiple backgrounds</h2>
+        <div
+            style="width:250px; height:100px; background:url('data:image/svg+xml,%3Csvg width=\'40\' height=\'40\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Ccircle cx=\'20\' cy=\'20\' r=\'10\' fill=\'%23f5a97f\'/%3E%3C/svg%3E'), linear-gradient(145deg, #add8ff, #d6eaff); border-radius:30px;">
+        </div>
+
+        <!-- final print/previous block -->
+        <div class="print-prev" id="print-page">
+            <i class="fa-regular fa-file-lines"></i> Print Page <span style="color:#3b70aa;">◀ Previous</span>
+            <span>Next ▶</span>
+        </div>
+        <div class="advert">
+            <i class="fa-regular fa-star"></i> Advertisements · CSS part 4 · advanced topics
+        </div>
+        <p style="margin-top:2rem; font-style:italic; color:#3a70a5;">— end of CSS notes part 4 —</p>
+    </main>
+</body>
+
+</html>

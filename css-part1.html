@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS notes · left nav</title>
+    <style>
+        /* RESET & BASE */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f7fb;
+            color: #1e293b;
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ===== LEFT SIDE PANE (nav) ===== */
+        .side-pane {
+            width: 280px;
+            background: #0f172a;
+            /* dark slate */
+            color: #e2e8f0;
+            overflow-y: auto;
+            padding: 2rem 1rem;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            box-shadow: 4px 0 12px rgba(0, 0, 0, 0.1);
+            scrollbar-width: thin;
+            scrollbar-color: #475569 #1e293b;
+        }
+
+        .side-pane::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .side-pane::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+
+        .side-pane::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 20px;
+        }
+
+        .side-pane h3 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #94a3b8;
+            margin: 1.5rem 0 0.5rem 0;
+            padding-left: 0.5rem;
+            border-left: 3px solid #38bdf8;
+        }
+
+        .side-pane ul {
+            list-style: none;
+            margin-bottom: 1.2rem;
+        }
+
+        .side-pane li {
+            margin: 0.25rem 0;
+        }
+
+        .side-pane a {
+            display: block;
+            padding: 0.4rem 0.5rem 0.4rem 1.2rem;
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 0.9rem;
+            border-radius: 6px;
+            transition: all 0.15s;
+            border-left: 2px solid transparent;
+        }
+
+        .side-pane a:hover {
+            background: #1e293b;
+            color: white;
+            border-left-color: #38bdf8;
+        }
+
+        /* small hierarchy for nested headings — manual but clean */
+        .side-pane .h2-link {
+            padding-left: 2rem;
+            font-size: 0.85rem;
+            color: #9ca3af;
+        }
+
+        .side-pane .h3-link {
+            padding-left: 3rem;
+            font-size: 0.8rem;
+            color: #9ca3af;
+        }
+
+        /* top bar mini (just for style) */
+        .pane-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #334155;
+        }
+
+        .pane-header span {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #f1f5f9;
+            letter-spacing: -0.5px;
+        }
+
+        .pane-header .css-badge {
+            background: #38bdf8;
+            color: #0f172a;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.2rem 0.6rem;
+            border-radius: 30px;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            flex: 1;
+            max-width: calc(100% - 280px);
+            background: white;
+            padding: 2.5rem 3rem;
+            box-shadow: -2px 0 0 rgba(0, 0, 0, 0.02);
+        }
+
+        /* headings anchors for smooth scroll */
+        h1,
+        h2,
+        h3 {
+            scroll-margin-top: 1.5rem;
+        }
+
+        .main-content h1 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            background: linear-gradient(145deg, #0f172a, #2563eb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+            border-bottom: 3px solid #e2e8f0;
+            padding-bottom: 0.3rem;
+        }
+
+        .main-content h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #0f172a;
+            margin: 2.5rem 0 1rem 0;
+            padding-bottom: 0.3rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .main-content h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin: 1.8rem 0 0.8rem 0;
+        }
+
+        .main-content p {
+            margin-bottom: 1rem;
+            color: #334155;
+        }
+
+        /* code blocks, examples */
+        pre {
+            background: #1e293b;
+            color: #f8fafc;
+            padding: 1rem;
+            border-radius: 12px;
+            overflow-x: auto;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            margin: 1.5rem 0;
+            border-left: 5px solid #38bdf8;
+        }
+
+        code {
+            background: #ecfdf5;
+            color: #065f46;
+            padding: 0.2rem 0.4rem;
+            border-radius: 5px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+        }
+
+        pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+        }
+
+        ul,
+        ol {
+            padding-left: 1.8rem;
+            margin: 1rem 0;
+        }
+
+        li {
+            margin: 0.25rem 0;
+        }
+
+        .note-box {
+            background: #fef9c3;
+            border-left: 6px solid #eab308;
+            padding: 1.2rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+        }
+
+        /* table like "Versions" list (simple) */
+        .version-list {
+            list-style-type: disc;
+        }
+
+        /* small interactive roadmap style (static) */
+        .roadmap-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 0.5rem 1rem;
+            background: #f8fafc;
+            padding: 1.2rem;
+            border-radius: 20px;
+            margin: 1rem 0;
+        }
+
+        .roadmap-item {
+            background: white;
+            padding: 0.4rem 1rem;
+            border-radius: 30px;
+            border: 1px solid #cbd5e1;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #0f172a;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+        }
+
+        /* Buttons / page stuff */
+        .print-prev {
+            display: flex;
+            gap: 2rem;
+            margin: 3rem 0 1rem;
+            padding: 1rem 0;
+            border-top: 2px dashed #cbd5e1;
+            border-bottom: 2px dashed #cbd5e1;
+            font-weight: 600;
+            color: #2563eb;
+        }
+
+        .advertisement {
+            background: #f1f5f9;
+            text-align: center;
+            padding: 0.8rem;
+            border-radius: 50px;
+            color: #475569;
+            font-size: 0.9rem;
+            margin: 1.5rem 0;
+            border: 1px dashed #94a3b8;
+        }
+
+        /* responsive */
+        @media (max-width: 900px) {
+            body {
+                flex-direction: column;
+            }
+
+            .side-pane {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .main-content {
+                max-width: 100%;
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- left pane: all headings as navigation -->
+    <nav class="side-pane">
+        <div class="pane-header">
+            <span>📘 css+</span>
+            <span class="css-badge">notes</span>
+        </div>
+        <h3>start</h3>
+        <ul>
+            <li><a href="#css-tutorial">CSS Tutorial</a></li>
+            <li><a href="#what-is-css">What is CSS</a></li>
+            <li><a href="#css-versions">CSS Versions</a></li>
+            <li><a href="#types-of-css">Types of CSS</a></li>
+            <li><a href="#advantages-css">Advantages of CSS</a></li>
+            <li><a href="#components-css">Components of CSS</a></li>
+            <li><a href="#css-example">CSS Example</a></li>
+            <li><a href="#getting-started">Getting Started</a></li>
+        </ul>
+        <h3>basics & properties</h3>
+        <ul>
+            <li><a href="#css-basics">CSS Basics</a></li>
+            <li><a href="#css-properties">CSS Properties</a></li>
+            <li><a href="#css-advanced">CSS Advanced</a></li>
+            <li><a href="#css-practice">CSS Practice</a></li>
+            <li><a href="#prerequisites">Prerequisites</a></li>
+        </ul>
+        <h3>reference</h3>
+        <ul>
+            <li><a href="#faq">FAQ</a></li>
+            <li><a href="#roadmap">CSS Roadmap</a></li>
+            <li><a href="#introduction">CSS Introduction</a></li>
+            <li><a href="#syntax">CSS Syntax</a></li>
+            <li><a href="#inclusion">CSS Inclusion</a></li>
+            <li><a href="#units">CSS Units</a></li>
+            <li><a href="#selectors">CSS Selectors</a></li>
+            <li><a href="#colors">CSS Colors</a></li>
+            <li><a href="#backgrounds">CSS Backgrounds</a></li>
+            <li><a href="#fonts">CSS Fonts</a></li>
+            <li><a href="#styling-text">CSS Styling Text</a></li>
+            <li><a href="#images">CSS Images</a></li>
+            <li><a href="#links">CSS Links</a></li>
+            <li><a href="#tables">CSS Styling Tables</a></li>
+            <li><a href="#borders">CSS Borders</a></li>
+            <li><a href="#border-block">border-block</a></li>
+            <li><a href="#border-inline">border-inline</a></li>
+            <li><a href="#margins">CSS Margins</a></li>
+            <li><a href="#lists">CSS Styling Lists</a></li>
+            <li><a href="#paddings">CSS Paddings</a></li>
+            <li><a href="#cursor">cursor</a></li>
+            <li><a href="#outlines">CSS Outlines</a></li>
+            <li><a href="#dimension">CSS Dimension</a></li>
+            <li><a href="#scrollbars">CSS Scrollbars</a></li>
+            <li><a href="#inline-block">display:inline-block</a></li>
+            <li><a href="#dropdowns">CSS Dropdowns</a></li>
+        </ul>
+        <h3>extra</h3>
+        <ul>
+            <li><a href="#print-page">Print Page</a></li>
+            <li><a href="#previous-next">Previous / Next</a></li>
+            <li><a href="#advertisements">Advertisements</a></li>
+        </ul>
+    </nav>
+
+    <!-- MAIN CONTENT (all paragraphs from the prompt) -->
+    <main class="main-content">
+
+        <!-- Top anchors / nav mimic -->
+        <span id="css-tutorial"></span>
+        <h1>CSS Tutorial</h1>
+        <p><strong>Job Search · PDF Version · Quick Guide · Resources · Discussion</strong></p>
+        <p>This CSS tutorial covers everything from basic styling concepts and selectors to advanced techniques, such as
+            flexbox, grid, animations, and CSS variables. This CSS tutorial is designed to help both beginners and
+            experienced designers to make them masters in creating visually appealing, responsive, and modern web
+            designs.</p>
+
+        <h2 id="what-is-css">What is CSS</h2>
+        <p>CSS is the acronym for "Cascading Style Sheet". It's a style sheet language used for describing the
+            presentation of a document written in a markup language like HTML. CSS helps the web developers to control
+            the layout and other visual aspects of the web pages. CSS plays a crucial role in modern web development by
+            providing the tools necessary to create visually appealing, accessible, and responsive websites.</p>
+
+        <h2 id="css-versions">CSS Versions</h2>
+        <p>Since the inception of CSS, several versions have came into existence. Some of the notable versions include:
+        </p>
+        <ul class="version-list">
+            <li><strong>CSS1</strong> – The initial version, released in December 1996. Basic styling.</li>
+            <li><strong>CSS2</strong> – Released in May 1998, introduced positioning, z-index, media types.</li>
+            <li><strong>CSS2.1</strong> – W3C Recommendation June 2011, refined CSS2.</li>
+            <li><strong>CSS3</strong> – Collection of modules: selectors, columns, animations, gradients, etc.</li>
+            <li><strong>CSS4 (in progress)</strong> – Ongoing effort to extend CSS3.</li>
+        </ul>
+        <p>Each version of CSS builds upon the previous ones. CSS is referred as just CSS now, without a version number.
+        </p>
+
+        <h2 id="types-of-css">Types of CSS</h2>
+        <p><strong>1. Inline CSS:</strong> Applied directly via <code>style</code> attribute. Highest priority.</p>
+        <pre><code>&lt;p style="color: blue; font-size: 16px;"&gt;This line is an inline-styled paragraph.&lt;/p&gt;</code></pre>
+
+        <p><strong>2. Internal CSS:</strong> Defined within <code>&lt;style&gt;</code> in <code>&lt;head&gt;</code>.</p>
+        <pre><code>&lt;head&gt; &lt;style&gt; p { color: green; font-size: 18px; } &lt;/style&gt; &lt;/head&gt;</code></pre>
+
+        <p><strong>3. External CSS:</strong> Separate .css file linked via <code>&lt;link&gt;</code>.</p>
+        <pre><code>&lt;head&gt; &lt;link rel="stylesheet" href="styles.css"&gt; &lt;/head&gt;</code></pre>
+
+        <h2 id="advantages-css">Advantages of Using CSS</h2>
+        <ul>
+            <li>Responsive design – media queries, adapt to different screens.</li>
+            <li>Flexibility and Control – precise layout and typography.</li>
+            <li>Consistency and Reusability – central file, easy updates.</li>
+            <li>Search Engine Optimization (SEO) – better structure.</li>
+            <li>Ease of Maintenance – global changes.</li>
+            <li>Faster Page Loading – caching external CSS.</li>
+        </ul>
+
+        <h2 id="components-css">Components of CSS</h2>
+        <p>A CSS rule contains a <strong>selector</strong> and a <strong>declaration block</strong>.</p>
+
+        <h2 id="css-example">CSS Example</h2>
+        <pre><code>&lt;style&gt;
+  h1 { color: #36CFFF; }
+  p { font-size: 1.5em; color: white; }
+  div { border: 5px inset gold; background-color: black; width: 300px; text-align: center; }
+&lt;/style&gt;</code></pre>
+        <p>In the above: <code>h1, p, div</code> are selectors; <code>color, font-size</code> etc. are properties.</p>
+
+        <h2 id="getting-started">Getting Started with CSS</h2>
+        <p>Below listed topics are most important to learn in CSS from basics to advance …</p>
+
+        <h3 id="css-basics">CSS Basics</h3>
+        <ul>
+            <li>CSS Introduction</li>
+            <li>CSS Syntax</li>
+            <li>CSS Selectors</li>
+            <li>CSS Inclusion</li>
+            <li>CSS Comments</li>
+        </ul>
+
+        <h3 id="css-properties">CSS Properties</h3>
+        <ul>
+            <li>Background, Border, Display, Float, Font, Line Height, Margin, Opacity, Overflow, Padding, Position,
+                Align, White Space, Width, Height, Outline, Visibility, Counter</li>
+        </ul>
+
+        <h3 id="css-advanced">CSS Advanced</h3>
+        <ul>
+            <li>Animation, Gradient, Transition, Tooltips, Arrow, Grid, FlexBox, Responsive, Media Query, 2D/3D
+                Transforms, Pseudo Classes</li>
+        </ul>
+
+        <h3 id="css-practice">CSS Practice</h3>
+        <ul>
+            <li>Interview Questions, Online Quiz, Online Test, Mock Test, Cheatsheet</li>
+        </ul>
+
+        <h2 id="prerequisites">Prerequisites to Learn CSS</h2>
+        <p>HTML, text editors, browser dev tools, basic file management.</p>
+
+        <h2 id="faq">Frequently Asked Questions about CSS</h2>
+        <p><strong>Full form?</strong> Cascading Style Sheets. <strong>Alternatives?</strong> None, but preprocessors
+            like Sass. <strong>Current version?</strong> CSS3 + modules. <strong>Disadvantages?</strong> Browser
+            inconsistencies.</p>
+
+        <!-- roadmap etc -->
+        <div class="print-prev" id="print-page">
+            <span>📄 Print Page</span> <span>◀ Previous</span> <span>Next ▶</span>
+        </div>
+        <div class="advertisement">Advertisements</div>
+
+        <h2 id="roadmap">CSS - Roadmap</h2>
+        <p>Master CSS from beginner to expert. This roadmap helps you visualize the steps.</p>
+        <div class="roadmap-grid">
+            <span class="roadmap-item">CSS Introduction</span><span class="roadmap-item">Selectors</span><span
+                class="roadmap-item">Colors</span><span class="roadmap-item">Opacity</span>
+            <span class="roadmap-item">Backgrounds</span><span class="roadmap-item">Box Model</span><span
+                class="roadmap-item">Syntax</span><span class="roadmap-item">Inclusion</span>
+            <span class="roadmap-item">Text/Fonts</span><span class="roadmap-item">Styling Lists</span><span
+                class="roadmap-item">Display</span><span class="roadmap-item">Visibility</span>
+            <span class="roadmap-item">Positioning</span><span class="roadmap-item">Float</span><span
+                class="roadmap-item">Flexbox</span><span class="roadmap-item">Grid</span>
+            <span class="roadmap-item">Media Queries</span><span class="roadmap-item">Transition</span><span
+                class="roadmap-item">Transform</span><span class="roadmap-item">Animation</span>
+            <span class="roadmap-item">Units, Comments, Color Reference, Background Color</span>
+        </div>
+
+        <h2 id="introduction">CSS - Introduction</h2>
+        <p>CSS stands for Cascading Style Sheets, used to describe presentation. Example: layout with sidebar, header,
+            footer.</p>
+
+        <h2 id="syntax">CSS - Syntax</h2>
+        <pre><code>selector { property: value; }</code></pre>
+        <p>Multiple declarations: use semicolon. Grouping: <code>div, p { }</code> .</p>
+
+        <h2 id="inclusion">CSS Inclusion - How To Add CSS?</h2>
+        <p>Inline, internal, external, <code>@import</code>. Overriding rules explained.</p>
+
+        <h2 id="units">CSS - Units</h2>
+        <p>Absolute: cm, mm, in, px, pt, pc. Relative: em, rem, vw, vh, % …</p>
+
+        <h2 id="selectors">CSS - Selectors</h2>
+        <p>Universal, element, class, id, attribute, group, pseudo-class, pseudo-element, descendant, child, adjacent,
+            general sibling, nesting.</p>
+
+        <h2 id="colors">CSS - Colors</h2>
+        <p>Keyword, hexadecimal, RGB, RGBA, HSL, HSLA, currentcolor, system colors.</p>
+
+        <h2 id="backgrounds">CSS Backgrounds</h2>
+        <p>Background color, image, position, size, repeat, origin, attachment, clip.</p>
+
+        <h2 id="fonts">CSS - Fonts</h2>
+        <p>Font families, size, weight, style, shorthand.</p>
+
+        <h2 id="styling-text">CSS - Styling Text</h2>
+        <p>Color, alignment, decoration, indentation, spacing, shadow, transformation.</p>
+
+        <h2 id="images">CSS - Images</h2>
+        <p>Rounded, circular, bordered, filters, card, centering, overlays.</p>
+
+        <h2 id="links">CSS - Links</h2>
+        <p>States: link, visited, hover, active. Text/button/image links.</p>
+
+        <h2 id="tables">CSS - Styling Tables</h2>
+        <p>Borders, border-collapse, spacing, caption, empty cells, layout, alignment, backgrounds, stripes, responsive.
+        </p>
+
+        <h2 id="borders">CSS - Borders</h2>
+        <p>Style, width, color, individual sides, shorthand, border-image, radius.</p>
+
+        <h2 id="border-block">CSS - border-block Property</h2>
+        <p>Shorthand for border-block-width, style, color. Affected by writing mode.</p>
+
+        <h2 id="border-inline">CSS - border-inline Property</h2>
+        <p>Similar to border-block but inline direction.</p>
+
+        <h2 id="margins">CSS Margins</h2>
+        <p>Individual sides, shorthand, auto, percentage, centering.</p>
+
+        <h2 id="lists">CSS - Styling Lists</h2>
+        <p>list-style-type, image, position, shorthand. Definition lists.</p>
+
+        <h2 id="paddings">CSS - Paddings</h2>
+        <p>Padding vs margin, individual sides, shorthand, %.</p>
+
+        <h2 id="cursor">CSS - cursor Property</h2>
+        <p>auto, pointer, grab, zoom, etc. Custom images.</p>
+
+        <h2 id="outlines">CSS Outlines</h2>
+        <p>Outline vs border, style, width, color, offset, focus.</p>
+
+        <h2 id="dimension">CSS - Dimension</h2>
+        <p>height, width, max/min, examples.</p>
+
+        <h2 id="scrollbars">CSS - Scrollbars</h2>
+        <p>::-webkit-scrollbar pseudo-elements, styling track, thumb.</p>
+
+        <h2 id="inline-block">CSS Layout - display: inline-block</h2>
+        <p>Characteristics, compared to inline/block, navigation examples.</p>
+
+        <h2 id="dropdowns">CSS - Dropdowns</h2>
+        <p>Basic hover dropdown, right/left aligned, with images, navbar dropdown.</p>
+
+        <!-- final previous/next block -->
+        <div class="print-prev" id="previous-next">
+            <span>📄 Print Page</span> <span>◀ Previous</span> <span>Next ▶</span>
+        </div>
+        <div class="advertisement" id="advertisements">Advertisements · CSS - Roadmap repeated for spacing · all rights
+            reserved</div>
+        <p style="margin-top: 2rem; font-style: italic;">✎ notes compiled — each heading corresponds to left navigation.
+        </p>
+    </main>
+</body>
+
+</html>
