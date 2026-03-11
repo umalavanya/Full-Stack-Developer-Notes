@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧩 HTML APIs – geolocation, drag & drop, workers, sockets, storage, and more</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background: #f8fafc;
+            color: #0f172a;
+            line-height: 1.6;
+            padding: 2rem 1.5rem;
+        }
+
+        .notes-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 2.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .notes-header {
+            background: #0f172a;
+            color: white;
+            padding: 2rem 3rem;
+            border-bottom: 6px solid #f97316;
+        }
+
+        .notes-header h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            background: linear-gradient(145deg, #f97316, #fbbf24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .notes-header p {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            margin-top: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            background: #f1f5f9;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid #cbd5e1;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #1e293b;
+            font-weight: 600;
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            background: white;
+            border: 1px solid #cbd5e1;
+            transition: 0.1s;
+            font-size: 0.9rem;
+        }
+
+        .nav-links a:hover {
+            background: #f97316;
+            color: white;
+            border-color: #f97316;
+        }
+
+        .content {
+            padding: 3rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin: 2.5rem 0 1rem;
+            border-bottom: 3px solid #f97316;
+            display: inline-block;
+            padding-bottom: 0.3rem;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            margin: 2rem 0 0.8rem;
+            color: #0f172a;
+        }
+
+        p {
+            margin: 1rem 0;
+        }
+
+        pre {
+            background: #0b1120;
+            color: #e2e8f0;
+            padding: 1.3rem;
+            border-radius: 18px;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            border-left: 4px solid #f97316;
+            margin: 1.5rem 0;
+        }
+
+        code:not(pre code) {
+            background: #f1f5f9;
+            padding: 0.2rem 0.5rem;
+            border-radius: 6px;
+            font-family: monospace;
+            color: #b45309;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 1.5rem 0;
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        th {
+            background: #e2e8f0;
+            font-weight: 600;
+            padding: 0.7rem 1rem;
+        }
+
+        td {
+            padding: 0.7rem 1rem;
+            border-top: 1px solid #cbd5e1;
+        }
+
+        .hl {
+            background: #fef9c3;
+            color: #854d0e;
+            font-weight: 600;
+            padding: 0.2rem 0.4rem;
+            border-radius: 6px;
+        }
+
+        .note-box {
+            background: #fff7ed;
+            border-left: 4px solid #f97316;
+            padding: 1.2rem;
+            border-radius: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .footer {
+            background: #f1f5f9;
+            padding: 2rem;
+            text-align: center;
+            color: #475569;
+            border-top: 1px solid #cbd5e1;
+        }
+
+        .footer a {
+            color: #f97316;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        hr {
+            margin: 2rem 0;
+            border: 1px dashed #cbd5e1;
+        }
+
+        .api-demo-box {
+            background: #f1f5f9;
+            border-radius: 1rem;
+            padding: 1rem;
+            margin: 1.5rem 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="notes-container">
+        <div class="notes-header">
+            <h1>🧩 HTML APIs – modern browser capabilities</h1>
+            <p>geolocation · drag & drop · web workers · websockets · web storage · sse · mathml · microdata · indexeddb
+                · web messaging · cors · webrtc · tools</p>
+        </div>
+        <div class="nav-links">
+            <a href="index.html">🏠 main index</a>
+            <a href="#geo">geolocation</a>
+            <a href="#drag">drag & drop</a>
+            <a href="#workers">web workers</a>
+            <a href="#ws">websockets</a>
+            <a href="#storage">web storage</a>
+            <a href="#sse">SSE</a>
+            <a href="#mathml">MathML</a>
+            <a href="#microdata">microdata</a>
+            <a href="#indexeddb">IndexedDB</a>
+            <a href="#messaging">web messaging</a>
+            <a href="#cors">CORS</a>
+            <a href="#webrtc">WebRTC</a>
+            <a href="#tools">tools</a>
+        </div>
+
+        <div class="content">
+
+            <!-- 1. GEOLOCATION API -->
+            <h2 id="geo">📍 Geolocation API</h2>
+            <p>Get the user's geographic location (latitude/longitude) – requires permission.</p>
+            <pre>navigator.geolocation.getCurrentPosition(successCallback, errorCallback, options);</pre>
+
+            <h3>Example: get current location</h3>
+            <pre>&lt;button onclick="getLocation()"&gt;Show my location&lt;/button&gt;
+&lt;p id="demo"&gt;&lt;/p&gt;
+&lt;script&gt;
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPos, showErr);
+  } else {
+    document.getElementById('demo').innerHTML = "Geolocation not supported.";
+  }
+}
+function showPos(pos) {
+  document.getElementById('demo').innerHTML =
+    "Latitude: " + pos.coords.latitude + "&lt;br&gt;Longitude: " + pos.coords.longitude;
+}
+function showErr(err) {
+  switch(err.code) {
+    case err.PERMISSION_DENIED: alert("User denied"); break;
+    case err.POSITION_UNAVAILABLE: alert("Location unavailable"); break;
+    case err.TIMEOUT: alert("Timeout"); break;
+    default: alert("Unknown error");
+  }
+}
+&lt;/script&gt;</pre>
+
+            <div class="api-demo-box">
+                <p><strong>Live demo (requires permission):</strong></p>
+                <button onclick="getLocation()">📍 Show my location</button>
+                <p id="geoDemo"></p>
+            </div>
+
+            <h3>watchPosition() and clearWatch()</h3>
+            <pre>var watchId = navigator.geolocation.watchPosition(showPos, showErr, { enableHighAccuracy: true });
+navigator.geolocation.clearWatch(watchId);</pre>
+
+            <hr>
+
+            <!-- 2. DRAG AND DROP API -->
+            <h2 id="drag">🖱️ Drag and Drop API</h2>
+            <p>Make elements draggable with <code>draggable="true"</code> and handle events: <code>dragstart</code>,
+                <code>dragover</code>, <code>drop</code>, etc.</p>
+            <pre>&lt;div draggable="true" ondragstart="dragStart(event)"&gt;Drag me&lt;/div&gt;
+&lt;div ondrop="drop(event)" ondragover="allowDrop(event)"&gt;Drop here&lt;/div&gt;
+
+&lt;script&gt;
+function dragStart(ev) {
+  ev.dataTransfer.setData("text", ev.target.id);
+}
+function allowDrop(ev) {
+  ev.preventDefault();
+}
+function drop(ev) {
+  ev.preventDefault();
+  var data = ev.dataTransfer.getData("text");
+  ev.target.appendChild(document.getElementById(data));
+}
+&lt;/script&gt;</pre>
+
+            <div class="api-demo-box">
+                <p><strong>Simple drag & drop:</strong></p>
+                <div draggable="true" ondragstart="dragStart(event)" id="drag1"
+                    style="width:80px;height:80px;background:#f97316;color:white;display:flex;align-items:center;justify-content:center;border-radius:8px;cursor:move;">
+                    DRAG</div>
+                <div ondrop="drop(event)" ondragover="allowDrop(event)"
+                    style="width:200px;height:200px;border:2px dashed #aaa;margin-top:10px;display:flex;align-items:center;justify-content:center;">
+                    drop zone</div>
+            </div>
+
+            <h3>DataTransfer object</h3>
+            <p><code>setData(format, data)</code>, <code>getData(format)</code>, <code>setDragImage()</code>,
+                <code>effectAllowed</code>, <code>dropEffect</code>.</p>
+
+            <hr>
+
+            <!-- 3. WEB WORKERS API -->
+            <h2 id="workers">⚙️ Web Workers API</h2>
+            <p>Run JavaScript in background threads (no DOM access). Communicate via <code>postMessage</code> and
+                <code>onmessage</code>.</p>
+            <pre>// main.js
+var worker = new Worker('worker.js');
+worker.postMessage('start');
+worker.onmessage = function(e) { console.log('Received:', e.data); };
+worker.terminate();
+
+// worker.js
+onmessage = function(e) {
+  // heavy computation
+  postMessage('done');
+};</pre>
+
+            <h3>Example: factorial in worker</h3>
+            <pre>// worker: 
+onmessage = function(e) {
+  var n = e.data;
+  var fact = 1;
+  for (var i=1; i<=n; i++) fact *= i;
+  postMessage(fact);
+};</pre>
+
+            <p><strong>Error handling:</strong> <code>worker.onerror = function(e) { ... }</code></p>
+            <p><strong>Browser support check:</strong> <code>if (window.Worker) { ... }</code></p>
+
+            <hr>
+
+            <!-- 4. WEBSOCKETS -->
+            <h2 id="ws">🔌 WebSockets</h2>
+            <p>Full‑duplex communication over a single TCP connection.</p>
+            <pre>var socket = new WebSocket('ws://localhost:8080');
+socket.onopen = function() { socket.send('Hello'); };
+socket.onmessage = function(e) { console.log('Received:', e.data); };
+socket.onclose = function() { console.log('closed'); };
+socket.onerror = function(e) { console.error(e); };
+socket.close();</pre>
+
+            <p><strong>Attributes:</strong> <code>readyState</code> (0‑3), <code>bufferedAmount</code>.</p>
+            <p>Server example (Python with <code>websockets</code> library) is provided in the full notes.</p>
+
+            <hr>
+
+            <!-- 5. WEB STORAGE -->
+            <h2 id="storage">💾 Web Storage (sessionStorage / localStorage)</h2>
+            <p>Store key‑value pairs in the browser (up to ~5MB).</p>
+            <pre>// localStorage – persists until manually cleared
+localStorage.setItem('theme', 'dark');
+var theme = localStorage.getItem('theme');
+localStorage.removeItem('theme');
+localStorage.clear();
+
+// sessionStorage – cleared when tab/window closed
+sessionStorage.setItem('temp', 'data');</pre>
+
+            <div class="api-demo-box">
+                <p><strong>Demo:</strong></p>
+                <button
+                    onclick="localStorage.setItem('hit', (Number(localStorage.getItem('hit')||0)+1); alert('Hit count: '+localStorage.getItem('hit'))">Increment
+                    hit counter</button>
+                <button onclick="localStorage.removeItem('hit'); alert('Counter reset')">Reset</button>
+            </div>
+
+            <hr>
+
+            <!-- 6. SERVER‑SENT EVENTS (SSE) -->
+            <h2 id="sse">📡 Server‑Sent Events (SSE)</h2>
+            <p>Server pushes data to the client over HTTP (one‑way).</p>
+            <pre>var source = new EventSource('sse.php');
+source.onmessage = function(e) {
+  console.log('New message:', e.data);
+};
+source.addEventListener('custom', function(e) {
+  // event with name 'custom'
+});</pre>
+            <p>Server must set header <code>Content-Type: text/event-stream</code> and send data as
+                <code>data: ...\n\n</code>.</p>
+
+            <hr>
+
+            <!-- 7. MATHML -->
+            <h2 id="mathml">∑ MathML – mathematical markup</h2>
+            <p>Embed formulas using <code>&lt;math&gt;</code>.</p>
+            <pre>&lt;math&gt;
+  &lt;msup&gt;
+    &lt;mi&gt;a&lt;/mi&gt;
+    &lt;mn&gt;2&lt;/mn&gt;
+  &lt;/msup&gt;
+  &lt;mo&gt;+&lt;/mo&gt;
+  &lt;msup&gt;
+    &lt;mi&gt;b&lt;/mi&gt;
+    &lt;mn&gt;2&lt;/mn&gt;
+  &lt;/msup&gt;
+  &lt;mo&gt;=&lt;/mo&gt;
+  &lt;msup&gt;
+    &lt;mi&gt;c&lt;/mi&gt;
+    &lt;mn&gt;2&lt;/mn&gt;
+  &lt;/msup&gt;
+&lt;/math&gt;</pre>
+
+            <p>Supported in Firefox, Safari, Chrome (experimental).</p>
+
+            <hr>
+
+            <!-- 8. MICRODATA -->
+            <h2 id="microdata">🏷️ Microdata (structured data)</h2>
+            <p>Add machine‑readable semantics with <code>itemscope</code>, <code>itemtype</code>, <code>itemprop</code>.
+            </p>
+            <pre>&lt;div itemscope itemtype="http://schema.org/Person"&gt;
+  &lt;span itemprop="name"&gt;John Doe&lt;/span&gt;
+  &lt;img itemprop="image" src="john.jpg"&gt;
+  &lt;a itemprop="url" href="https://example.com"&gt;Website&lt;/a&gt;
+&lt;/div&gt;</pre>
+
+            <p>Used by search engines (Google Rich Snippets).</p>
+
+            <hr>
+
+            <!-- 9. INDEXEDDB -->
+            <h2 id="indexeddb">🗃️ IndexedDB – client‑side NoSQL database</h2>
+            <p>Asynchronous, object‑oriented database for large amounts of structured data.</p>
+            <pre>var request = indexedDB.open('myDB', 1);
+request.onupgradeneeded = function(e) {
+  var db = e.target.result;
+  var store = db.createObjectStore('items', { keyPath: 'id' });
+  store.createIndex('name', 'name', { unique: false });
+};
+request.onsuccess = function(e) { db = e.target.result; };
+
+function addItem() {
+  var tx = db.transaction(['items'], 'readwrite');
+  var store = tx.objectStore('items');
+  store.add({ id: 1, name: 'Apple' });
+}</pre>
+
+            <hr>
+
+            <!-- 10. WEB MESSAGING -->
+            <h2 id="messaging">📨 Web Messaging (postMessage)</h2>
+            <p>Cross‑origin communication between windows/iframes.</p>
+            <pre>// in main window
+var iframe = document.querySelector('iframe');
+iframe.contentWindow.postMessage('Hello', 'https://target.com');
+
+// in iframe
+window.addEventListener('message', function(e) {
+  if (e.origin !== 'https://allowed.com') return;
+  console.log('Received:', e.data);
+  e.source.postMessage('Reply', e.origin);
+});</pre>
+
+            <p><strong>MessageChannel</strong> for two‑way communication between ports.</p>
+
+            <hr>
+
+            <!-- 11. CORS -->
+            <h2 id="cors">🌐 CORS (Cross‑Origin Resource Sharing)</h2>
+            <p>Browser mechanism to allow requests to another origin if server sends appropriate headers.</p>
+            <pre>// server must send:
+Access-Control-Allow-Origin: *
+// or specific origin
+
+// simple request
+fetch('https://api.other.com/data', {
+  mode: 'cors'
+});</pre>
+            <p>Preflight request for methods other than GET/HEAD/POST, or with custom headers.</p>
+
+            <hr>
+
+            <!-- 12. WEBRTC -->
+            <h2 id="webrtc">📹 WebRTC – real‑time communication</h2>
+            <p>Peer‑to‑peer audio, video, and data.</p>
+            <ul>
+                <li><strong>MediaStream</strong> (getUserMedia) – access camera/microphone</li>
+                <li><strong>RTCPeerConnection</strong> – audio/video calling</li>
+                <li><strong>RTCDataChannel</strong> – peer‑to‑peer data</li>
+            </ul>
+            <pre>navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+  .then(stream => {
+    videoElement.srcObject = stream;
+  });</pre>
+
+            <hr>
+
+            <!-- 13. TOOLS & DEMOS -->
+            <h2 id="tools">🛠️ HTML tools & demos</h2>
+
+            <h3>Modernizr – feature detection</h3>
+            <pre>&lt;script src="modernizr.js"&gt;&lt;/script&gt;
+&lt;style&gt;
+.no-audio #music { display: none; }
+&lt;/style&gt;</pre>
+
+            <h3>QR Code generator (live)</h3>
+            <div class="api-demo-box">
+                <p>Enter text/URL: <input id="qrInput" value="https://tutorialspoint.com" style="width:60%;"></p>
+                <div id="qrDisplay"></div>
+            </div>
+
+            <h3>HTML5 Audio Visualizer demo</h3>
+            <p>Drag an MP3 file onto the area – the full code is in the chapter (audio visualizer with canvas).</p>
+
+            <h3>Custom Video Player</h3>
+            <pre>&lt;input type="file" accept="video/*"&gt;
+&lt;video controls&gt;&lt;/video&gt;
+&lt;script&gt;
+document.querySelector('input').addEventListener('change', function(e) {
+  var video = document.querySelector('video');
+  video.src = URL.createObjectURL(e.target.files[0]);
+});
+&lt;/script&gt;</pre>
+
+            <h3>Web Slide Desk</h3>
+            <p>Simple slide navigation with prev/next buttons (see chapter).</p>
+
+            <hr>
+
+            <div class="note-box">
+                <strong>📌 Summary:</strong> This page covers all major HTML5 APIs – from geolocation and drag & drop to
+                WebSockets, IndexedDB, WebRTC, and microdata. Each API includes syntax, examples, and practical usage.
+            </div>
+
+        </div>
+
+        <div class="footer">
+            ⚡ part of your full‑stack notes · <a href="index.html">back to main index</a> · <a href="#">top ↑</a>
+        </div>
+    </div>
+
+    <!-- scripts for live demos -->
+    <script>
+        // geolocation demo
+        function getLocation() {
+            var out = document.getElementById('geoDemo');
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function (pos) { out.innerHTML = "Lat: " + pos.coords.latitude + "<br>Lng: " + pos.coords.longitude; },
+                    function (err) { out.innerHTML = "Error: " + err.message; }
+                );
+            } else {
+                out.innerHTML = "Geolocation not supported.";
+            }
+        }
+
+        // drag & drop demo
+        function dragStart(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+        function drop(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            ev.target.appendChild(document.getElementById(data));
+        }
+
+        // QR code simple demo
+        var qrInput = document.getElementById('qrInput');
+        var qrDiv = document.getElementById('qrDisplay');
+        function updateQR() {
+            var val = qrInput.value.trim();
+            if (val === '') return;
+            // Use a public QR code API (for demo only)
+            qrDiv.innerHTML = '<img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=' + encodeURIComponent(val) + '" alt="QR">';
+        }
+        qrInput.addEventListener('input', updateQR);
+        updateQR();
+
+        // localStorage demo
+        window.incrementHit = function () {
+            var hits = Number(localStorage.getItem('hit') || 0) + 1;
+            localStorage.setItem('hit', hits);
+            alert('Hit counter: ' + hits);
+        };
+        window.resetHit = function () {
+            localStorage.removeItem('hit');
+            alert('Counter reset');
+        };
+    </script>
+</body>
+
+</html>

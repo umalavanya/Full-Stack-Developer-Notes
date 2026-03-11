@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧩 HTML head · layouts · graphics – complete module</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background: #f8fafc;
+            color: #0f172a;
+            line-height: 1.6;
+            padding: 2rem 1.5rem;
+        }
+
+        .notes-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 2.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .notes-header {
+            background: #0f172a;
+            color: white;
+            padding: 2rem 3rem;
+            border-bottom: 6px solid #f97316;
+        }
+
+        .notes-header h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            background: linear-gradient(145deg, #f97316, #fbbf24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .notes-header p {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            margin-top: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            background: #f1f5f9;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid #cbd5e1;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #1e293b;
+            font-weight: 600;
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            background: white;
+            border: 1px solid #cbd5e1;
+            transition: 0.1s;
+            font-size: 0.9rem;
+        }
+
+        .nav-links a:hover {
+            background: #f97316;
+            color: white;
+            border-color: #f97316;
+        }
+
+        .content {
+            padding: 3rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin: 2.5rem 0 1rem;
+            border-bottom: 3px solid #f97316;
+            display: inline-block;
+            padding-bottom: 0.3rem;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            margin: 2rem 0 0.8rem;
+            color: #0f172a;
+        }
+
+        p {
+            margin: 1rem 0;
+        }
+
+        pre {
+            background: #0b1120;
+            color: #e2e8f0;
+            padding: 1.3rem;
+            border-radius: 18px;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            border-left: 4px solid #f97316;
+            margin: 1.5rem 0;
+        }
+
+        code:not(pre code) {
+            background: #f1f5f9;
+            padding: 0.2rem 0.5rem;
+            border-radius: 6px;
+            font-family: monospace;
+            color: #b45309;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 1.5rem 0;
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        th {
+            background: #e2e8f0;
+            font-weight: 600;
+            padding: 0.7rem 1rem;
+        }
+
+        td {
+            padding: 0.7rem 1rem;
+            border-top: 1px solid #cbd5e1;
+        }
+
+        .hl {
+            background: #fef9c3;
+            color: #854d0e;
+            font-weight: 600;
+            padding: 0.2rem 0.4rem;
+            border-radius: 6px;
+        }
+
+        .note-box {
+            background: #fff7ed;
+            border-left: 4px solid #f97316;
+            padding: 1.2rem;
+            border-radius: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .footer {
+            background: #f1f5f9;
+            padding: 2rem;
+            text-align: center;
+            color: #475569;
+            border-top: 1px solid #cbd5e1;
+        }
+
+        .footer a {
+            color: #f97316;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        hr {
+            margin: 2rem 0;
+            border: 1px dashed #cbd5e1;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="notes-container">
+        <div class="notes-header">
+            <h1>🧩 HTML head · layouts · graphics – complete module</h1>
+            <p>head elements, favicon, scripting, layouts, responsive, symbols, emojis, style guide, SVG, canvas</p>
+        </div>
+        <div class="nav-links">
+            <a href="index.html">🏠 main index</a>
+            <a href="#head">head elements</a>
+            <a href="#favicon">favicon</a>
+            <a href="#javascript">JavaScript</a>
+            <a href="#layouts">layouts</a>
+            <a href="#responsive">responsive</a>
+            <a href="#symbols">symbols</a>
+            <a href="#emojis">emojis</a>
+            <a href="#style-guide">style guide</a>
+            <a href="#svg">SVG</a>
+            <a href="#canvas">canvas</a>
+        </div>
+
+        <div class="content">
+
+            <!-- 1. HEAD ELEMENTS -->
+            <h2 id="head">📌 HTML head elements</h2>
+            <p>The <code>&lt;head&gt;</code> section contains metadata and links to external resources – not displayed
+                on the page.</p>
+
+            <h3><code>&lt;title&gt;</code> – page title</h3>
+            <pre>&lt;title&gt;My awesome page&lt;/title&gt;</pre>
+
+            <h3><code>&lt;meta&gt;</code> – metadata</h3>
+            <pre>&lt;meta charset="UTF-8"&gt;
+&lt;meta name="description" content="Free tutorials"&gt;
+&lt;meta name="keywords" content="HTML, CSS, JavaScript"&gt;
+&lt;meta name="author" content="John Doe"&gt;
+&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+&lt;meta http-equiv="refresh" content="30"&gt;
+&lt;meta name="robots" content="noindex, nofollow"&gt;</pre>
+
+            <h3><code>&lt;base&gt;</code> – base URL for relative links</h3>
+            <pre>&lt;base href="https://www.tutorialspoint.com/" target="_blank"&gt;</pre>
+
+            <h3><code>&lt;link&gt;</code> – external resources (CSS, favicon)</h3>
+            <pre>&lt;link rel="stylesheet" href="style.css"&gt;
+&lt;link rel="icon" href="favicon.ico" type="image/x-icon"&gt;</pre>
+
+            <h3><code>&lt;style&gt;</code> – internal CSS</h3>
+            <pre>&lt;style&gt;
+  body { background: lightblue; }
+&lt;/style&gt;</pre>
+
+            <h3><code>&lt;script&gt;</code> – JavaScript (internal/external)</h3>
+            <pre>&lt;script src="script.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  function hello() { alert('hi'); }
+&lt;/script&gt;</pre>
+
+            <hr>
+
+            <!-- 2. FAVICON -->
+            <h2 id="favicon">⭐ Favicon (favorite icon)</h2>
+            <p>A small icon displayed in the browser tab. Add using <code>&lt;link rel="icon"&gt;</code> inside
+                <code>&lt;head&gt;</code>.</p>
+            <pre>&lt;link rel="icon" type="image/png" href="favicon.png"&gt;
+&lt;link rel="icon" type="image/x-icon" href="favicon.ico"&gt;</pre>
+            <p>Formats: ICO, PNG, GIF, SVG. Common sizes: 16x16, 32x32, 48x48.</p>
+
+            <hr>
+
+            <!-- 3. JAVASCRIPT IN HTML -->
+            <h2 id="javascript">⚡ JavaScript in HTML</h2>
+            <p>Three ways to include JavaScript:</p>
+            <ul>
+                <li><strong>Inline:</strong> <code>&lt;button onclick="alert('hi')"&gt;</code></li>
+                <li><strong>Internal:</strong> inside <code>&lt;script&gt; ... &lt;/script&gt;</code></li>
+                <li><strong>External:</strong> <code>&lt;script src="file.js"&gt;&lt;/script&gt;</code></li>
+            </ul>
+            <h3>Example: internal script</h3>
+            <pre>&lt;script&gt;
+  function showMessage() {
+    alert('Hello from internal script');
+  }
+&lt;/script&gt;
+&lt;button onclick="showMessage()"&gt;Click&lt;/button&gt;</pre>
+
+            <h3><code>&lt;noscript&gt;</code> – fallback for disabled JS</h3>
+            <pre>&lt;noscript&gt;Your browser does not support JavaScript.&lt;/noscript&gt;</pre>
+
+            <hr>
+
+            <!-- 4. LAYOUTS -->
+            <h2 id="layouts">📐 HTML layouts – semantic elements</h2>
+            <p>Use semantic tags to structure your page:
+                <code>&lt;header&gt;, &lt;nav&gt;, &lt;section&gt;, &lt;article&gt;, &lt;aside&gt;, &lt;footer&gt;</code>.
+            </p>
+            <pre>&lt;body&gt;
+  &lt;header&gt;Header&lt;/header&gt;
+  &lt;nav&gt;Navigation&lt;/nav&gt;
+  &lt;section&gt;
+    &lt;article&gt;Main content&lt;/article&gt;
+    &lt;aside&gt;Sidebar&lt;/aside&gt;
+  &lt;/section&gt;
+  &lt;footer&gt;Footer&lt;/footer&gt;
+&lt;/body&gt;</pre>
+
+            <h3>Layout using CSS float</h3>
+            <pre>nav { float: left; width: 20%; }
+article { float: left; width: 80%; }</pre>
+
+            <h3>Layout using CSS flexbox</h3>
+            <pre>.container { display: flex; }
+nav { flex: 1; }
+article { flex: 4; }</pre>
+
+            <h3>Layout using CSS grid</h3>
+            <pre>.grid { display: grid; grid-template-columns: 1fr 4fr; }</pre>
+
+            <hr>
+
+            <!-- 5. RESPONSIVE WEB DESIGN -->
+            <h2 id="responsive">📱 Responsive web design</h2>
+            <p>Make pages adapt to different screen sizes.</p>
+
+            <h3>Viewport meta tag</h3>
+            <pre>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</pre>
+
+            <h3>Responsive images</h3>
+            <pre>&lt;img src="image.jpg" style="max-width:100%; height:auto;"&gt;</pre>
+
+            <h3>Media queries</h3>
+            <pre>@media screen and (max-width: 600px) {
+  body { background: lightblue; }
+  .sidebar { display: none; }
+}</pre>
+
+            <h3>Responsive text (vw unit)</h3>
+            <pre>&lt;h1 style="font-size:6vw;"&gt;Responsive heading&lt;/h1&gt;</pre>
+
+            <hr>
+
+            <!-- 6. SYMBOLS -->
+            <h2 id="symbols">🔣 HTML symbols (entities)</h2>
+            <p>Use entities to display special characters.</p>
+            <table>
+                <tr>
+                    <th>Symbol</th>
+                    <th>Entity name</th>
+                    <th>Entity number</th>
+                </tr>
+                <tr>
+                    <td>©</td>
+                    <td>&amp;copy;</td>
+                    <td>&amp;#169;</td>
+                </tr>
+                <tr>
+                    <td>®</td>
+                    <td>&amp;reg;</td>
+                    <td>&amp;#174;</td>
+                </tr>
+                <tr>
+                    <td>™</td>
+                    <td>&amp;trade;</td>
+                    <td>&amp;#8482;</td>
+                </tr>
+                <tr>
+                    <td>€</td>
+                    <td>&amp;euro;</td>
+                    <td>&amp;#8364;</td>
+                </tr>
+                <tr>
+                    <td>₹</td>
+                    <td>—</td>
+                    <td>&amp;#8377;</td>
+                </tr>
+                <tr>
+                    <td>←</td>
+                    <td>&amp;larr;</td>
+                    <td>&amp;#8592;</td>
+                </tr>
+                <tr>
+                    <td>→</td>
+                    <td>&amp;rarr;</td>
+                    <td>&amp;#8594;</td>
+                </tr>
+                <tr>
+                    <td>∑</td>
+                    <td>&amp;sum;</td>
+                    <td>&amp;#8721;</td>
+                </tr>
+                <tr>
+                    <td>♥</td>
+                    <td>&amp;hearts;</td>
+                    <td>&amp;#9829;</td>
+                </tr>
+            </table>
+
+            <hr>
+
+            <!-- 7. EMOJIS -->
+            <h2 id="emojis">😊 HTML emojis (UTF-8)</h2>
+            <p>Emojis are characters from the UTF-8 set. Use decimal or hexadecimal codes.</p>
+            <pre>&lt;meta charset="UTF-8"&gt;
+&lt;p&gt;Smiley: &amp;#128512;  (decimal) &amp;#x1F600; (hex)&lt;/p&gt;</pre>
+            <table>
+                <tr>
+                    <th>Emoji</th>
+                    <th>Decimal</th>
+                    <th>Hex</th>
+                </tr>
+                <tr>
+                    <td>😈</td>
+                    <td>&amp;#128520;</td>
+                    <td>&amp;#x1F608;</td>
+                </tr>
+                <tr>
+                    <td>😂</td>
+                    <td>&amp;#128514;</td>
+                    <td>&amp;#x1F602;</td>
+                </tr>
+                <tr>
+                    <td>👍</td>
+                    <td>&amp;#128077;</td>
+                    <td>&amp;#x1F44D;</td>
+                </tr>
+                <tr>
+                    <td>😁</td>
+                    <td>&amp;#128513;</td>
+                    <td>&amp;#x1F601;</td>
+                </tr>
+                <tr>
+                    <td>😍</td>
+                    <td>&amp;#128525;</td>
+                    <td>&amp;#x1F60D;</td>
+                </tr>
+                <tr>
+                    <td>😭</td>
+                    <td>&amp;#128557;</td>
+                    <td>&amp;#x1F62D;</td>
+                </tr>
+            </table>
+
+            <hr>
+
+            <!-- 8. STYLE GUIDE -->
+            <h2 id="style-guide">📝 HTML style guide (best practices)</h2>
+            <ul>
+                <li>Always declare <code>&lt;!DOCTYPE html&gt;</code></li>
+                <li>Specify document language: <code>&lt;html lang="en"&gt;</code></li>
+                <li>Set character encoding: <code>&lt;meta charset="UTF-8"&gt;</code></li>
+                <li>Use lowercase for elements and attributes</li>
+                <li>Quote attribute values (double quotes)</li>
+                <li>Close all tags (including optional ones like <code>&lt;/p&gt;</code>)</li>
+                <li>Use proper indentation (2 or 4 spaces)</li>
+                <li>Add comments: <code>&lt;!-- section explanation --&gt;</code></li>
+                <li>Set viewport for mobile: <code>&lt;meta name="viewport" ...&gt;</code></li>
+            </ul>
+
+            <hr>
+
+            <!-- 9. SVG -->
+            <h2 id="svg">🎨 SVG – scalable vector graphics</h2>
+            <p>Define vector graphics using XML. Embed with <code>&lt;svg&gt;</code> or <code>&lt;img&gt;</code>.</p>
+
+            <h3>Basic shapes</h3>
+            <pre>&lt;svg width="200" height="200"&gt;
+  &lt;circle cx="50" cy="50" r="40" fill="red" /&gt;
+  &lt;rect x="10" y="10" width="80" height="60" fill="blue" /&gt;
+  &lt;line x1="0" y1="0" x2="100" y2="100" stroke="green" stroke-width="2" /&gt;
+  &lt;ellipse cx="100" cy="100" rx="50" ry="30" fill="purple" /&gt;
+  &lt;polygon points="20,10 300,20 170,50" fill="orange" /&gt;
+  &lt;polyline points="0,0 0,30 30,30 30,60" fill="none" stroke="black" /&gt;
+&lt;/svg&gt;</pre>
+
+            <h3>Gradient example</h3>
+            <pre>&lt;svg&gt;
+  &lt;defs&gt;
+    &lt;linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%"&gt;
+      &lt;stop offset="0%" style="stop-color:red;" /&gt;
+      &lt;stop offset="100%" style="stop-color:blue;" /&gt;
+    &lt;/linearGradient&gt;
+  &lt;/defs&gt;
+  &lt;rect x="10" y="10" width="150" height="80" fill="url(#grad)" /&gt;
+&lt;/svg&gt;</pre>
+
+            <hr>
+
+            <!-- 10. CANVAS -->
+            <h2 id="canvas">🖼️ HTML canvas – drawing with JavaScript</h2>
+            <p><code>&lt;canvas&gt;</code> creates a drawing surface. Use JavaScript to draw.</p>
+            <pre>&lt;canvas id="myCanvas" width="300" height="200" style="border:1px solid #ccc;"&gt;&lt;/canvas&gt;
+&lt;script&gt;
+  const canvas = document.getElementById('myCanvas');
+  const ctx = canvas.getContext('2d');
+
+  // rectangle
+  ctx.fillStyle = 'red';
+  ctx.fillRect(20, 20, 100, 80);
+
+  // circle
+  ctx.beginPath();
+  ctx.arc(150, 100, 40, 0, 2*Math.PI);
+  ctx.fillStyle = 'blue';
+  ctx.fill();
+
+  // line
+  ctx.beginPath();
+  ctx.moveTo(10, 10);
+  ctx.lineTo(200, 150);
+  ctx.strokeStyle = 'green';
+  ctx.stroke();
+
+  // text
+  ctx.font = '20px Arial';
+  ctx.fillStyle = 'black';
+  ctx.fillText('Hello canvas', 30, 180);
+&lt;/script&gt;</pre>
+
+            <h3>Canvas methods overview</h3>
+            <ul>
+                <li><code>fillRect(x, y, w, h)</code> – filled rectangle</li>
+                <li><code>strokeRect(x, y, w, h)</code> – outlined rectangle</li>
+                <li><code>clearRect(x, y, w, h)</code> – clear area</li>
+                <li><code>beginPath(), moveTo(), lineTo(), stroke()</code> – draw lines</li>
+                <li><code>arc(x, y, r, startAngle, endAngle)</code> – circle/arc</li>
+                <li><code>quadraticCurveTo(), bezierCurveTo()</code> – curves</li>
+                <li><code>fillText(), strokeText()</code> – text</li>
+                <li><code>drawImage()</code> – place images</li>
+                <li><code>createLinearGradient(), createRadialGradient()</code> – gradients</li>
+                <li><code>translate(), rotate(), scale()</code> – transformations</li>
+                <li><code>save(), restore()</code> – save/restore state</li>
+            </ul>
+
+            <div class="note-box">
+                <strong>📌 Summary:</strong> This page covers everything about the HTML <code>&lt;head&gt;</code>,
+                favicon, including JavaScript, layout techniques (semantic, float, flex, grid), responsive design,
+                symbols, emojis, style best practices, and the two graphics powerhouses: SVG and Canvas.
+            </div>
+
+        </div>
+
+        <div class="footer">
+            ⚡ part of your full‑stack notes · <a href="index.html">back to main index</a> · <a href="#">top ↑</a>
+        </div>
+    </div>
+</body>
+
+</html>

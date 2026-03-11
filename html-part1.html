@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📄 HTML complete notes – from beginner to advanced</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background: #f8fafc;
+            color: #0f172a;
+            line-height: 1.6;
+            padding: 2rem 1.5rem;
+        }
+
+        .notes-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 2.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .notes-header {
+            background: #0f172a;
+            color: white;
+            padding: 2rem 3rem;
+            border-bottom: 6px solid #f97316;
+        }
+
+        .notes-header h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            background: linear-gradient(145deg, #f97316, #fbbf24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .notes-header p {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            margin-top: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+            background: #f1f5f9;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid #cbd5e1;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #1e293b;
+            font-weight: 600;
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            background: white;
+            border: 1px solid #cbd5e1;
+            transition: 0.1s;
+        }
+
+        .nav-links a:hover {
+            background: #f97316;
+            color: white;
+            border-color: #f97316;
+        }
+
+        .content {
+            padding: 3rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin: 2.5rem 0 1rem;
+            border-bottom: 3px solid #f97316;
+            display: inline-block;
+            padding-bottom: 0.3rem;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            margin: 2rem 0 0.8rem;
+            color: #0f172a;
+        }
+
+        p {
+            margin: 1rem 0;
+        }
+
+        pre {
+            background: #0b1120;
+            color: #e2e8f0;
+            padding: 1.3rem;
+            border-radius: 18px;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            border-left: 4px solid #f97316;
+            margin: 1.5rem 0;
+        }
+
+        code:not(pre code) {
+            background: #f1f5f9;
+            padding: 0.2rem 0.5rem;
+            border-radius: 6px;
+            font-family: monospace;
+            color: #b45309;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 1.5rem 0;
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        th {
+            background: #e2e8f0;
+            font-weight: 600;
+            padding: 0.7rem 1rem;
+        }
+
+        td {
+            padding: 0.7rem 1rem;
+            border-top: 1px solid #cbd5e1;
+        }
+
+        .hl {
+            background: #fef9c3;
+            color: #854d0e;
+            font-weight: 600;
+            padding: 0.2rem 0.4rem;
+            border-radius: 6px;
+        }
+
+        .note-box {
+            background: #fff7ed;
+            border-left: 4px solid #f97316;
+            padding: 1.2rem;
+            border-radius: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .footer {
+            background: #f1f5f9;
+            padding: 2rem;
+            text-align: center;
+            color: #475569;
+            border-top: 1px solid #cbd5e1;
+        }
+
+        .footer a {
+            color: #f97316;
+            font-weight: 600;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="notes-container">
+        <div class="notes-header">
+            <h1>📄 HTML – complete tutorial</h1>
+            <p>from "what is HTML?" to semantic layout, forms, iframes, and best practices</p>
+        </div>
+        <div class="nav-links">
+            <a href="index.html">🏠 main index</a>
+            <a href="#basics">basics</a>
+            <a href="#elements">elements</a>
+            <a href="#attributes">attributes</a>
+            <a href="#formatting">formatting</a>
+            <a href="#images">images & maps</a>
+            <a href="#frames">iframes</a>
+            <a href="#advanced">advanced</a>
+        </div>
+
+        <div class="content">
+
+            <!-- 1. INTRODUCTION & BASICS -->
+            <h2 id="basics">1. What is HTML?</h2>
+            <p><span class="hl">HTML (HyperText Markup Language)</span> is the standard markup language for creating web
+                pages. It describes the structure of a page using elements enclosed in tags. HTML is
+                <strong>not</strong> a programming language – it's a markup language that tells the browser how to
+                display content.</p>
+            <ul>
+                <li><strong>HyperText</strong> – links that connect pages</li>
+                <li><strong>Markup Language</strong> – uses tags to define elements (headings, paragraphs, links...)
+                </li>
+            </ul>
+            <div class="note-box">
+                <strong>Why learn HTML?</strong> It's the foundation of every website. Without HTML you cannot build web
+                pages. It's essential for front‑end, back‑end, and full‑stack developers.
+            </div>
+            <h3>Your first HTML page</h3>
+            <pre>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;My First Page&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Hello, world!&lt;/h1&gt;
+    &lt;p&gt;This is a paragraph.&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+            <p>Save as <code>my.html</code> and open in any browser.</p>
+
+            <h3>HTML page structure explained</h3>
+            <ul>
+                <li><code>&lt;!DOCTYPE html&gt;</code> – tells browser it's HTML5</li>
+                <li><code>&lt;html&gt;</code> – root element</li>
+                <li><code>&lt;head&gt;</code> – meta info, title, links to CSS/JS</li>
+                <li><code>&lt;title&gt;</code> – page title (browser tab)</li>
+                <li><code>&lt;body&gt;</code> – visible content</li>
+            </ul>
+
+            <h3>Basic tags (headings, paragraphs, breaks)</h3>
+            <pre>&lt;h1&gt;Main heading&lt;/h1&gt;
+&lt;h2&gt;Subheading&lt;/h2&gt;
+&lt;p&gt;This is a paragraph with a&lt;br&gt;line break.&lt;/p&gt;
+&lt;hr&gt; &lt;!-- horizontal rule --&gt;</pre>
+
+            <h3>Comments</h3>
+            <pre>&lt;!-- this is a comment ––&gt;</pre>
+
+            <!-- 2. HTML ELEMENTS -->
+            <h2 id="elements">2. HTML elements & tags</h2>
+            <p>An <span class="hl">element</span> consists of an opening tag, content, and a closing tag. Some elements
+                are <strong>void</strong> (no content, e.g. <code>&lt;img&gt;</code>, <code>&lt;br&gt;</code>).</p>
+            <pre>&lt;p&gt;This is a paragraph element.&lt;/p&gt;
+&lt;img src="photo.jpg" alt="description"&gt; &lt;!-- void element --&gt;</pre>
+
+            <h3>Nested elements</h3>
+            <pre>&lt;div&gt;
+  &lt;p&gt;A paragraph inside a &lt;strong&gt;div&lt;/strong&gt;.&lt;/p&gt;
+&lt;/div&gt;</pre>
+
+            <h3>Block vs inline</h3>
+            <ul>
+                <li><strong>Block</strong>: start on new line, take full width
+                    (<code>&lt;div&gt;, &lt;p&gt;, &lt;h1&gt;</code>)</li>
+                <li><strong>Inline</strong>: flow within text (<code>&lt;span&gt;, &lt;a&gt;, &lt;img&gt;</code>)</li>
+            </ul>
+
+            <!-- 3. ATTRIBUTES -->
+            <h2 id="attributes">3. HTML attributes</h2>
+            <p>Attributes provide additional information about an element. They go inside the opening tag.</p>
+            <pre>&lt;tag attribute="value"&gt;content&lt;/tag&gt;</pre>
+            <table>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Example</th>
+                    <th>Purpose</th>
+                </tr>
+                <tr>
+                    <td>id</td>
+                    <td><code>&lt;div id="header"&gt;</code></td>
+                    <td>unique identifier</td>
+                </tr>
+                <tr>
+                    <td>class</td>
+                    <td><code>&lt;p class="highlight"&gt;</code></td>
+                    <td>CSS class</td>
+                </tr>
+                <tr>
+                    <td>style</td>
+                    <td><code>style="color:red;"</code></td>
+                    <td>inline CSS</td>
+                </tr>
+                <tr>
+                    <td>src</td>
+                    <td><code>&lt;img src="image.jpg"&gt;</code></td>
+                    <td>source for media</td>
+                </tr>
+                <tr>
+                    <td>href</td>
+                    <td><code>&lt;a href="link.html"&gt;</code></td>
+                    <td>hyperlink reference</td>
+                </tr>
+                <tr>
+                    <td>alt</td>
+                    <td><code>alt="description"</code></td>
+                    <td>alternate text (image)</td>
+                </tr>
+                <tr>
+                    <td>title</td>
+                    <td><code>title="tooltip"</code></td>
+                    <td>extra info (tooltip)</td>
+                </tr>
+                <tr>
+                    <td>dir</td>
+                    <td><code>dir="rtl"</code></td>
+                    <td>text direction</td>
+                </tr>
+            </table>
+            <p><span class="hl">Boolean attributes</span> (no value needed):
+                <code>disabled, required, readonly, checked</code>.</p>
+
+            <!-- 4. HEADINGS & PARAGRAPHS (detailed) -->
+            <h2>4. Headings & paragraphs</h2>
+            <h3>Headings <code>&lt;h1&gt;–&lt;h6&gt;</code></h3>
+            <pre>&lt;h1&gt;Most important&lt;/h1&gt;
+&lt;h2&gt;Section title&lt;/h2&gt;
+&lt;h6&gt;Lowest level&lt;/h6&gt;</pre>
+            <p>Use headings to create a document outline – important for SEO and accessibility.</p>
+
+            <h3>Paragraphs <code>&lt;p&gt;</code></h3>
+            <pre>&lt;p&gt;This is a paragraph. Browsers add space before/after.&lt;/p&gt;</pre>
+            <p>You can combine with <code>&lt;br&gt;</code> (line break) and <code>&lt;hr&gt;</code> (thematic break).
+            </p>
+
+            <!-- 5. TEXT FORMATTING & PHRASE TAGS -->
+            <h2>5. Text formatting & phrase tags</h2>
+            <table>
+                <tr>
+                    <th>Tag</th>
+                    <th>Description</th>
+                    <th>Example</th>
+                </tr>
+                <tr>
+                    <td>&lt;b&gt;</td>
+                    <td>bold (visual)</td>
+                    <td><b>bold</b></td>
+                </tr>
+                <tr>
+                    <td>&lt;strong&gt;</td>
+                    <td>strong importance (bold + semantic)</td>
+                    <td><strong>important</strong></td>
+                </tr>
+                <tr>
+                    <td>&lt;i&gt;</td>
+                    <td>italic (visual)</td>
+                    <td><i>italic</i></td>
+                </tr>
+                <tr>
+                    <td>&lt;em&gt;</td>
+                    <td>emphasized (italic + semantic)</td>
+                    <td><em>emphasis</em></td>
+                </tr>
+                <tr>
+                    <td>&lt;mark&gt;</td>
+                    <td>highlighted</td>
+                    <td><mark>marked</mark></td>
+                </tr>
+                <tr>
+                    <td>&lt;small&gt;</td>
+                    <td>smaller text</td>
+                    <td><small>small</small></td>
+                </tr>
+                <tr>
+                    <td>&lt;del&gt;</td>
+                    <td>deleted (strikethrough)</td>
+                    <td><del>deleted</del></td>
+                </tr>
+                <tr>
+                    <td>&lt;ins&gt;</td>
+                    <td>inserted (underline)</td>
+                    <td><ins>inserted</ins></td>
+                </tr>
+                <tr>
+                    <td>&lt;sub&gt;</td>
+                    <td>subscript</td>
+                    <td>H<sub>2</sub>O</td>
+                </tr>
+                <tr>
+                    <td>&lt;sup&gt;</td>
+                    <td>superscript</td>
+                    <td>10<sup>th</sup></td>
+                </tr>
+                <tr>
+                    <td>&lt;code&gt;</td>
+                    <td>code fragment</td>
+                    <td><code>let x = 5;</code></td>
+                </tr>
+                <tr>
+                    <td>&lt;kbd&gt;</td>
+                    <td>keyboard input</td>
+                    <td><kbd>Ctrl+C</kbd></td>
+                </tr>
+                <tr>
+                    <td>&lt;samp&gt;</td>
+                    <td>sample output</td>
+                    <td><samp>error</samp></td>
+                </tr>
+                <tr>
+                    <td>&lt;var&gt;</td>
+                    <td>variable</td>
+                    <td><var>i</var></td>
+                </tr>
+                <tr>
+                    <td>&lt;pre&gt;</td>
+                    <td>preformatted (preserves spaces)</td>
+                    <td>
+                        <pre>  hello</pre>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- 6. QUOTATIONS & CITATIONS -->
+            <h2>6. Quotations & citations</h2>
+            <ul>
+                <li><code>&lt;q&gt;</code> – short inline quote (adds quotes)</li>
+                <li><code>&lt;blockquote&gt;</code> – long block‑level quote (indented)</li>
+                <li><code>&lt;cite&gt;</code> – title of a work</li>
+                <li><code>&lt;abbr&gt;</code> – abbreviation (with title attribute)</li>
+                <li><code>&lt;address&gt;</code> – contact info</li>
+                <li><code>&lt;bdo&gt;</code> – override text direction</li>
+            </ul>
+            <pre>&lt;q&gt;Short quote&lt;/q&gt;
+&lt;blockquote cite="source-url"&gt;Longer quote...&lt;/blockquote&gt;
+&lt;cite&gt;Book title&lt;/cite&gt;
+&lt;abbr title="HyperText Markup Language"&gt;HTML&lt;/abbr&gt;
+&lt;address&gt;123 Main St, City&lt;/address&gt;
+&lt;bdo dir="rtl"&gt;This text is right-to-left.&lt;/bdo&gt;</pre>
+
+            <!-- 7. LISTS -->
+            <h2>7. Lists</h2>
+            <h3>Unordered list <code>&lt;ul&gt;</code></h3>
+            <pre>&lt;ul&gt;
+  &lt;li&gt;Item 1&lt;/li&gt;
+  &lt;li&gt;Item 2&lt;/li&gt;
+&lt;/ul&gt;</pre>
+            <h3>Ordered list <code>&lt;ol&gt;</code></h3>
+            <pre>&lt;ol&gt;
+  &lt;li&gt;First&lt;/li&gt;
+  &lt;li&gt;Second&lt;/li&gt;
+&lt;/ol&gt;</pre>
+            <p>You can nest lists, change marker type with <code>type="1/A/a/I/i"</code>, start with
+                <code>start="5"</code>.</p>
+
+            <!-- 8. IMAGES & IMAGE MAPS -->
+            <h2 id="images">8. Images & image maps</h2>
+            <pre>&lt;img src="path.jpg" alt="description" width="300" height="200"&gt;</pre>
+            <p>Supported formats: JPEG, PNG, GIF, SVG, WebP. Use <code>alt</code> for accessibility.</p>
+
+            <h3>Image maps (<code>&lt;map&gt; + &lt;area&gt;</code>)</h3>
+            <pre>&lt;img src="map.jpg" usemap="#workmap"&gt;
+&lt;map name="workmap"&gt;
+  &lt;area shape="rect" coords="34,44,270,350" href="page.html" alt="area"&gt;
+  &lt;area shape="circle" coords="200,100,40" href="other.html"&gt;
+  &lt;area shape="poly" coords="140,20,190,80,100,80" href="poly.html"&gt;
+&lt;/map&gt;</pre>
+            <p>Shapes: <code>rect</code> (x1,y1,x2,y2), <code>circle</code> (centerX,centerY,radius), <code>poly</code>
+                (x1,y1,x2,y2,...).</p>
+
+            <!-- 9. FRAMES & IFRAMES -->
+            <h2 id="frames">9. Frames (legacy) & iframes</h2>
+            <div class="note-box">
+                <strong>Note:</strong> <code>&lt;frameset&gt;</code> and <code>&lt;frame&gt;</code> are deprecated in
+                HTML5. Use <code>&lt;iframe&gt;</code> for embedding external content.
+            </div>
+            <h3>Iframe – inline frame</h3>
+            <pre>&lt;iframe src="page.html" width="500" height="300" title="description"&gt;
+  Fallback text (if not supported)
+&lt;/iframe&gt;</pre>
+            <p>You can target an iframe with a link using <code>target="frameName"</code> and
+                <code>name="frameName"</code>.</p>
+            <p>Common attributes: <code>allow, loading="lazy", sandbox, referrerpolicy</code>.</p>
+
+            <!-- 10. STYLE SHEETS (CSS) -->
+            <h2>10. Using CSS with HTML</h2>
+            <p>Three ways:</p>
+            <ul>
+                <li><strong>Inline</strong> – <code>style="color:blue;"</code></li>
+                <li><strong>Internal</strong> – <code>&lt;style&gt; ... &lt;/style&gt;</code> inside
+                    <code>&lt;head&gt;</code></li>
+                <li><strong>External</strong> – <code>&lt;link rel="stylesheet" href="style.css"&gt;</code></li>
+            </ul>
+            <pre>&lt;head&gt;
+  &lt;style&gt;
+    p { color: red; }
+  &lt;/style&gt;
+  &lt;link rel="stylesheet" href="global.css"&gt;
+&lt;/head&gt;</pre>
+
+            <!-- 11. COLORS & FONTS -->
+            <h2>11. Colors & fonts</h2>
+            <p>Colors can be specified by name (<code>red</code>), hex (<code>#ff0000</code>), rgb
+                (<code>rgb(255,0,0)</code>), hsl.</p>
+            <p>Fonts: use CSS properties <code>font-family, font-size, font-weight</code>. The <code>&lt;font&gt;</code>
+                tag is obsolete.</p>
+
+            <!-- 12. HTML5 SEMANTIC ELEMENTS -->
+            <h2>12. Semantic HTML (HTML5)</h2>
+            <p>Use elements that describe meaning, not just layout:</p>
+            <pre>&lt;header&gt; &lt;nav&gt; &lt;main&gt; &lt;article&gt; &lt;section&gt; &lt;aside&gt; &lt;footer&gt;</pre>
+            <p>Improves accessibility, SEO, and code readability.</p>
+
+            <!-- 13. TOOLS & ROADMAP -->
+            <h2>13. HTML editors & resources</h2>
+            <p>Popular editors: VS Code, Sublime, Notepad++, Brackets, Atom. Online playgrounds: CodePen, JSFiddle,
+                Tutorialspoint online HTML editor.</p>
+            <p><strong>2025 learning roadmap:</strong> start with basics → lists/links/images → forms → semantic HTML →
+                accessibility → integration with CSS/JS. Practice by building small pages.</p>
+
+            <h2>14. Quick FAQ</h2>
+            <ul>
+                <li><strong>Is HTML a programming language?</strong> No, it's a markup language.</li>
+                <li><strong>Latest version?</strong> HTML5 (living standard).</li>
+                <li><strong>Difference &lt;head&gt; and &lt;header&gt;?</strong> <code>&lt;head&gt;</code> contains
+                    meta‑data; <code>&lt;header&gt;</code> is a semantic section for introductory content.</li>
+                <li><strong>How to save an HTML file?</strong> Use <code>.html</code> extension.</li>
+            </ul>
+        </div>
+
+        <div class="footer">
+            ⚡ part of your full‑stack notes · <a href="index.html">back to main index</a> · <a href="#">top ↑</a>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📄 HTML deep dive – computer code · meta · tables · lists · links</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background: #f8fafc;
+            color: #0f172a;
+            line-height: 1.6;
+            padding: 2rem 1.5rem;
+        }
+
+        .notes-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 2.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .notes-header {
+            background: #0f172a;
+            color: white;
+            padding: 2rem 3rem;
+            border-bottom: 6px solid #f97316;
+        }
+
+        .notes-header h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            background: linear-gradient(145deg, #f97316, #fbbf24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .notes-header p {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            margin-top: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            background: #f1f5f9;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid #cbd5e1;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #1e293b;
+            font-weight: 600;
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            background: white;
+            border: 1px solid #cbd5e1;
+            transition: 0.1s;
+            font-size: 0.9rem;
+        }
+
+        .nav-links a:hover {
+            background: #f97316;
+            color: white;
+            border-color: #f97316;
+        }
+
+        .content {
+            padding: 3rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin: 2.5rem 0 1rem;
+            border-bottom: 3px solid #f97316;
+            display: inline-block;
+            padding-bottom: 0.3rem;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            margin: 2rem 0 0.8rem;
+            color: #0f172a;
+        }
+
+        p {
+            margin: 1rem 0;
+        }
+
+        pre {
+            background: #0b1120;
+            color: #e2e8f0;
+            padding: 1.3rem;
+            border-radius: 18px;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            border-left: 4px solid #f97316;
+            margin: 1.5rem 0;
+        }
+
+        code:not(pre code) {
+            background: #f1f5f9;
+            padding: 0.2rem 0.5rem;
+            border-radius: 6px;
+            font-family: monospace;
+            color: #b45309;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 1.5rem 0;
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        th {
+            background: #e2e8f0;
+            font-weight: 600;
+            padding: 0.7rem 1rem;
+        }
+
+        td {
+            padding: 0.7rem 1rem;
+            border-top: 1px solid #cbd5e1;
+        }
+
+        .hl {
+            background: #fef9c3;
+            color: #854d0e;
+            font-weight: 600;
+            padding: 0.2rem 0.4rem;
+            border-radius: 6px;
+        }
+
+        .note-box {
+            background: #fff7ed;
+            border-left: 4px solid #f97316;
+            padding: 1.2rem;
+            border-radius: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .footer {
+            background: #f1f5f9;
+            padding: 2rem;
+            text-align: center;
+            color: #475569;
+            border-top: 1px solid #cbd5e1;
+        }
+
+        .footer a {
+            color: #f97316;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        hr {
+            margin: 2rem 0;
+            border: 1px dashed #cbd5e1;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="notes-container">
+        <div class="notes-header">
+            <h1>📄 HTML advanced – computer code, meta, tables, lists, links</h1>
+            <p>complete reference with examples</p>
+        </div>
+        <div class="nav-links">
+            <a href="index.html">🏠 main index</a>
+            <a href="#code">code elements</a>
+            <a href="#meta">meta tags</a>
+            <a href="#classid">class & id</a>
+            <a href="#backgrounds">backgrounds</a>
+            <a href="#tables">tables</a>
+            <a href="#lists">lists</a>
+            <a href="#links">links</a>
+        </div>
+
+        <div class="content">
+
+            <!-- 1. HTML COMPUTER CODE ELEMENTS -->
+            <h2 id="code">💻 HTML computer code elements</h2>
+            <p>Special tags for displaying code, keyboard input, variables, and preformatted text.</p>
+
+            <h3><code>&lt;kbd&gt;</code> – keyboard input</h3>
+            <pre>&lt;p&gt;Press &lt;kbd&gt;Ctrl&lt;/kbd&gt;+&lt;kbd&gt;C&lt;/kbd&gt; to copy.&lt;/p&gt;</pre>
+            <p><strong>Result:</strong> Press <kbd>Ctrl</kbd>+<kbd>C</kbd> to copy.</p>
+
+            <h3><code>&lt;pre&gt;</code> – preformatted text</h3>
+            <pre>&lt;pre&gt;
+  This text
+    preserves spaces
+      and line breaks.
+&lt;/pre&gt;</pre>
+            <p><strong>Result:</strong></p>
+            <pre style="background:#f1f5f9; color:black; border-left-color:#aaa;">
+  This text
+    preserves spaces
+      and line breaks.
+        </pre>
+
+            <h3><code>&lt;code&gt;</code> – code snippet</h3>
+            <pre>&lt;p&gt;The &lt;code&gt;function()&lt;/code&gt; keyword defines a function.&lt;/p&gt;</pre>
+            <p><strong>Result:</strong> The <code>function()</code> keyword defines a function.</p>
+
+            <h3><code>&lt;var&gt;</code> – variable</h3>
+            <pre>&lt;p&gt;The area is &lt;var&gt;πr²&lt;/var&gt;&lt;/p&gt;</pre>
+            <p><strong>Result:</strong> The area is <var>πr²</var></p>
+
+            <h3><code>&lt;samp&gt;</code> – sample output</h3>
+            <pre>&lt;p&gt;&lt;samp&gt;Error: file not found&lt;/samp&gt;&lt;/p&gt;</pre>
+            <p><strong>Result:</strong> <samp>Error: file not found</samp></p>
+
+            <hr>
+
+            <!-- 2. META TAGS -->
+            <h2 id="meta">🔍 HTML meta tags</h2>
+            <p><span class="hl">&lt;meta&gt;</span> tags provide metadata about the document – they don't display but
+                are used by browsers, search engines, and other services.</p>
+            <pre>&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="description" content="Free tutorials"&gt;
+  &lt;meta name="keywords" content="HTML, CSS, JavaScript"&gt;
+  &lt;meta name="author" content="John Doe"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;meta http-equiv="refresh" content="30"&gt;
+&lt;/head&gt;</pre>
+
+            <table>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Example</th>
+                    <th>Purpose</th>
+                </tr>
+                <tr>
+                    <td>charset</td>
+                    <td><code>charset="UTF-8"</code></td>
+                    <td>character encoding</td>
+                </tr>
+                <tr>
+                    <td>name="description"</td>
+                    <td><code>content="..."</code></td>
+                    <td>page description (search results)</td>
+                </tr>
+                <tr>
+                    <td>name="keywords"</td>
+                    <td><code>content="html, css"</code></td>
+                    <td>SEO keywords (mostly ignored now)</td>
+                </tr>
+                <tr>
+                    <td>name="author"</td>
+                    <td><code>content="..."</code></td>
+                    <td>document author</td>
+                </tr>
+                <tr>
+                    <td>name="viewport"</td>
+                    <td><code>content="width=device-width, initial-scale=1"</code></td>
+                    <td>responsive design</td>
+                </tr>
+                <tr>
+                    <td>http-equiv="refresh"</td>
+                    <td><code>content="5; url=https://..."</code></td>
+                    <td>auto‑refresh / redirect</td>
+                </tr>
+                <tr>
+                    <td>http-equiv="cookie"</td>
+                    <td><code>content="..."</code></td>
+                    <td>set cookies (old, rarely used)</td>
+                </tr>
+            </table>
+
+            <h3>Meta for social media (Open Graph)</h3>
+            <pre>&lt;meta property="og:title" content="Title"&gt;
+&lt;meta property="og:description" content="Desc"&gt;
+&lt;meta property="og:image" content="image.jpg"&gt;</pre>
+
+            <hr>
+
+            <!-- 3. CLASS & ID -->
+            <h2 id="classid">🏷️ HTML class & id</h2>
+            <h3>class attribute</h3>
+            <p>Used to classify elements (non‑unique, can be shared).</p>
+            <pre>&lt;style&gt;.highlight { background: yellow; }&lt;/style&gt;
+&lt;p class="highlight"&gt;This is highlighted.&lt;/p&gt;
+&lt;p class="highlight"&gt;Also highlighted.&lt;/p&gt;</pre>
+
+            <h3>id attribute</h3>
+            <p>Unique identifier for a single element.</p>
+            <pre>&lt;div id="header"&gt;Main header&lt;/div&gt;
+&lt;script&gt; document.getElementById('header') &lt;/script&gt;</pre>
+
+            <h3>Difference</h3>
+            <ul>
+                <li><strong>id</strong> must be unique per page; used for JavaScript and anchor links.</li>
+                <li><strong>class</strong> can be reused; mainly for CSS styling.</li>
+            </ul>
+
+            <hr>
+
+            <!-- 4. BACKGROUNDS -->
+            <h2 id="backgrounds">🖼️ HTML backgrounds</h2>
+            <p>Old way: <code>background</code> attribute (deprecated). Modern: CSS <code>background</code>.</p>
+
+            <h3>Background color</h3>
+            <pre>&lt;body style="background-color: #f0f0f0;"&gt; ... &lt;/body&gt;</pre>
+
+            <h3>Background image</h3>
+            <pre>&lt;div style="background-image: url('pattern.jpg'); background-repeat: repeat; background-position: center;"&gt;
+  Content
+&lt;/div&gt;</pre>
+
+            <h3>Background repeat & position</h3>
+            <pre>background-repeat: repeat-x;   /* horizontal repeat */
+background-repeat: repeat-y;   /* vertical repeat */
+background-repeat: no-repeat;  /* no repeat */
+background-position: top left; /* default top left */</pre>
+
+            <hr>
+
+            <!-- 5. TABLES (advanced) -->
+            <h2 id="tables">📊 HTML tables – advanced</h2>
+            <p>Tables are built with <code>&lt;table&gt;</code>, <code>&lt;tr&gt;</code> (rows), <code>&lt;td&gt;</code>
+                (cells), <code>&lt;th&gt;</code> (headers).</p>
+
+            <h3>Basic table</h3>
+            <pre>&lt;table border="1"&gt;
+  &lt;tr&gt;&lt;th&gt;Name&lt;/th&gt;&lt;th&gt;Age&lt;/th&gt;&lt;/tr&gt;
+  &lt;tr&gt;&lt;td&gt;Alice&lt;/td&gt;&lt;td&gt;25&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;</pre>
+
+            <h3>Table with caption, thead, tbody, tfoot</h3>
+            <pre>&lt;table border="1"&gt;
+  &lt;caption&gt;Employee data&lt;/caption&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;&lt;th&gt;ID&lt;/th&gt;&lt;th&gt;Name&lt;/th&gt;&lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;John&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;2&lt;/td&gt;&lt;td&gt;Jane&lt;/td&gt;&lt;/tr&gt;
+  &lt;/tbody&gt;
+  &lt;tfoot&gt;
+    &lt;tr&gt;&lt;td colspan="2"&gt;Two employees&lt;/td&gt;&lt;/tr&gt;
+  &lt;/tfoot&gt;
+&lt;/table&gt;</pre>
+
+            <h3>Colgroup & col</h3>
+            <pre>&lt;colgroup&gt;
+  &lt;col span="2" style="background: lightgrey;"&gt;
+  &lt;col style="background: lightblue;"&gt;
+&lt;/colgroup&gt;</pre>
+
+            <h3>Nested tables</h3>
+            <pre>&lt;table border="1"&gt;
+  &lt;tr&gt;
+    &lt;td&gt;Main cell
+      &lt;table border="1"&gt;
+        &lt;tr&gt;&lt;td&gt;inner 1&lt;/td&gt;&lt;td&gt;inner 2&lt;/td&gt;&lt;/tr&gt;
+      &lt;/table&gt;
+    &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;</pre>
+
+            <h3>Table styling (CSS zebra stripes, hover)</h3>
+            <pre>tr:nth-child(even) { background: #f2f2f2; }
+tr:hover { background: #ddd; }</pre>
+
+            <hr>
+
+            <!-- 6. LISTS -->
+            <h2 id="lists">📝 HTML lists</h2>
+            <h3>Unordered list</h3>
+            <pre>&lt;ul&gt;
+  &lt;li&gt;Item 1&lt;/li&gt;
+  &lt;li&gt;Item 2&lt;/li&gt;
+&lt;/ul&gt;</pre>
+            <p>Marker types: <code>disc</code>, <code>circle</code>, <code>square</code> (via CSS
+                <code>list-style-type</code>).</p>
+
+            <h3>Ordered list</h3>
+            <pre>&lt;ol type="1" start="3"&gt;
+  &lt;li&gt;Third&lt;/li&gt;
+  &lt;li&gt;Fourth&lt;/li&gt;
+&lt;/ol&gt;</pre>
+            <p><code>type</code> values: <code>1</code> (numbers), <code>A</code> (uppercase letters), <code>a</code>
+                (lowercase), <code>I</code> (Roman), <code>i</code> (small Roman).</p>
+
+            <h3>Definition list</h3>
+            <pre>&lt;dl&gt;
+  &lt;dt&gt;HTML&lt;/dt&gt;
+  &lt;dd&gt;HyperText Markup Language&lt;/dd&gt;
+&lt;/dl&gt;</pre>
+
+            <h3>Nested lists</h3>
+            <pre>&lt;ul&gt;
+  &lt;li&gt;Fruits
+    &lt;ul&gt;
+      &lt;li&gt;Apple&lt;/li&gt;
+      &lt;li&gt;Banana&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</pre>
+
+            <hr>
+
+            <!-- 7. LINKS -->
+            <h2 id="links">🔗 HTML links (hyperlinks)</h2>
+            <p>Links are created with <code>&lt;a&gt;</code> (anchor) tag.</p>
+
+            <h3>Basic text link</h3>
+            <pre>&lt;a href="https://example.com" target="_blank"&gt;Visit example&lt;/a&gt;</pre>
+
+            <h3>target attribute</h3>
+            <ul>
+                <li><code>_self</code> – same tab (default)</li>
+                <li><code>_blank</code> – new tab/window</li>
+                <li><code>_parent</code> – parent frame</li>
+                <li><code>_top</code> – full body of window</li>
+            </ul>
+
+            <h3>Link to a page section (id)</h3>
+            <pre>&lt;a href="#section2"&gt;Jump to section 2&lt;/a&gt;
+...
+&lt;h2 id="section2"&gt;Section 2&lt;/h2&gt;</pre>
+
+            <h3>Image as link</h3>
+            <pre>&lt;a href="page.html"&gt;
+  &lt;img src="button.jpg" alt="click me"&gt;
+&lt;/a&gt;</pre>
+
+            <h3>Email link (mailto)</h3>
+            <pre>&lt;a href="mailto:someone@example.com?subject=Hello&body=Hi"&gt;Send email&lt;/a&gt;</pre>
+
+            <h3>Download link</h3>
+            <pre>&lt;a href="file.zip" download="custom-name.zip"&gt;Download zip&lt;/a&gt;</pre>
+
+            <h3>Base path</h3>
+            <p>Use <code>&lt;base&gt;</code> in <code>&lt;head&gt;</code> to set a default URL for all relative links.
+            </p>
+            <pre>&lt;base href="https://www.tutorialspoint.com/"&gt;
+&lt;a href="/html/index.htm"&gt;HTML Tutorial&lt;/a&gt;</pre>
+
+            <h3>Image maps (client‑side)</h3>
+            <pre>&lt;img src="map.jpg" usemap="#workmap"&gt;
+&lt;map name="workmap"&gt;
+  &lt;area shape="rect" coords="34,44,270,350" href="page.html"&gt;
+  &lt;area shape="circle" coords="200,100,40" href="other.html"&gt;
+  &lt;area shape="poly" coords="140,20,190,80,100,80" href="poly.html"&gt;
+&lt;/map&gt;</pre>
+            <p>Coordinate shapes: <code>rect</code> (x1,y1,x2,y2), <code>circle</code> (centerX,centerY,radius),
+                <code>poly</code> (x1,y1,x2,y2,...).</p>
+
+            <h3>Server‑side image map (deprecated)</h3>
+            <pre>&lt;a href="process.map"&gt;&lt;img src="image.jpg" ismap&gt;&lt;/a&gt;</pre>
+            <p>Coordinates are sent to server – rarely used today.</p>
+
+            <hr>
+            <div class="note-box">
+                <strong>📌 Summary:</strong> This page covers advanced HTML elements often used in real projects. Each
+                topic includes working examples – try them in your editor.
+            </div>
+
+        </div>
+
+        <div class="footer">
+            ⚡ part of your full‑stack notes · <a href="index.html">back to main index</a> · <a href="#">top ↑</a>
+        </div>
+    </div>
+</body>
+
+</html>

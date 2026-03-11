@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎨 HTML colors · forms · multimedia – complete guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background: #f8fafc;
+            color: #0f172a;
+            line-height: 1.6;
+            padding: 2rem 1.5rem;
+        }
+
+        .notes-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 2.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .notes-header {
+            background: #0f172a;
+            color: white;
+            padding: 2rem 3rem;
+            border-bottom: 6px solid #f97316;
+        }
+
+        .notes-header h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            background: linear-gradient(145deg, #f97316, #fbbf24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .notes-header p {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            margin-top: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            background: #f1f5f9;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid #cbd5e1;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #1e293b;
+            font-weight: 600;
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            background: white;
+            border: 1px solid #cbd5e1;
+            transition: 0.1s;
+            font-size: 0.9rem;
+        }
+
+        .nav-links a:hover {
+            background: #f97316;
+            color: white;
+            border-color: #f97316;
+        }
+
+        .content {
+            padding: 3rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin: 2.5rem 0 1rem;
+            border-bottom: 3px solid #f97316;
+            display: inline-block;
+            padding-bottom: 0.3rem;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            margin: 2rem 0 0.8rem;
+            color: #0f172a;
+        }
+
+        p {
+            margin: 1rem 0;
+        }
+
+        pre {
+            background: #0b1120;
+            color: #e2e8f0;
+            padding: 1.3rem;
+            border-radius: 18px;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            border-left: 4px solid #f97316;
+            margin: 1.5rem 0;
+        }
+
+        code:not(pre code) {
+            background: #f1f5f9;
+            padding: 0.2rem 0.5rem;
+            border-radius: 6px;
+            font-family: monospace;
+            color: #b45309;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 1.5rem 0;
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        th {
+            background: #e2e8f0;
+            font-weight: 600;
+            padding: 0.7rem 1rem;
+        }
+
+        td {
+            padding: 0.7rem 1rem;
+            border-top: 1px solid #cbd5e1;
+        }
+
+        .hl {
+            background: #fef9c3;
+            color: #854d0e;
+            font-weight: 600;
+            padding: 0.2rem 0.4rem;
+            border-radius: 6px;
+        }
+
+        .note-box {
+            background: #fff7ed;
+            border-left: 4px solid #f97316;
+            padding: 1.2rem;
+            border-radius: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .color-swatch {
+            display: inline-block;
+            width: 1.2rem;
+            height: 1.2rem;
+            border-radius: 4px;
+            margin-right: 0.3rem;
+            vertical-align: middle;
+            border: 1px solid #ccc;
+        }
+
+        .footer {
+            background: #f1f5f9;
+            padding: 2rem;
+            text-align: center;
+            color: #475569;
+            border-top: 1px solid #cbd5e1;
+        }
+
+        .footer a {
+            color: #f97316;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        hr {
+            margin: 2rem 0;
+            border: 1px dashed #cbd5e1;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="notes-container">
+        <div class="notes-header">
+            <h1>🎨 HTML colors · forms · multimedia – complete guide</h1>
+            <p>color names, RGB/RGBA, HEX, HSL/HSLA, form controls, input attributes, video/audio</p>
+        </div>
+        <div class="nav-links">
+            <a href="index.html">🏠 main index</a>
+            <a href="#color-names">color names</a>
+            <a href="#rgb">RGB/RGBA</a>
+            <a href="#hex">HEX</a>
+            <a href="#hsl">HSL/HSLA</a>
+            <a href="#forms">forms</a>
+            <a href="#form-controls">form controls</a>
+            <a href="#input-attrs">input attributes</a>
+            <a href="#multimedia">multimedia</a>
+        </div>
+
+        <div class="content">
+
+            <!-- 1. COLOR NAMES -->
+            <h2 id="color-names">🌈 HTML color names</h2>
+            <p>HTML supports 140+ predefined color names. Here are the 16 basic colors and some extended ones.</p>
+
+            <h3>Basic 16 colors (HTML 3.2)</h3>
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Hex</th>
+                    <th>Sample</th>
+                </tr>
+                <tr>
+                    <td>aqua</td>
+                    <td>#00ffff</td>
+                    <td><span class="color-swatch" style="background:#00ffff;"></span></td>
+                </tr>
+                <tr>
+                    <td>black</td>
+                    <td>#000000</td>
+                    <td><span class="color-swatch" style="background:#000000;"></span></td>
+                </tr>
+                <tr>
+                    <td>blue</td>
+                    <td>#0000ff</td>
+                    <td><span class="color-swatch" style="background:#0000ff;"></span></td>
+                </tr>
+                <tr>
+                    <td>fuchsia</td>
+                    <td>#ff00ff</td>
+                    <td><span class="color-swatch" style="background:#ff00ff;"></span></td>
+                </tr>
+                <tr>
+                    <td>green</td>
+                    <td>#008000</td>
+                    <td><span class="color-swatch" style="background:#008000;"></span></td>
+                </tr>
+                <tr>
+                    <td>gray</td>
+                    <td>#808080</td>
+                    <td><span class="color-swatch" style="background:#808080;"></span></td>
+                </tr>
+                <tr>
+                    <td>lime</td>
+                    <td>#00ff00</td>
+                    <td><span class="color-swatch" style="background:#00ff00;"></span></td>
+                </tr>
+                <tr>
+                    <td>maroon</td>
+                    <td>#800000</td>
+                    <td><span class="color-swatch" style="background:#800000;"></span></td>
+                </tr>
+                <tr>
+                    <td>navy</td>
+                    <td>#000080</td>
+                    <td><span class="color-swatch" style="background:#000080;"></span></td>
+                </tr>
+                <tr>
+                    <td>olive</td>
+                    <td>#808000</td>
+                    <td><span class="color-swatch" style="background:#808000;"></span></td>
+                </tr>
+                <tr>
+                    <td>purple</td>
+                    <td>#800080</td>
+                    <td><span class="color-swatch" style="background:#800080;"></span></td>
+                </tr>
+                <tr>
+                    <td>red</td>
+                    <td>#ff0000</td>
+                    <td><span class="color-swatch" style="background:#ff0000;"></span></td>
+                </tr>
+                <tr>
+                    <td>silver</td>
+                    <td>#c0c0c0</td>
+                    <td><span class="color-swatch" style="background:#c0c0c0;"></span></td>
+                </tr>
+                <tr>
+                    <td>teal</td>
+                    <td>#008080</td>
+                    <td><span class="color-swatch" style="background:#008080;"></span></td>
+                </tr>
+                <tr>
+                    <td>white</td>
+                    <td>#ffffff</td>
+                    <td><span class="color-swatch" style="background:#ffffff; border:1px solid #aaa;"></span></td>
+                </tr>
+                <tr>
+                    <td>yellow</td>
+                    <td>#ffff00</td>
+                    <td><span class="color-swatch" style="background:#ffff00;"></span></td>
+                </tr>
+            </table>
+
+            <p>Extended names:
+                <code>aliceblue, antiquewhite, aquamarine, azure, beige, bisque, blanchedalmond, blueviolet, brown, burlywood, cadetblue, chartreuse, chocolate, coral, cornflowerblue, cornsilk, crimson, cyan, darkblue, darkcyan, darkgoldenrod, darkgray, darkgreen, darkkhaki, darkmagenta, darkolivegreen, darkorange, darkorchid, darkred, darksalmon, darkseagreen, darkslateblue, darkslategray, darkturquoise, darkviolet, deeppink, deepskyblue, dimgray, dodgerblue, firebrick, floralwhite, forestgreen, gainsboro, ghostwhite, gold, goldenrod, greenyellow, honeydew, hotpink, indianred, indigo, ivory, khaki, lavender, lavenderblush, lawngreen, lemonchiffon, lightblue, lightcoral, lightcyan, lightgoldenrodyellow, lightgreen, lightgrey, lightpink, lightsalmon, lightseagreen, lightskyblue, lightslategray, lightsteelblue, lightyellow, limegreen, linen, magenta, mediumblue, mediumorchid, mediumpurple, midnightblue, mistyrose, moccasin, oldlace, orange, orchid, peachpuff, peru, pink, plum, rosybrown, royalblue, salmon, sandybrown, seagreen, sienna, skyblue, slateblue, steelblue, tan, thistle, tomato, violet, wheat, whitesmoke, yellowgreen</code>
+            </p>
+
+            <hr>
+
+            <!-- 2. RGB & RGBA -->
+            <h2 id="rgb">🎨 RGB & RGBA colors</h2>
+            <p><span class="hl">rgb(red, green, blue)</span> – each value 0..255. <span class="hl">rgba(red, green,
+                    blue, alpha)</span> adds opacity (0 = transparent, 1 = opaque).</p>
+            <pre>&lt;p style="color: rgb(255,0,0);"&gt;Red text&lt;/p&gt;
+&lt;div style="background: rgba(0,0,255,0.3);"&gt;Semi‑transparent blue&lt;/div&gt;</pre>
+
+            <table>
+                <tr>
+                    <th>RGB</th>
+                    <th>Sample</th>
+                    <th>RGBA (0.5)</th>
+                    <th>Sample</th>
+                </tr>
+                <tr>
+                    <td>rgb(255,0,0)</td>
+                    <td><span class="color-swatch" style="background:rgb(255,0,0);"></span></td>
+                    <td>rgba(255,0,0,0.5)</td>
+                    <td><span class="color-swatch" style="background:rgba(255,0,0,0.5);"></span></td>
+                </tr>
+                <tr>
+                    <td>rgb(0,255,0)</td>
+                    <td><span class="color-swatch" style="background:rgb(0,255,0);"></span></td>
+                    <td>rgba(0,255,0,0.5)</td>
+                    <td><span class="color-swatch" style="background:rgba(0,255,0,0.5);"></span></td>
+                </tr>
+                <tr>
+                    <td>rgb(0,0,255)</td>
+                    <td><span class="color-swatch" style="background:rgb(0,0,255);"></span></td>
+                    <td>rgba(0,0,255,0.5)</td>
+                    <td><span class="color-swatch" style="background:rgba(0,0,255,0.5);"></span></td>
+                </tr>
+            </table>
+
+            <hr>
+
+            <!-- 3. HEX colors -->
+            <h2 id="hex">#️⃣ HEX colors</h2>
+            <p>Format: <code>#RRGGBB</code> or <code>#RGB</code> (short). RR,GG,BB are hexadecimal values 00–FF.</p>
+            <pre>&lt;body style="background:#ffaa00;"&gt; ... &lt;/body&gt;
+&lt;p style="color:#00f;"&gt;Blue text (short hex)&lt;/p&gt;</pre>
+
+            <h3>Common HEX values</h3>
+            <table>
+                <tr>
+                    <th>Color</th>
+                    <th>HEX</th>
+                    <th>Sample</th>
+                </tr>
+                <tr>
+                    <td>black</td>
+                    <td>#000000</td>
+                    <td><span class="color-swatch" style="background:#000000;"></span></td>
+                </tr>
+                <tr>
+                    <td>red</td>
+                    <td>#ff0000</td>
+                    <td><span class="color-swatch" style="background:#ff0000;"></span></td>
+                </tr>
+                <tr>
+                    <td>green</td>
+                    <td>#00ff00</td>
+                    <td><span class="color-swatch" style="background:#00ff00;"></span></td>
+                </tr>
+                <tr>
+                    <td>blue</td>
+                    <td>#0000ff</td>
+                    <td><span class="color-swatch" style="background:#0000ff;"></span></td>
+                </tr>
+                <tr>
+                    <td>yellow</td>
+                    <td>#ffff00</td>
+                    <td><span class="color-swatch" style="background:#ffff00;"></span></td>
+                </tr>
+                <tr>
+                    <td>cyan</td>
+                    <td>#00ffff</td>
+                    <td><span class="color-swatch" style="background:#00ffff;"></span></td>
+                </tr>
+                <tr>
+                    <td>magenta</td>
+                    <td>#ff00ff</td>
+                    <td><span class="color-swatch" style="background:#ff00ff;"></span></td>
+                </tr>
+                <tr>
+                    <td>white</td>
+                    <td>#ffffff</td>
+                    <td><span class="color-swatch" style="background:#ffffff; border:1px solid #aaa;"></span></td>
+                </tr>
+            </table>
+
+            <hr>
+
+            <!-- 4. HSL & HSLA -->
+            <h2 id="hsl">🌈 HSL & HSLA colors</h2>
+            <p><span class="hl">hsl(hue, saturation%, lightness%)</span> – hue: 0–360 (0=red, 120=green, 240=blue),
+                saturation: 0%–100%, lightness: 0%–100%.</p>
+            <p><span class="hl">hsla(hue, saturation%, lightness%, alpha)</span> adds opacity.</p>
+            <pre>&lt;div style="background: hsl(120, 50%, 50%);"&gt;Greenish&lt;/div&gt;
+&lt;div style="background: hsla(240, 80%, 60%, 0.3);"&gt;Semi‑transparent blue&lt;/div&gt;</pre>
+
+            <div class="note-box">
+                <strong>HSL color picker:</strong><br>
+                Hue: <input type="range" min="0" max="360" value="0" id="hue"> <span id="hueVal">0</span>°<br>
+                Saturation: <input type="range" min="0" max="100" value="100" id="sat"> <span
+                    id="satVal">100</span>%<br>
+                Lightness: <input type="range" min="0" max="100" value="50" id="light"> <span
+                    id="lightVal">50</span>%<br>
+                <div style="width:100%; height:50px; margin-top:10px; background: hsl(0,100%,50%);" id="hslPreview">
+                </div>
+                <p>HSL: <code id="hslCode">hsl(0,100%,50%)</code></p>
+                <script>
+                    document.getElementById('hue').addEventListener('input', updateHSL);
+                    document.getElementById('sat').addEventListener('input', updateHSL);
+                    document.getElementById('light').addEventListener('input', updateHSL);
+                    function updateHSL() {
+                        let h = document.getElementById('hue').value;
+                        let s = document.getElementById('sat').value;
+                        let l = document.getElementById('light').value;
+                        document.getElementById('hueVal').innerText = h;
+                        document.getElementById('satVal').innerText = s;
+                        document.getElementById('lightVal').innerText = l;
+                        let color = `hsl(${h},${s}%,${l}%)`;
+                        document.getElementById('hslPreview').style.background = color;
+                        document.getElementById('hslCode').innerText = color;
+                    }
+                </script>
+            </div>
+
+            <hr>
+
+            <!-- 5. FORMS -->
+            <h2 id="forms">📋 HTML forms</h2>
+            <p><span class="hl">&lt;form&gt;</span> container for user input. Attributes: <code>action</code>,
+                <code>method</code>, <code>target</code>, <code>autocomplete</code>, <code>enctype</code>,
+                <code>novalidate</code>.</p>
+
+            <h3>Basic form example</h3>
+            <pre>&lt;form action="/submit" method="post"&gt;
+  &lt;label for="name"&gt;Name:&lt;/label&gt;
+  &lt;input type="text" id="name" name="name"&gt;
+  &lt;button type="submit"&gt;Send&lt;/button&gt;
+&lt;/form&gt;</pre>
+
+            <h3>Form attributes table</h3>
+            <table>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Description</th>
+                    <th>Example</th>
+                </tr>
+                <tr>
+                    <td>action</td>
+                    <td>URL where data is sent</td>
+                    <td><code>action="/submit"</code></td>
+                </tr>
+                <tr>
+                    <td>method</td>
+                    <td>GET or POST</td>
+                    <td><code>method="post"</code></td>
+                </tr>
+                <tr>
+                    <td>target</td>
+                    <td>_self, _blank, _parent, _top</td>
+                    <td><code>target="_blank"</code></td>
+                </tr>
+                <tr>
+                    <td>autocomplete</td>
+                    <td>on/off</td>
+                    <td><code>autocomplete="off"</code></td>
+                </tr>
+                <tr>
+                    <td>enctype</td>
+                    <td>encoding for POST</td>
+                    <td><code>enctype="multipart/form-data"</code> (files)</td>
+                </tr>
+                <tr>
+                    <td>novalidate</td>
+                    <td>disable validation</td>
+                    <td><code>novalidate</code></td>
+                </tr>
+            </table>
+
+            <hr>
+
+            <!-- 6. FORM CONTROLS -->
+            <h2 id="form-controls">🎛️ HTML form controls</h2>
+            <p>All input types and elements inside a form.</p>
+
+            <h3>Text input & password</h3>
+            <pre>&lt;input type="text" name="username"&gt;
+&lt;input type="password" name="pwd"&gt;</pre>
+
+            <h3>Radio & checkbox</h3>
+            <pre>&lt;input type="radio" name="gender" value="male"&gt; Male
+&lt;input type="radio" name="gender" value="female"&gt; Female
+&lt;input type="checkbox" name="hobby" value="reading"&gt; Reading</pre>
+
+            <h3>Select (dropdown)</h3>
+            <pre>&lt;select name="city"&gt;
+  &lt;option value="nyc"&gt;New York&lt;/option&gt;
+  &lt;option value="lax" selected&gt;Los Angeles&lt;/option&gt;
+&lt;/select&gt;</pre>
+
+            <h3>Textarea (multi‑line)</h3>
+            <pre>&lt;textarea rows="4" cols="50" name="comment"&gt;Default text&lt;/textarea&gt;</pre>
+
+            <h3>File upload</h3>
+            <pre>&lt;input type="file" name="resume" accept=".pdf,.doc" multiple&gt;</pre>
+
+            <h3>Button types</h3>
+            <pre>&lt;input type="submit" value="Submit"&gt;
+&lt;input type="reset" value="Reset"&gt;
+&lt;input type="button" value="Click me" onclick="alert('hi')"&gt;
+&lt;button type="button"&gt;Also a button&lt;/button&gt;</pre>
+
+            <h3>Hidden input</h3>
+            <pre>&lt;input type="hidden" name="userId" value="123"&gt;</pre>
+
+            <h3>HTML5 new input types</h3>
+            <pre>&lt;input type="date"&gt;
+&lt;input type="datetime-local"&gt;
+&lt;input type="month"&gt;
+&lt;input type="week"&gt;
+&lt;input type="time"&gt;
+&lt;input type="number" min="0" max="10" step="1"&gt;
+&lt;input type="range" min="0" max="100"&gt;
+&lt;input type="email"&gt;
+&lt;input type="url"&gt;
+&lt;input type="tel"&gt;
+&lt;input type="color"&gt;</pre>
+
+            <h3>Datalist (autocomplete options)</h3>
+            <pre>&lt;input list="browsers" name="browser"&gt;
+&lt;datalist id="browsers"&gt;
+  &lt;option value="Chrome"&gt;
+  &lt;option value="Firefox"&gt;
+&lt;/datalist&gt;</pre>
+
+            <hr>
+
+            <!-- 7. INPUT ATTRIBUTES -->
+            <h2 id="input-attrs">⚙️ HTML input attributes</h2>
+            <table>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Description</th>
+                    <th>Example</th>
+                </tr>
+                <tr>
+                    <td>type</td>
+                    <td>input type (text, password, email, …)</td>
+                    <td><code>type="email"</code></td>
+                </tr>
+                <tr>
+                    <td>name</td>
+                    <td>identifies input for server</td>
+                    <td><code>name="username"</code></td>
+                </tr>
+                <tr>
+                    <td>value</td>
+                    <td>initial value</td>
+                    <td><code>value="John"</code></td>
+                </tr>
+                <tr>
+                    <td>size</td>
+                    <td>visible width (characters)</td>
+                    <td><code>size="30"</code></td>
+                </tr>
+                <tr>
+                    <td>maxlength</td>
+                    <td>max characters allowed</td>
+                    <td><code>maxlength="10"</code></td>
+                </tr>
+                <tr>
+                    <td>readonly</td>
+                    <td>cannot change, but value sent</td>
+                    <td><code>readonly</code></td>
+                </tr>
+                <tr>
+                    <td>disabled</td>
+                    <td>cannot interact, value not sent</td>
+                    <td><code>disabled</code></td>
+                </tr>
+                <tr>
+                    <td>min / max</td>
+                    <td>range for number/date</td>
+                    <td><code>min="1" max="10"</code></td>
+                </tr>
+                <tr>
+                    <td>accept</td>
+                    <td>file types for file input</td>
+                    <td><code>accept="image/*"</code></td>
+                </tr>
+                <tr>
+                    <td>multiple</td>
+                    <td>allow multiple files</td>
+                    <td><code>multiple</code></td>
+                </tr>
+                <tr>
+                    <td>placeholder</td>
+                    <td>hint inside field</td>
+                    <td><code>placeholder="Enter name"</code></td>
+                </tr>
+                <tr>
+                    <td>required</td>
+                    <td>must be filled</td>
+                    <td><code>required</code></td>
+                </tr>
+                <tr>
+                    <td>autofocus</td>
+                    <td>focus on page load</td>
+                    <td><code>autofocus</code></td>
+                </tr>
+                <tr>
+                    <td>list</td>
+                    <td>id of datalist</td>
+                    <td><code>list="ids"</code></td>
+                </tr>
+            </table>
+
+            <hr>
+
+            <!-- 8. MULTIMEDIA -->
+            <h2 id="multimedia">📽️ HTML multimedia – video, audio, embed, object</h2>
+
+            <h3>Video <code>&lt;video&gt;</code></h3>
+            <pre>&lt;video width="320" height="240" controls&gt;
+  &lt;source src="movie.mp4" type="video/mp4"&gt;
+  &lt;source src="movie.ogg" type="video/ogg"&gt;
+  Your browser does not support the video tag.
+&lt;/video&gt;</pre>
+            <p>Attributes: <code>autoplay, muted, loop, poster, preload</code>.</p>
+
+            <h3>Audio <code>&lt;audio&gt;</code></h3>
+            <pre>&lt;audio controls&gt;
+  &lt;source src="song.mp3" type="audio/mpeg"&gt;
+  &lt;source src="song.ogg" type="audio/ogg"&gt;
+  Your browser does not support the audio element.
+&lt;/audio&gt;</pre>
+
+            <h3>Embed <code>&lt;embed&gt;</code> (old but simple)</h3>
+            <pre>&lt;embed src="file.pdf" width="500" height="375" type="application/pdf"&gt;</pre>
+
+            <h3>Object <code>&lt;object&gt;</code> (more flexible)</h3>
+            <pre>&lt;object data="movie.swf" type="application/x-shockwave-flash" width="400" height="300"&gt;
+  &lt;param name="quality" value="high"&gt;
+  &lt;!-- fallback content --&gt;
+  &lt;img src="fallback.png" alt="alternative"&gt;
+&lt;/object&gt;</pre>
+
+            <p><code>&lt;object&gt;</code> can also embed PDF, HTML, images, etc.</p>
+
+            <div class="note-box">
+                <strong>📌 Browser support:</strong> MP4, WebM, Ogg for video; MP3, WAV, Ogg for audio. Use multiple
+                <code>&lt;source&gt;</code> for compatibility.
+            </div>
+
+            <hr>
+
+            <div class="note-box">
+                <strong>✨ Summary:</strong> This page covers HTML color models (names, RGB, HEX, HSL), all form controls
+                and attributes, and multimedia embedding – everything you need to build rich, interactive web pages.
+            </div>
+
+        </div>
+
+        <div class="footer">
+            ⚡ part of your full‑stack notes · <a href="index.html">back to main index</a> · <a href="#">top ↑</a>
+        </div>
+    </div>
+</body>
+
+</html>
